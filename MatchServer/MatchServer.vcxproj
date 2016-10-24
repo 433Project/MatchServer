@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\IOCPServer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
     <ClCompile Include="src\MetricGenerator.cpp" />

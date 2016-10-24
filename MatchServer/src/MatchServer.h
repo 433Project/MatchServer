@@ -35,20 +35,23 @@ public:
 	void RunServer();
 
 private:
-	
+	SOCKET GetConnSocket(char* ip, int port);
 	HANDLE CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads);
 	BOOL AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HANDLE hDevice, DWORD dwCompletionKey);
 
 	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
-	void AcceptEX(SOCKET hsoListen);
+	void AcceptEX(SOCKET hsoListen, int count);
 	SOCKET GetListenSocket(short shPortNo, int nBacklog);
 
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
 	WSADATA wsd;
+	SOCKET hConfigSock;
+	SOCKADDR_IN configAddr;
+
 	SOCKET hConnSock;
-	SOCKADDR_IN recvAddr;
+	SOCKADDR_IN connAddr;
 
 	SOCKET hsoListen;
 	int backlog = 10;

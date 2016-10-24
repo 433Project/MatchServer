@@ -20,13 +20,6 @@ void MatchServer::RunServer() {
 		return;
 	}
 
-	/*if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE));
-	{
-	cout << "SetConsoleCtrlHandler failed, code : " << GetLastError() << endl;
-	return;
-	}
-	*/
-
 	//===================IOCP Creation & Make Thread Pool
 	GetSystemInfo(&si);
 	int numOfCPU = si.dwNumberOfProcessors;
@@ -39,31 +32,61 @@ void MatchServer::RunServer() {
 		_beginthreadex(NULL, 0, ProcessThread, (LPVOID)hCompletion, 0, NULL);
 	}
 
-	//==================Connection to Connection Server
-	hConnSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	//==================Connect to Config Server
+	hConfigSock = GetConnSocket("10.100.10.10", 14040);
+	
+	if (hConfigSock == INVALID_SOCKET) 
+		return ;
+	
+	
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
+	
+	PER_IO_DATA ov;
+	ov.buffer = "request message~~!";
+	ov.wsaBuf.buf = ov.buffer;
+	DWORD sendBytes;
+	WSASend(hConfigSock, &ov.wsaBuf, 1, &sendBytes, 0, &ov, NULL);
+
+	//==================Connect to Connection Server
+	hConnSock = GetConnSocket("10.100.10.10", 14040);
+	
 	if (hConnSock == INVALID_SOCKET)
-		cout << "socket failed, code : " << WSAGetLastError() << endl;
-
-	memset(&recvAddr, 0, sizeof(recvAddr));
-	recvAddr.sin_family = AF_INET;
-	recvAddr.sin_addr.s_addr = inet_addr("10.100.10.10");	//Connection Server IP
-	recvAddr.sin_port = htons(14040);						//Connection Server Port
-
-	if (connect(hConnSock, (SOCKADDR*)&recvAddr, sizeof(recvAddr)) == SOCKET_ERROR)
-		cout << "connect failed, code : " << WSAGetLastError() << endl;
-
+		return;
+	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, hConnSock);
 
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
 
-	AcceptEX(hsoListen);
+	AcceptEX(hsoListen, 2);
 
 	while (TRUE)
 	{
 
-
 	}
+}
+
+SOCKET MatchServer::GetConnSocket(char* ip, int port)
+{
+	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	if (hSock == INVALID_SOCKET)
+	{
+		cout << "socket failed, code : " << WSAGetLastError() << endl;
+		return hSock;
+	}
+	SOCKADDR_IN addr;
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(ip);				//Server IP
+	addr.sin_port = htons(port);						//Server Port
+
+	if (connect(hSock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
+	{
+		cout << "connect failed, code : " << WSAGetLastError() << endl;
+		return INVALID_SOCKET;
+	}
+	
+	return hSock;
 }
 
 HANDLE MatchServer::CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads)
@@ -139,28 +162,32 @@ SOCKET MatchServer::GetListenSocket(short shPortNo, int nBacklog)
 	return hsoListen;
 }
 
-void MatchServer::AcceptEX(SOCKET hsoListen)
+void MatchServer::AcceptEX(SOCKET hsoListen, int count)
 {
 	LPFN_ACCEPTEX pfnAcceptEx = (LPFN_ACCEPTEX)
 		GetSockExtAPI(hsoListen, WSAID_ACCEPTEX);
 
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET)
-		return;
+	for (int i = 0; i < count; i++) 
+	{
+		SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (sock == INVALID_SOCKET)
+			return;
 
-	LPPER_IO_DATA ov = new PER_IO_DATA();
+		LPPER_IO_DATA ov = new PER_IO_DATA();
 
-	BOOL bIsOK = pfnAcceptEx
-	(
-		hsoListen,						//sListenSocket
-		sock,							//sAcceptSocket
-		ov->buffer,						//lpOutputBuffer
-		0,								//dwReceiveDataLength
-		sizeof(SOCKADDR_IN) + 16,		//dwLocalAddressLength
-		sizeof(SOCKADDR_IN) + 16,		//dwRemoteAddressLength
-		NULL,							//lpdwBytesReceived
-		(LPOVERLAPPED)ov				//lpOverlapped
-	);
+		BOOL bIsOK = pfnAcceptEx
+		(
+			hsoListen,						//sListenSocket
+			sock,							//sAcceptSocket
+			ov->buffer,						//lpOutputBuffer
+			0,								//dwReceiveDataLength
+			sizeof(SOCKADDR_IN) + 16,		//dwLocalAddressLength
+			sizeof(SOCKADDR_IN) + 16,		//dwRemoteAddressLength
+			NULL,							//lpdwBytesReceived
+			(LPOVERLAPPED)ov				//lpOverlapped
+		);
+	}
+	
 }
 
 unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
@@ -191,10 +218,10 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		}
 
 		PerIoData->wsaBuf.buf[BytesTransferred] = '\0';
-		cout << "***CS(" << PerHandleData->clntID << ") sent : " << PerIoData->wsaBuf.buf << "\n" << endl;
+		//cout << "***CS(" << PerHandleData->clntID << ") sent : " << PerIoData->wsaBuf.buf << "\n" << endl;
 
-		PerIoData->wsaBuf.len = BytesTransferred;
-		WSASend(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, 0, NULL, NULL);
+		//PerIoData->wsaBuf.len = BytesTransferred;
+		//WSASend(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, 0, NULL, NULL);
 
 		//RECV
 
