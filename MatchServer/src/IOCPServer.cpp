@@ -63,7 +63,7 @@
 //	hConnSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 //	if (hConnSock == INVALID_SOCKET)
 //		cout << "socket failed, code : " << WSAGetLastError() << endl;
-//
+//laks
 //	memset(&recvAddr, 0, sizeof(recvAddr));
 //	recvAddr.sin_family = AF_INET;
 //	recvAddr.sin_addr.s_addr = inet_addr("10.100.10.10");	//Connection Server IP
