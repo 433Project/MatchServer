@@ -145,12 +145,14 @@
     <ClCompile Include="src\IOCPServer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
+    <ClCompile Include="src\MetricGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MatchServer.h" />
+    <ClInclude Include="src\MetricGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

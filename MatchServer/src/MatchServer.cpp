@@ -176,7 +176,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		GetQueuedCompletionStatus(
 			hCompletionPort,
 			&BytesTransferred,
-			(LPDWORD)&PerHandleData,
+			reinterpret_cast<PULONG_PTR>(&PerHandleData),
 			(LPOVERLAPPED*)&PerIoData,
 			INFINITE
 		);
