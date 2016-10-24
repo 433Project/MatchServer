@@ -142,18 +142,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="config\AppConfig.cpp" />
+    <ClCompile Include="src\IOCPServer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
-    <ClCompile Include="src\MetricGenerator.cpp" />
+    <ClCompile Include="src\util\MetricGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="config.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="config\AppConfig.h" />
     <ClInclude Include="src\MatchServer.h" />
-    <ClInclude Include="src\MetricGenerator.h" />
+    <ClInclude Include="src\util\MetricGenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\app.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties config_4app_1json__JSONSchema="http://json.schemastore.org/config" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

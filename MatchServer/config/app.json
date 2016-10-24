@@ -1,0 +1,13 @@
+{
+  "max": [
+    { "offense": "100" },
+    { "defense": "100" },
+    { "level": "100" }
+  ],
+
+  "weight": [
+    { "offsense": "0.2" },
+    { "defense": "0.2" },
+    { "level": "0.2" }
+  ]
+}

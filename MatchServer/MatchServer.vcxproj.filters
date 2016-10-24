@@ -21,21 +21,28 @@
     <ClCompile Include="src\MatchServer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\MetricGenerator.cpp">
+    <ClCompile Include="src\IOCPServer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt">
+    <ClCompile Include="config\AppConfig.cpp">
       <Filter>소스 파일</Filter>
-    </Text>
+    </ClCompile>
+    <ClCompile Include="src\util\MetricGenerator.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MatchServer.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\MetricGenerator.h">
+    <ClInclude Include="config\AppConfig.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\MetricGenerator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\app.json" />
   </ItemGroup>
 </Project>
