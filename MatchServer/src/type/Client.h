@@ -9,7 +9,7 @@ private:
 	int userId;
 	int metric;
 	int serverId;
-	bool attacthed
+	bool attacthed;
 
 };
 

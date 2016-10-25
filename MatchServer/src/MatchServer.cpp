@@ -13,6 +13,12 @@ MatchServer::~MatchServer()
 
 void MatchServer::RunServer() {
 
+	cout << "#############################################################" << endl;
+	cout << "#####################=================#######################" << endl;
+	cout << "#####################   Match Server  #######################" << endl;
+	cout << "#####################=================#######################" << endl;
+	cout << "#############################################################" << endl;
+
 	int nErrCode = WSAStartup(MAKEWORD(2, 2), &wsd);
 	if (nErrCode)
 	{
@@ -33,11 +39,10 @@ void MatchServer::RunServer() {
 	}
 
 	//==================Connect to Config Server
-	hConfigSock = GetConnSocket("10.100.10.10", 14040);
-	
+	hConfigSock = GetConnectSocket("10.100.10.10", 14040);	// Config Server ip, port
+
 	if (hConfigSock == INVALID_SOCKET) 
 		return ;
-	
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
 	
@@ -48,7 +53,7 @@ void MatchServer::RunServer() {
 	WSASend(hConfigSock, &ov.wsaBuf, 1, &sendBytes, 0, &ov, NULL);
 
 	//==================Connect to Connection Server
-	hConnSock = GetConnSocket("10.100.10.10", 14040);
+	hConnSock = GetConnectSocket("10.100.10.10", 10101);	// Connection Server ip, port
 	
 	if (hConnSock == INVALID_SOCKET)
 		return;
@@ -66,7 +71,7 @@ void MatchServer::RunServer() {
 	}
 }
 
-SOCKET MatchServer::GetConnSocket(char* ip, int port)
+SOCKET MatchServer::GetConnectSocket(char* ip, int port)
 {
 	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (hSock == INVALID_SOCKET)

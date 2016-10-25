@@ -17,10 +17,9 @@ AppConfig::~AppConfig() {
 void AppConfig::LoadConfig() {
 	ifstream  confFile;
 	confFile.open("app.json");
-	confFile.
 }
 
 
 string AppConfig::GetConfig() {
-
+	return "";
 }

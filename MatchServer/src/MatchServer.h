@@ -35,7 +35,7 @@ public:
 	void RunServer();
 
 private:
-	SOCKET GetConnSocket(char* ip, int port);
+	SOCKET GetConnectSocket(char* ip, int port);
 	HANDLE CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads);
 	BOOL AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HANDLE hDevice, DWORD dwCompletionKey);
 
