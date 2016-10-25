@@ -30,6 +30,7 @@
     <ClCompile Include="src\util\MetricGenerator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\util\ClientHolder.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -37,6 +38,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\util\ServerHolder.cpp">
+=======
+    <ClCompile Include="src\util\ServerHolder.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\ClientHolder.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\type\Client.cpp">
+>>>>>>> db4fe625dc6bd249e88bf2f8047471829e2101ea
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,6 +60,7 @@
     <ClInclude Include="src\util\MetricGenerator.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="lib\json.hpp">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -63,6 +74,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="src\util\ServerHolder.h">
+=======
+    <ClInclude Include="src\common.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ServerHolder.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ClientHolder.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\type\Client.h">
+>>>>>>> db4fe625dc6bd249e88bf2f8047471829e2101ea
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
