@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 using namespace std;
 
 class AppConfig
@@ -8,7 +9,7 @@ class AppConfig
 public:
 	AppConfig();
 	~AppConfig();
-	string GetConfig();
+	string GetAppConfig();
 
 private:
 	void LoadConfig();

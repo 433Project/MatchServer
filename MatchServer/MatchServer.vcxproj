@@ -103,6 +103,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,23 +145,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+   
+    <ClCompile Include="src\type\Client.cpp" />
+    <ClCompile Include="src\util\ClientHolder.cpp" />
     <ClCompile Include="config\AppConfig.cpp" />
     <ClCompile Include="src\IOCPServer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
-    <ClCompile Include="src\type\Client.cpp" />
-    <ClCompile Include="src\util\ClientHolder.cpp" />
     <ClCompile Include="src\util\MetricGenerator.cpp" />
     <ClCompile Include="src\util\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config\AppConfig.h" />
-    <ClInclude Include="src\common.h" />
-    <ClInclude Include="src\MatchServer.h" />
+    <ClInclude Include="src\util\ServerHolder.h" />
     <ClInclude Include="src\type\Client.h" />
     <ClInclude Include="src\util\ClientHolder.h" />
+    <ClInclude Include="config\AppConfig.h" />
+    <ClInclude Include="lib\json.hpp" />
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="src\util\MetricGenerator.h" />
-    <ClInclude Include="src\util\ServerHolder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
