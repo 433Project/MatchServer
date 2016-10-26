@@ -4,7 +4,7 @@
 
 using namespace std;
 
-
+// client 능력치 생성
 class MetricGenerator {
 
 public:

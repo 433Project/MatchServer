@@ -1,9 +1,12 @@
 #pragma once
 
 #include <iostream>
-#include "ClientHolder.h"
 #include "Client.h"
-#include <map>
+#include "WaitingRoom.h"
+#include "common.h"
+
+
+#include <unordered_map>
 
 using namespace std;
 
@@ -16,11 +19,25 @@ public:
 	ClientHolder();
 	~ClientHolder();
 
+	//================ 초기화 관련 
+	static ClientHolder* GetInstance();
+	WaitingList GetWaitingList();
+
+
+	// =============== Business Logic 
+	bool AddClient(int metric, Client client);
+
+	Client GetClient(CLIENTID userId);
+	bool DeleteClient(CLIENTID userId);
+
+	bool SetClientState(Client client, int state);	
+	
 private: 
-
-	map<string, Client> clientMap;
-
-
-
+	static ClientHolder* instance;
+	WaitingList waitingList;
+	
+	unordered_map<CLIENTID, Client> clientInfoList; 
+	
+	
 };
 
