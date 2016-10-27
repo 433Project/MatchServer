@@ -7,20 +7,20 @@
 using namespace std;
 
 
-struct Body
-{
-	Command com;
-	byte* data;
-};
-
-enum Command 
-{
-	MATCH_REQUEST,
-	MATCH_COMPLET,
-	LATENCY,
-	HEALTH_CHECK,
-	MSLIST_REQUEST
-};
+//struct Body
+//{
+//	Command com;
+//	byte* data;
+//};
+//
+//enum Command 
+//{
+//	MATCH_REQUEST,
+//	MATCH_COMPLET,
+//	LATENCY,
+//	HEALTH_CHECK,
+//	MSLIST_REQUEST
+//};
 
 
 struct PER_HANDLE_DATA
@@ -48,9 +48,7 @@ class MessageManager
 public:
 	MessageManager();
 	~MessageManager();
-
-private:
-	void SendMessage(SOCKET socket, LPPER_IO_DATA ov);
-	void ReceiveMessage(SOCKET socket, LPPER_IO_DATA ov);
+	void MessageManager::SendPacket(SOCKET socket, char* buf);
+	void ReceivePacket(SOCKET socket, LPPER_IO_DATA ov);
 };
 

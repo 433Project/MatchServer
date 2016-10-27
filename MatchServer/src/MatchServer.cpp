@@ -35,19 +35,23 @@ void MatchServer::RunServer() {
 	}
 
 	//==================Connect to Config Server
-	hConfigSock = GetConnectSocket("10.100.10.10", 14040);	// Config Server ip, port
+	hConfigSock = GetConnectSocket(confIP, confPort);	// Config Server ip, port
 	if (hConfigSock == INVALID_SOCKET)
 		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
 	
+//[!]Matching Server List Request 보낼 메세지	
+	char* buf = "hello";
+	mm->SendPacket(hConfigSock, buf);
+
 	//==================Connect to Connection Server
-	hConnSock = GetConnectSocket("10.100.10.10", 10101);	// Connection Server ip, port
+	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, hConnSock);
-
+	*/
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
 

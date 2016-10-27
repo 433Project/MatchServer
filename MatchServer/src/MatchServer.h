@@ -51,5 +51,7 @@ private:
 	LPPER_HANDLE_DATA PerHandleData;	//Overlapped Struct
 
 	int port = 10000;
+
+	MessageManager* mm = new MessageManager();
 };
 
