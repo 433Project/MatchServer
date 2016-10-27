@@ -3,9 +3,6 @@
 #include "WaitingRoom.h"
 #include <unordered_map>
 
-//using namespace std;
-
-
 // MS에 요청한 Client들의 정보를 관리한다.
 class ClientHolder
 {

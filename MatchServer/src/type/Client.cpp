@@ -5,7 +5,11 @@
 
 Client::Client()
 {
-
+	this->clientId = 0;
+	this->metric = 0;
+	this->serverId = 0;
+	this->state = state;
+	this->attacthed = attacthed;
 }
 
 Client::Client(int clientId, int metric, int serverId, int state, bool attacthed) {
@@ -16,9 +20,8 @@ Client::Client(int clientId, int metric, int serverId, int state, bool attacthed
 	this->attacthed = attacthed;
 }
 
-
-Client::~Client()
-{
+Client::~Client() {
+	delete this;
 }
 
 //=====================================
