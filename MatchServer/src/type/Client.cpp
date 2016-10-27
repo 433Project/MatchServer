@@ -1,3 +1,4 @@
+#pragma once
 #include "Client.h"
 
 
@@ -28,8 +29,13 @@ int Client::GetMetric() {
 
 bool Client::SetMetric(int metric) {
 	this->metric = metric;
+	return true;
 }
 
 CLIENTID Client::GetClientId() {
 	return this->clientId;
+}
+
+int Client::GetServerId() {
+	return this->serverId;
 }
