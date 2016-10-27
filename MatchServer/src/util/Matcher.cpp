@@ -94,7 +94,5 @@ int Matcher::FindOpposite(Client client) {
 		move++;
 	}// end loop
 
-
-
 	return 0;
 }

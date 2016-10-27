@@ -4,13 +4,13 @@
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\util\ClientHolder.cpp" />
     <ClCompile Include="config\AppConfig.cpp" />
-    <ClCompile Include="src\IOCPServer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
     <ClCompile Include="src\util\MetricGenerator.cpp" />
     <ClCompile Include="src\util\ServerHolder.cpp" />
     <ClCompile Include="src\util\Matcher.cpp" />
     <ClCompile Include="src\util\ConsoleLogger.h" />
+    <ClCompile Include="src\MessageManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\ServerHolder.h" />
@@ -23,6 +23,7 @@
     <ClInclude Include="src\util\Matcher.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />
     <ClInclude Include="src\type\common.h" />
+    <ClInclude Include="src\MessageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
