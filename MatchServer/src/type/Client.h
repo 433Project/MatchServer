@@ -10,7 +10,9 @@ public:
 	
 	bool SetMetric(int);
 	int GetMetric();
-
+	int GetServerId();
+	//int GetState();
+	
 	CLIENTID GetClientId();
 
 private: 

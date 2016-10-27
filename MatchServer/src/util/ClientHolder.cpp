@@ -36,34 +36,45 @@ bool ClientHolder::AddClient(int metric, Client client) {
 	
 	// 대기열에 넣는다.
 	int idx = sizeof(ROOM) * metric;
-
-	//(waitingList + idx)->clientList.insert({client.GetClientId, client});
-
-	(waitingList + idx)->clientList.push_back(client.GetClientId);
-	(waitingList + idx)->count++;
-
+	
+	(waitingList + idx)->clientList.push_back(client);
 
 	// client info list에 넣는다.
-	clientInfoList.insert({client.GetClientId, client});
-
+	clientInfoList.insert({client.GetClientId(), client});
+	
 	return true;
 }
 
-Client ClientHolder::GetClient(CLIENTID clientId) {
-	//
-}
+// 아직 미구현
 
-// 매칭 대기열에서 client를 제거한다. 
+//Client ClientHolder::GetClient(CLIENTID clientId) {
+//	//
+//	return ;
+//}
+
+// waiting list, info list에서 매칭 완료된 client를 제거한다. 
 bool ClientHolder::DeleteClient(CLIENTID clientId) {
-	int idx = sizeof(ROOM) * ;
+
+	Client client = clientInfoList[clientId];
+
+	int idx = sizeof(ROOM) * client.GetClientId();
 
 	//(waitingList + idx)->clientList.insert({ client.GetClientId, client });
-	(waitingList + idx)->clientList
-	(waitingList + idx)->count++;
+	int clientIdx = 0;
+	for (auto it = (waitingList + idx)->clientList.begin(); ; ++it) {
+
+		if (it->GetClientId() == clientId) {
+			// waiting list clear
+			(waitingList + idx)->clientList.erase((waitingList + idx)->clientList.begin()+ clientIdx); // 뭐지 
+			
+			// client info list clear
+			clientInfoList.erase(clientId);
+			return true;
+		}
+
+		clientIdx++;
+	}
+
+	return false;
 }
 
-/*****
-map<string, Client> ClientHolder::GetClientList() {
-	return instance->clientMap;
-}
-*/

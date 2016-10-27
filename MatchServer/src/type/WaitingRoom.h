@@ -1,15 +1,13 @@
 #pragma once
-#include "common.h"
 #include <iostream>
-#include <queue>
+#include <deque>
+#include "Client.h"
 
 using namespace std;
 
 struct WaitingRoom {
 
-	int count;
-	unordered_map<CLIENTID, Client> clientList;
-
+	deque<Client> clientList;
 };
 
 //

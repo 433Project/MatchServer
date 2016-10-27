@@ -1,8 +1,4 @@
 #pragma once
-#include <iostream>
-#include <process.h>
-
-using namespace std;
 
 // client 능력치 생성
 class MetricGenerator {

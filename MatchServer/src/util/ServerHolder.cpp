@@ -1,7 +1,5 @@
 #include "ServerHolder.h"
 
-
-
 ServerHolder::ServerHolder()
 {
 }
