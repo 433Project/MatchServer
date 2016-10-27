@@ -6,6 +6,23 @@
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
+
+struct Body
+{
+	Command com;
+	byte* data;
+};
+
+enum Command 
+{
+	MATCH_REQUEST,
+	MATCH_COMPLET,
+	LATENCY,
+	HEALTH_CHECK,
+	MSLIST_REQUEST
+};
+
+
 struct PER_HANDLE_DATA
 {
 	SOCKET hClntSock;
