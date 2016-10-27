@@ -1,6 +1,5 @@
 #include "Matcher.h"
 
-
 Matcher* Matcher::instance = nullptr;
 Matcher* Matcher::GetInstance() {
 	if (!instance) {
@@ -12,6 +11,11 @@ Matcher* Matcher::GetInstance() {
 Matcher::Matcher() {
 	clientHolder = ClientHolder::GetInstance();
 	metricGenerator = new MetricGenerator();
+}
+
+Matcher::~Matcher() {
+	delete clientHolder;
+	delete metricGenerator;
 }
 
 // 1) metric 생성
@@ -33,7 +37,6 @@ void Matcher::Matching(Client client) {
 	int oppositeId = FindOpposite(client);
 
 	// 5) 매칭결과 BR 
-
 }
 
 
@@ -82,8 +85,6 @@ int Matcher::FindOpposite(Client client) {
 			if ((waitingList + (currentClientMetric - move)*moveUnit)->clientList.size() != 0) {
 
 				// latency check
-				//opposite = (waitingList + move)->clientList.begin()->second;
-
 				// if latency check : ok 
 				return opposite.GetClientId();
 

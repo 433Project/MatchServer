@@ -20,7 +20,8 @@ ClientHolder::ClientHolder()
 
 ClientHolder::~ClientHolder()
 {
-
+	delete waitingList;
+	delete instance;
 }
 
 // 대기열 포인터 반환
@@ -37,7 +38,6 @@ bool ClientHolder::AddClient(int metric, Client client) {
 	
 	// 대기열에 넣는다.
 	int idx = sizeof(ROOM) * metric;
-	
 	(waitingList + idx)->clientList.push_back(client);
 
 	// client info list에 넣는다.

@@ -19,6 +19,7 @@ public:
 
 	void Matching(Client client);
 	int FindOpposite(Client client);
+
 };
 
 
