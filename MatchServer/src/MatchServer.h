@@ -47,9 +47,16 @@ private:
 
 private:
 	WSADATA wsd;
+
+	//Config Server 
+	char* confIP = "10.100.10.10";
+	int confPort = 14040;
 	SOCKET hConfigSock;
 	SOCKADDR_IN configAddr;
 
+	//Connection Server
+	char* connIP = "10.100.10.10";
+	int connPort = 10101;
 	SOCKET hConnSock;
 	SOCKADDR_IN connAddr;
 
@@ -59,8 +66,8 @@ private:
 	SYSTEM_INFO si;
 	HANDLE hCompletion;
 
-	LPPER_IO_DATA PerIoData;
-	LPPER_HANDLE_DATA PerHandleData;
+	LPPER_IO_DATA PerIoData;			//CompletionKey
+	LPPER_HANDLE_DATA PerHandleData;	//Overlapped Struct
 
 	int port = 10000;
 };

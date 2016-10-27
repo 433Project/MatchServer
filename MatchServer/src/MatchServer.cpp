@@ -1,18 +1,14 @@
 #include "MatchServer.h"
 
-
-
 MatchServer::MatchServer()
 {
 }
-
 
 MatchServer::~MatchServer()
 {
 }
 
 void MatchServer::RunServer() {
-
 	cout << "#############################################################" << endl;
 	cout << "#####################=================#######################" << endl;
 	cout << "#####################   Match Server  #######################" << endl;
@@ -40,21 +36,13 @@ void MatchServer::RunServer() {
 
 	//==================Connect to Config Server
 	hConfigSock = GetConnectSocket("10.100.10.10", 14040);	// Config Server ip, port
-
-	if (hConfigSock == INVALID_SOCKET) 
-		return ;
+	if (hConfigSock == INVALID_SOCKET)
+		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
 	
-	PER_IO_DATA ov;
-	ov.buffer = "request message~~!";
-	ov.wsaBuf.buf = ov.buffer;
-	DWORD sendBytes;
-	WSASend(hConfigSock, &ov.wsaBuf, 1, &sendBytes, 0, &ov, NULL);
-
 	//==================Connect to Connection Server
 	hConnSock = GetConnectSocket("10.100.10.10", 10101);	// Connection Server ip, port
-	
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	
@@ -67,31 +55,7 @@ void MatchServer::RunServer() {
 
 	while (TRUE)
 	{
-
 	}
-}
-
-SOCKET MatchServer::GetConnectSocket(char* ip, int port)
-{
-	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	if (hSock == INVALID_SOCKET)
-	{
-		cout << "socket failed, code : " << WSAGetLastError() << endl;
-		return hSock;
-	}
-	SOCKADDR_IN addr;
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = inet_addr(ip);				//Server IP
-	addr.sin_port = htons(port);						//Server Port
-
-	if (connect(hSock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
-	{
-		cout << "connect failed, code : " << WSAGetLastError() << endl;
-		return INVALID_SOCKET;
-	}
-	
-	return hSock;
 }
 
 HANDLE MatchServer::CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads)
@@ -163,8 +127,33 @@ SOCKET MatchServer::GetListenSocket(short shPortNo, int nBacklog)
 		closesocket(hsoListen);
 		return INVALID_SOCKET;
 	}
-
 	return hsoListen;
+}
+
+SOCKET MatchServer::GetConnectSocket(char* ip, int port)
+{
+	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	if (hSock == INVALID_SOCKET)
+	{
+		cout << "socket failed, code : " << WSAGetLastError() << endl;
+		return hSock;
+	}
+	SOCKADDR_IN addr;
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(ip);			//Server IP
+	addr.sin_port = htons(port);					//Server Port
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (connect(hSock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
+		{
+			cout << "connect failed, code : " << WSAGetLastError() << endl;
+			continue;
+		}
+		return hSock;
+	}
+	return INVALID_SOCKET;
 }
 
 void MatchServer::AcceptEX(SOCKET hsoListen, int count)
@@ -191,8 +180,7 @@ void MatchServer::AcceptEX(SOCKET hsoListen, int count)
 			NULL,							//lpdwBytesReceived
 			(LPOVERLAPPED)ov				//lpOverlapped
 		);
-	}
-	
+	}	
 }
 
 unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
@@ -212,25 +200,6 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			(LPOVERLAPPED*)&PerIoData,
 			INFINITE
 		);
-
-		if (BytesTransferred == 0)
-		{
-			cout << "==> CS disconnected...\n" << endl;
-			closesocket(PerHandleData->hClntSock);
-			free(PerHandleData);
-			free(PerIoData);
-			continue;
-		}
-
-		PerIoData->wsaBuf.buf[BytesTransferred] = '\0';
-		//cout << "***CS(" << PerHandleData->clntID << ") sent : " << PerIoData->wsaBuf.buf << "\n" << endl;
-
-		//PerIoData->wsaBuf.len = BytesTransferred;
-		//WSASend(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, 0, NULL, NULL);
-
-		//RECV
-
 	}
-
 	return 0;
 }

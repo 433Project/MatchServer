@@ -78,11 +78,8 @@ int Matcher::FindOpposite(Client client) {
 				// continue;
 			}
 		}
-
 		move++;
 	}
-
-
 
 	return 0;
 }

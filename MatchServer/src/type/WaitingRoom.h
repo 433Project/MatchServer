@@ -2,7 +2,6 @@
 #include "common.h"
 #include <iostream>
 #include <queue>
-#include <D>
 
 using namespace std;
 
