@@ -3,6 +3,29 @@
 #include <winsock2.h>
 #include <MSWSock.h>
 
+#pragma comment(lib, "Ws2_32.lib")
+using namespace std;
+
+struct PER_HANDLE_DATA
+{
+	SOCKET hClntSock;
+	int clntID;
+
+	PER_HANDLE_DATA(SOCKET sock)
+	{
+		memset(this, 0, sizeof(*this));
+		hClntSock = sock;
+	}
+};
+typedef PER_HANDLE_DATA* LPPER_HANDLE_DATA;
+
+struct PER_IO_DATA : OVERLAPPED
+{
+	char* buffer;
+	WSABUF wsaBuf;
+};
+typedef PER_IO_DATA* LPPER_IO_DATA;
+
 class MessageManager
 {
 public:
@@ -10,7 +33,7 @@ public:
 	~MessageManager();
 
 private:
-	bool SendMessage(SOCKET socket);
-	bool ReceiveMessage(SOCKET socket);
+	void SendMessage(SOCKET socket, LPPER_IO_DATA ov);
+	void ReceiveMessage(SOCKET socket, LPPER_IO_DATA ov);
 };
 

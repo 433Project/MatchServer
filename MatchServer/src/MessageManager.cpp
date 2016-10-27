@@ -10,12 +10,12 @@ MessageManager::~MessageManager()
 {
 }
 
-bool MessageManager::SendMessage(SOCKET Socket)
+void MessageManager::SendMessage(SOCKET socket, LPPER_IO_DATA ov)
 {
-	return true;
+	WSASend(socket, &(ov->wsaBuf), 1, NULL, 0, ov, NULL);
 }
 
-bool MessageManager::ReceiveMessage(SOCKET socket)
+void MessageManager::ReceiveMessage(SOCKET socket, LPPER_IO_DATA ov)
 {
-	return true;
+	WSARecv(socket, &(ov->wsaBuf), 1, NULL, 0, ov, NULL);
 }
