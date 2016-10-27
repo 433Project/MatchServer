@@ -10,12 +10,12 @@ MessageManager::~MessageManager()
 {
 }
 
-bool MessageManager::SendMessage(Socket Socket, byte[] buf) 
+bool MessageManager::SendMessage(SOCKET Socket)
 {
-
+	return true;
 }
 
-bool MessageManager::ReceiveMessage() 
+bool MessageManager::ReceiveMessage(SOCKET socket)
 {
-
+	return true;
 }

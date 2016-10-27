@@ -10,7 +10,7 @@ public:
 	~MessageManager();
 
 private:
-	bool SendMessage(Socket socket, byte[] buf);
-	bool ReceiveMessage(Socket socket);
+	bool SendMessage(SOCKET socket);
+	bool ReceiveMessage(SOCKET socket);
 };
 
