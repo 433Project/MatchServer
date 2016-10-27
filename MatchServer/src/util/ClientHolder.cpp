@@ -2,14 +2,6 @@
 #include "ConsoleLogger.h"
 
 ClientHolder* ClientHolder::instance = nullptr;
-ClientHolder::ClientHolder()
-{	
-	waitingList = (ROOM*) malloc(sizeof(ROOM) * MAX_METRIC);
-	memset(waitingList, 0, sizeof(ROOM) * MAX_METRIC);
-	
-	ConsoleLogger::PrintMessage("ClientHolder 초기화");
-}
-
 ClientHolder* ClientHolder::GetInstance() {
 	ConsoleLogger::PrintMessage("ClientHolder getInstance()");
 	if (!instance) {
@@ -18,10 +10,19 @@ ClientHolder* ClientHolder::GetInstance() {
 	return instance;
 }
 
+ClientHolder::ClientHolder()
+{	
+	waitingList = (ROOM*) malloc(sizeof(ROOM) * MAX_METRIC);
+	memset(waitingList, 0, sizeof(ROOM) * MAX_METRIC);
+	
+	ConsoleLogger::PrintMessage("ClientHolder 초기화");
+}
+
 ClientHolder::~ClientHolder()
 {
 
 }
+
 // 대기열 포인터 반환
 WaitingList ClientHolder::GetWaitingList() {
 	return this->waitingList;
