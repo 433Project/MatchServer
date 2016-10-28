@@ -3,6 +3,8 @@
 
 MessageManager::MessageManager()
 {
+
+	mm = new MessageManager();
 }
 
 

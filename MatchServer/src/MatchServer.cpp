@@ -1,7 +1,9 @@
 #include "MatchServer.h"
+#include "MessageManager.h"
 
 MatchServer::MatchServer()
 {
+	mm = new MessageManager();
 }
 
 MatchServer::~MatchServer()

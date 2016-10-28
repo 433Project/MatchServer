@@ -3,7 +3,6 @@
 #include <winsock2.h>
 #include <MSWSock.h>
 #include <process.h>
-#include "MessageManager.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
@@ -52,6 +51,6 @@ private:
 
 	int port = 10000;
 
-	MessageManager* mm = new MessageManager();
+	MessageManager* mm;
 };
 
