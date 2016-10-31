@@ -41,3 +41,26 @@ char* MessageManager::HeaderToCharPtr(Header *h)
 	
 	return head;
 }
+
+Header* MessageManager::CharPtrToHeader(char* bytes)
+{
+	Header* head;
+
+	memcpy(head, &(h->length), 4);
+	memcpy(&head[4], &(h->srcType), 4);
+	memcpy(&head[8], &(h->srcCode), 4);
+	memcpy(&head[12], &(h->dstType), 4);
+	memcpy(&head[16], &(h->dstCode), 4);
+
+	return head;
+}
+char* MessageManager::BodyToCharPtr(Command command, char* data)
+{
+	int dataLen = sizeof(*data);
+	char* body = new char[sizeof(Command)+ dataLen];
+
+	memcpy(body, &(command), 4);
+	memcpy(&body[4], &data, dataLen);
+
+	return body;
+}

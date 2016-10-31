@@ -34,6 +34,7 @@ public:
 	void MessageManager::SendPacket(SOCKET socket, char* buf, int len);
 	void ReceivePacket(LPPER_HANDLE_DATA PerHandleData);
 	char* HeaderToCharPtr(Header *h);
+	char* BodyToCharPtr(Command command, char* data);
 
 public:
 	int HEAD_SIZE = 20;
