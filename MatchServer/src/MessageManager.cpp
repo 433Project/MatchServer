@@ -16,12 +16,18 @@ void MessageManager::SendPacket(SOCKET socket, char* buf)
 	send(socket, buf, strlen(buf), 0);
 }
 
-/*
-void MessageManager::ReceivePacket(SOCKET socket, LPPER_IO_DATA ov)
+
+void MessageManager::ReceivePacket(LPPER_HANDLE_DATA PerHandleData)
 {
-	WSARecv(socket, &(ov->wsaBuf), 1, NULL, 0, ov, NULL);
+	LPPER_IO_DATA PerIoData = (LPPER_IO_DATA)malloc(sizeof(PER_IO_DATA));
+	memset(&PerIoData, 0, sizeof(OVERLAPPED));
+	PerIoData->wsaBuf.len = 1024;
+	PerIoData->wsaBuf.buf = PerIoData->buffer;
+
+	DWORD flags = 0;
+	WSARecv(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
 }
-*/
+
 
 char* MessageManager::HeaderToCharPtr(Header *h)
 {

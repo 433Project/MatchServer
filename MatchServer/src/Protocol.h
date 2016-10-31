@@ -7,7 +7,8 @@ enum SrcDstType :int
 	ROOM_MANAGER,
 	PACKET_GENERATOR,
 	MONITORING_SERVER,
-	CONFIG_SERVER
+	CONFIG_SERVER,
+	CONNECTION_SERVER
 };
 
 enum Command
@@ -37,4 +38,10 @@ struct Header
 		this->dstType = dstType;
 		this->dstCode = dstCode;
 	}
+};
+
+struct UserInfo
+{
+	int	ID;
+	int	metric;
 };
