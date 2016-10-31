@@ -31,8 +31,11 @@ class MessageManager
 public:
 	MessageManager();
 	~MessageManager();
-	void MessageManager::SendPacket(SOCKET socket, char* buf);
+	void MessageManager::SendPacket(SOCKET socket, char* buf, int len);
 	void ReceivePacket(LPPER_HANDLE_DATA PerHandleData);
 	char* HeaderToCharPtr(Header *h);
+
+public:
+	int HEAD_SIZE = 20;
 };
 

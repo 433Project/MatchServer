@@ -48,10 +48,12 @@ void MatchServer::RunServer() {
 
 	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConfigSock);
 	
-	Header* h = new Header(10, MATCHING_SERVER, 0, CONFIG_SERVER, 0);
+	Header* h = new Header(0, MATCHING_SERVER, 0, CONFIG_SERVER, 0);
 	char* buf = mm->HeaderToCharPtr(h);
-	mm->SendPacket(hConfigSock, buf);
+
+	mm->SendPacket(hConfigSock, buf, 20);
 	mm->ReceivePacket(PerHandleData);
+	delete buf;
 
 	//==================Connect to Connection Server
 	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
@@ -227,7 +229,6 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		}
 
 		PerIoData->wsaBuf.buf[BytesTransferred] = '\0';
-
 
 		//recv
 		mm->ReceivePacket(PerHandleData);

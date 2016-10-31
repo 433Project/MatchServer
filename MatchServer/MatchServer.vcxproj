@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ProcessManager.cpp" />
     <ClCompile Include="src\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\util\ClientHolder.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="src\util\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ProcessManager.h" />
     <ClInclude Include="src\MessageManager.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />
     <ClInclude Include="src\util\Matcher.h" />
