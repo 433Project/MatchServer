@@ -24,6 +24,7 @@
     <ClInclude Include="src\type\WaitingRoom.h" />
     <ClInclude Include="src\type\common.h" />
     <ClInclude Include="src\MessageManager.h" />
+    <ClInclude Include="src\Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

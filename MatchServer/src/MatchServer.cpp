@@ -1,6 +1,8 @@
 #include "MatchServer.h"
 #include "MessageManager.h"
 
+MessageManager* mm;
+
 MatchServer::MatchServer()
 {
 	mm = new MessageManager();
@@ -43,17 +45,17 @@ void MatchServer::RunServer() {
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
 	
-//[!]Matching Server List Request 보낼 메세지	
-	char* buf = "hello";
+	Header* h = new Header(10, MATCHING_SERVER, 0, CONFIG_SERVER, 0);
+	char* buf = mm->HeaderToCharPtr(h);
 	mm->SendPacket(hConfigSock, buf);
 
 	//==================Connect to Connection Server
-	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
+	hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, hConnSock);
-	*/
+	
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
 

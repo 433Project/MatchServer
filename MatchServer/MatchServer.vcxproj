@@ -167,6 +167,7 @@
     <ClInclude Include="src\type\common.h" />
     <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="src\util\MetricGenerator.h" />
+    <ClInclude Include="src\Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

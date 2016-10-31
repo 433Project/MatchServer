@@ -6,7 +6,8 @@ enum SrcDstType :int
 	MATCHING_CLIENT,
 	ROOM_MANAGER,
 	PACKET_GENERATOR,
-	MONITORING_SERVER
+	MONITORING_SERVER,
+	CONFIG_SERVER
 };
 
 enum Command
@@ -27,6 +28,7 @@ struct Header
 	int srcCode;
 	SrcDstType dstType;
 	int dstCode;
+
 	Header(int len, SrcDstType srcType, int srcCode, SrcDstType dstType, int dstCode)
 	{
 		this->length = len;
