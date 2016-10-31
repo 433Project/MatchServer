@@ -54,7 +54,7 @@ void MatchServer::RunServer() {
 	mm->ReceivePacket(PerHandleData);
 
 	//==================Connect to Connection Server
-	hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
+	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
 
@@ -64,7 +64,7 @@ void MatchServer::RunServer() {
 	
 	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConnSock);
 	mm->ReceivePacket(PerHandleData);
-	
+	*/
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
 
