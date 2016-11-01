@@ -1,5 +1,6 @@
 #include "MatchServer.h"
-#include "MessageManager.h"
+
+MessageManager* mm;
 
 MatchServer::MatchServer()
 {
@@ -41,18 +42,30 @@ void MatchServer::RunServer() {
 	if (hConfigSock == INVALID_SOCKET)
 		return;
 	
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, hConfigSock);
+	PerHandleData = (LPPER_HANDLE_DATA)malloc(sizeof(PER_HANDLE_DATA));
+	PerHandleData->hClntSock = hConfigSock;
+	PerHandleData->clntID = CONFIG_SERVER;
+
+	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConfigSock);
 	
-//[!]Matching Server List Request 보낼 메세지	
-	char* buf = "hello";
-	mm->SendPacket(hConfigSock, buf);
+	Header* h = new Header(0, MATCHING_SERVER, 0, CONFIG_SERVER, 0);
+	char* buf = mm->HeaderToCharPtr(h);
+
+	mm->SendPacket(hConfigSock, buf, 20);
+	mm->ReceivePacket(PerHandleData);
+	delete buf;
 
 	//==================Connect to Connection Server
 	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
+
+	PerHandleData = (LPPER_HANDLE_DATA)malloc(sizeof(PER_HANDLE_DATA));
+	PerHandleData->hClntSock = hConnSock;
+	PerHandleData->clntID = CONNECTION_SERVER;
 	
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, hConnSock);
+	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConnSock);
+	mm->ReceivePacket(PerHandleData);
 	*/
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
@@ -206,6 +219,19 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			(LPOVERLAPPED*)&PerIoData,
 			INFINITE
 		);
+
+		if (BytesTransferred == 0)
+		{
+			closesocket(PerHandleData->hClntSock);
+			free(PerHandleData);
+			free(PerIoData);
+			continue;
+		}
+
+		PerIoData->wsaBuf.buf[BytesTransferred] = '\0';
+
+		//recv
+		mm->ReceivePacket(PerHandleData);
 	}
 	return 0;
 }

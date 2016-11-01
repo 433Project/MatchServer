@@ -4,6 +4,8 @@
 #include <MSWSock.h>
 #include <process.h>
 
+#include "MessageManager.h"
+
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
@@ -46,11 +48,9 @@ private:
 	SYSTEM_INFO si;
 	HANDLE hCompletion;
 
-	LPPER_IO_DATA PerIoData;			//CompletionKey
+	//LPPER_IO_DATA PerIoData;			//CompletionKey
 	LPPER_HANDLE_DATA PerHandleData;	//Overlapped Struct
 
 	int port = 10000;
-
-	MessageManager* mm;
 };
 

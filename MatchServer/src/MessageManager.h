@@ -2,10 +2,9 @@
 #include <iostream>
 #include <winsock2.h>
 #include <MSWSock.h>
-
+#include "Protocol.h"
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
-
 
 struct PER_HANDLE_DATA
 {
@@ -32,7 +31,12 @@ class MessageManager
 public:
 	MessageManager();
 	~MessageManager();
-	void MessageManager::SendPacket(SOCKET socket, char* buf);
-	void ReceivePacket(SOCKET socket, LPPER_IO_DATA ov);
+	void MessageManager::SendPacket(SOCKET socket, char* buf, int len);
+	void ReceivePacket(LPPER_HANDLE_DATA PerHandleData);
+	char* HeaderToCharPtr(Header *h);
+	char* BodyToCharPtr(Command command, char* data);
+
+public:
+	int HEAD_SIZE = 20;
 };
 

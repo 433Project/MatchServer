@@ -144,8 +144,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="lib\idl_gen_text.cpp" />
     <ClCompile Include="lib\idl_parser.cpp" />
+=======
+    <ClCompile Include="src\ProcessManager.cpp" />
+>>>>>>> 0e6ee4bf29b5ccaa894a3be87b7d5bd6e52fc145
     <ClCompile Include="src\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\util\ClientHolder.cpp" />
@@ -158,7 +162,11 @@
     <ClCompile Include="src\util\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="lib\flatbuffers.h" />
+=======
+    <ClInclude Include="src\ProcessManager.h" />
+>>>>>>> 0e6ee4bf29b5ccaa894a3be87b7d5bd6e52fc145
     <ClInclude Include="src\MessageManager.h" />
     <ClInclude Include="src\Protocol.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />
@@ -171,6 +179,7 @@
     <ClInclude Include="src\type\common.h" />
     <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="src\util\MetricGenerator.h" />
+    <ClInclude Include="src\Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

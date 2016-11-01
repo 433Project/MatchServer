@@ -11,8 +11,12 @@
     <ClCompile Include="src\util\Matcher.cpp" />
     <ClCompile Include="src\util\ConsoleLogger.h" />
     <ClCompile Include="src\MessageManager.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="lib\idl_parser.cpp" />
     <ClCompile Include="lib\idl_gen_text.cpp" />
+=======
+    <ClCompile Include="src\ProcessManager.cpp" />
+>>>>>>> 0e6ee4bf29b5ccaa894a3be87b7d5bd6e52fc145
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\ServerHolder.h" />
@@ -26,8 +30,13 @@
     <ClInclude Include="src\type\WaitingRoom.h" />
     <ClInclude Include="src\type\common.h" />
     <ClInclude Include="src\MessageManager.h" />
+<<<<<<< HEAD
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="src\Protocol.h" />
+=======
+    <ClInclude Include="src\Protocol.h" />
+    <ClInclude Include="src\ProcessManager.h" />
+>>>>>>> 0e6ee4bf29b5ccaa894a3be87b7d5bd6e52fc145
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
