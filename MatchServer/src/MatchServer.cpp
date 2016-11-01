@@ -48,13 +48,13 @@ void MatchServer::RunServer() {
 
 	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConfigSock);
 	
-	Header* h = new Header(0, MATCHING_SERVER, 0, CONFIG_SERVER, 0);
+	Header* h = new Header(1, MATCHING_CLIENT, 3, PACKET_GENERATOR, 5);
 	char* buf = mm->HeaderToCharPtr(h);
 
 	mm->SendPacket(hConfigSock, buf, 20);
 	mm->ReceivePacket(PerHandleData);
 	delete buf;
-
+	
 	//==================Connect to Connection Server
 	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
@@ -130,8 +130,8 @@ SOCKET MatchServer::GetListenSocket(short shPortNo, int nBacklog)
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(shPortNo);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
-
-	LONG lSockRet = bind(hsoListen, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
+	
+	LONG lSockRet = ::bind(hsoListen, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
 		cout << "bind failed, code : " << WSAGetLastError() << endl;

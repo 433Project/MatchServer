@@ -31,8 +31,8 @@ private:
 	WSADATA wsd;
 
 	//Config Server 
-	char* confIP = "10.100.10.10";
-	int confPort = 14040;
+	char* confIP = "10.100.10.9";
+	int confPort = 12345;
 	SOCKET hConfigSock;
 	SOCKADDR_IN configAddr;
 

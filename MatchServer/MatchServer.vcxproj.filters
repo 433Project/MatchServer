@@ -29,12 +29,22 @@
     <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="lib\Protocol.h" />
     <ClInclude Include="src\util\MetricGenerator.h" />
+<<<<<<< HEAD
     <ClInclude Include="src\service\matching\ClientHolder.h" />
     <ClInclude Include="src\service\matching\Matcher.h" />
     <ClInclude Include="src\service\matching\ServerHolder.h" />
     <ClInclude Include="src\service\CommandHandler.h" />
     <ClInclude Include="src\service\AbstractCommand.h" />
     <ClInclude Include="src\util\LatencyGenerator.h" />
+=======
+    <ClInclude Include="src\util\Matcher.h" />
+    <ClInclude Include="src\type\WaitingRoom.h" />
+    <ClInclude Include="src\type\common.h" />
+    <ClInclude Include="src\MessageManager.h" />
+    <ClInclude Include="src\Protocol.h" />
+    <ClInclude Include="src\ProcessManager.h" />
+    <ClInclude Include="src\Packet_generated.h" />
+>>>>>>> c305c8f7904e0a5ddca0f9e542c4a7f8617f47d6
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
