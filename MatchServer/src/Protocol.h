@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 enum SrcDstType :int
 {
 	MATCHING_SERVER = 0,
