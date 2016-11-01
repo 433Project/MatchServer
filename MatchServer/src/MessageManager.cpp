@@ -54,6 +54,7 @@ Header* MessageManager::CharPtrToHeader(char* bytes)
 
 	return head;
 }
+
 char* MessageManager::BodyToCharPtr(Command command, char* data)
 {
 	int dataLen = sizeof(*data);
