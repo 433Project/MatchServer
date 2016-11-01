@@ -27,6 +27,7 @@
     <ClInclude Include="src\MessageManager.h" />
     <ClInclude Include="src\Protocol.h" />
     <ClInclude Include="src\ProcessManager.h" />
+    <ClInclude Include="src\Packet_generated.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

@@ -1240,7 +1240,7 @@ FLATBUFFERS_FINAL_CLASS
       auto stra = reinterpret_cast<const String *>(buf_->data_at(a.o));
       auto strb = reinterpret_cast<const String *>(buf_->data_at(b.o));
       return strncmp(stra->c_str(), strb->c_str(),
-                     std::min(stra->size(), strb->size()) + 1) < 0;
+                     min(stra->size(), strb->size()) + 1) < 0;
     }
     const vector_downward *buf_;
   };
@@ -1619,7 +1619,7 @@ inline const uint8_t *GetBufferStartFromRootPointer(const void *root) {
   auto table = reinterpret_cast<const Table *>(root);
   auto vtable = table->GetVTable();
   // Either the vtable is before the root or after the root.
-  auto start = std::min(vtable, reinterpret_cast<const uint8_t *>(root));
+  auto start = min(vtable, reinterpret_cast<const uint8_t *>(root));
   // Align to at least sizeof(uoffset_t).
   start = reinterpret_cast<const uint8_t *>(
             reinterpret_cast<uintptr_t>(start) & ~(sizeof(uoffset_t) - 1));

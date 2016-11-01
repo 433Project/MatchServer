@@ -1,5 +1,6 @@
 #include "MessageManager.h"
 
+
 MessageManager::MessageManager()
 {
 
@@ -27,7 +28,26 @@ void MessageManager::ReceivePacket(LPPER_HANDLE_DATA PerHandleData)
 	DWORD flags = 0;
 	WSARecv(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
 }
+/*
+flatbuffers::Offset<Header> MessageManager::MakeHeader(int len, SrcDstType srcType, int srcCode, SrcDstType dstType, int dstCode)
+{
 
+	flatbuffers::FlatBufferBuilder builder(1024);
+	return CreateHeader(builder, len, srcType, srcCode, dstType, dstCode);
+}
+
+flatbuffers::Offset<Body> MakeBody(Command com, string data)
+{
+	flatbuffers::FlatBufferBuilder builder(1024);
+
+	return CreateBody(builder, com, builder.CreateString(data));
+}
+
+flatbuffers::Offset<Packet> MessageManager::MakePacket(flatbuffers::Offset<Header> h, flatbuffers::Offset<Body> b)
+{
+	flatbuffers::FlatBufferBuilder builder(1024);
+	return CreatePacket(builder, h, b);
+}*/
 
 char* MessageManager::HeaderToCharPtr(Header *h)
 {
@@ -46,14 +66,15 @@ Header* MessageManager::CharPtrToHeader(char* bytes)
 {
 	Header* head;
 
-	memcpy(head, &(h->length), 4);
-	memcpy(&head[4], &(h->srcType), 4);
-	memcpy(&head[8], &(h->srcCode), 4);
-	memcpy(&head[12], &(h->dstType), 4);
-	memcpy(&head[16], &(h->dstCode), 4);
+	memcpy(&(head->length),bytes, 4);
+	memcpy(&(head->srcType), &bytes[4], 4);
+	memcpy(&(head->srcCode), &bytes[8], 4);
+	memcpy(&(head->dstType), &bytes[12], 4);
+	memcpy(&(head->dstCode), &bytes[16], 4);
 
 	return head;
 }
+
 char* MessageManager::BodyToCharPtr(Command command, char* data)
 {
 	int dataLen = sizeof(*data);
