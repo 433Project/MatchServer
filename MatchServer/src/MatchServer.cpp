@@ -41,35 +41,24 @@ void MatchServer::RunServer() {
 	hConfigSock = GetConnectSocket(confIP, confPort);	// Config Server ip, port
 	if (hConfigSock == INVALID_SOCKET)
 		return;
-	
-	PerHandleData = (LPPER_HANDLE_DATA)malloc(sizeof(PER_HANDLE_DATA));
-	PerHandleData->hClntSock = hConfigSock;
-	PerHandleData->clntID = CONFIG_SERVER;
 
-	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConfigSock);
-	
-	Header* h = new Header(1, MATCHING_CLIENT, 3, PACKET_GENERATOR, 5);
-	char* buf = mm->HeaderToCharPtr(h);
-
-	mm->SendPacket(hConfigSock, buf, 20);
-	mm->ReceivePacket(PerHandleData);
-	delete buf;
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, CONFIG_SERVER);
+	LPPER_IO_DATA ov = new PER_IO_DATA(hConfigSock);
+	mm->ReceivePacket(ov);
 	
 	//==================Connect to Connection Server
-	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
+	hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
-
-	PerHandleData = (LPPER_HANDLE_DATA)malloc(sizeof(PER_HANDLE_DATA));
-	PerHandleData->hClntSock = hConnSock;
-	PerHandleData->clntID = CONNECTION_SERVER;
 	
-	AssociateDeviceWithCompletionPort(hCompletion, PerHandleData, hConnSock);
-	mm->ReceivePacket(PerHandleData);
-	*/
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
+	ov = new PER_IO_DATA(hConnSock);
+	mm->ReceivePacket(ov);
+	
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
-
+	
+	bool a = AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hsoListen, LISTEN_SOCKET);
 	AcceptEX(hsoListen, 2);
 
 	while (TRUE)
@@ -186,7 +175,7 @@ void MatchServer::AcceptEX(SOCKET hsoListen, int count)
 		if (sock == INVALID_SOCKET)
 			return;
 
-		LPPER_IO_DATA ov = new PER_IO_DATA();
+		LPPER_IO_DATA ov = new PER_IO_DATA(sock);
 
 		BOOL bIsOK = pfnAcceptEx
 		(
@@ -199,6 +188,17 @@ void MatchServer::AcceptEX(SOCKET hsoListen, int count)
 			NULL,							//lpdwBytesReceived
 			(LPOVERLAPPED)ov				//lpOverlapped
 		);
+
+		if (bIsOK == FALSE)
+		{
+			if (WSAGetLastError() != WSA_IO_PENDING)
+			{
+				cout << "AcceptEx failed : " << WSAGetLastError() << endl;
+				closesocket(ov->hClntSock);
+				delete ov;
+				break;
+			}
+		}
 	}	
 }
 
@@ -206,32 +206,20 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 {
 	HANDLE hCompletionPort = hCompletion;
 
-	DWORD BytesTransferred;
-	LPPER_HANDLE_DATA PerHandleData;
-	LPPER_IO_DATA PerIoData;
-
+	DWORD bytesTransferred;
+	LPPER_IO_DATA perIoData;
+	ULONG_PTR	key = 0;
 	while (TRUE)
 	{
 		GetQueuedCompletionStatus(
 			hCompletionPort,
-			&BytesTransferred,
-			reinterpret_cast<PULONG_PTR>(&PerHandleData),
-			(LPOVERLAPPED*)&PerIoData,
+			&bytesTransferred,
+			&key,
+			(LPOVERLAPPED*)&perIoData,
 			INFINITE
 		);
+		mm->ReceivePacket(perIoData);
 
-		if (BytesTransferred == 0)
-		{
-			closesocket(PerHandleData->hClntSock);
-			free(PerHandleData);
-			free(PerIoData);
-			continue;
-		}
-
-		PerIoData->wsaBuf.buf[BytesTransferred] = '\0';
-
-		//recv
-		mm->ReceivePacket(PerHandleData);
 	}
 	return 0;
 }

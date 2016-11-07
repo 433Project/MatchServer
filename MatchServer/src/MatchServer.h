@@ -9,6 +9,14 @@
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
+enum CompletionKey :int
+{
+	CONFIG_SERVER,
+	CONNECTION_SERVER,
+	MATCH_SERVER,
+	LISTEN_SOCKET
+};
+
 class MatchServer
 {
 public:
@@ -18,8 +26,8 @@ public:
 
 private:
 	SOCKET GetConnectSocket(char* ip, int port);
-	HANDLE CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads);
-	BOOL AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HANDLE hDevice, DWORD dwCompletionKey);
+	static HANDLE CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads);
+	static BOOL AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HANDLE hDevice, DWORD dwCompletionKey);
 
 	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
 	void AcceptEX(SOCKET hsoListen, int count);
@@ -31,14 +39,14 @@ private:
 	WSADATA wsd;
 
 	//Config Server 
-	char* confIP = "10.100.10.9";
-	int confPort = 12345;
+	char* confIP = "10.100.10.6";
+	int confPort = 10433;
 	SOCKET hConfigSock;
 	SOCKADDR_IN configAddr;
 
 	//Connection Server
-	char* connIP = "10.100.10.10";
-	int connPort = 10101;
+	char* connIP = "10.100.10.6";
+	int connPort = 10433;
 	SOCKET hConnSock;
 	SOCKADDR_IN connAddr;
 
