@@ -18,37 +18,28 @@ void MessageManager::SendPacket(SOCKET socket, char* buf, int len)
 }
 
 
-void MessageManager::ReceivePacket(LPPER_HANDLE_DATA PerHandleData)
+void MessageManager::ReceivePacket(LPPER_IO_DATA PerIoData)
 {
-	LPPER_IO_DATA PerIoData = (LPPER_IO_DATA)malloc(sizeof(PER_IO_DATA));
-	memset(PerIoData, 0, sizeof(OVERLAPPED));
-	PerIoData->wsaBuf.len = 1024;
-	PerIoData->wsaBuf.buf = PerIoData->buffer;
-
-	DWORD flags = 0;
-	WSARecv(PerHandleData->hClntSock, &(PerIoData->wsaBuf), 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
+	DWORD flags = MSG_PUSH_IMMEDIATE;
+	WSABUF wb;
+	wb.buf = PerIoData->buffer, wb.len = sizeof(PerIoData->buffer);
+	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
 }
 /*
-flatbuffers::Offset<Header> MessageManager::MakeHeader(int len, SrcDstType srcType, int srcCode, SrcDstType dstType, int dstCode)
+void MessageManager::ReceiveFlatBuffers(SOCKET s) 
 {
-
-	flatbuffers::FlatBufferBuilder builder(1024);
-	return CreateHeader(builder, len, srcType, srcCode, dstType, dstCode);
-}
-
-flatbuffers::Offset<Body> MakeBody(Command com, string data)
-{
-	flatbuffers::FlatBufferBuilder builder(1024);
-
-	return CreateBody(builder, com, builder.CreateString(data));
-}
-
-flatbuffers::Offset<Packet> MessageManager::MakePacket(flatbuffers::Offset<Header> h, flatbuffers::Offset<Body> b)
-{
-	flatbuffers::FlatBufferBuilder builder(1024);
-	return CreatePacket(builder, h, b);
+	char* buf;
+	recv(s, buf, 8, 0);
+//	const Packet * p = GetPacket(buf);
+//	const Header *h = p->header();
+	cout << h->length() << endl;
+	cout << h->srcType() << endl;
+	cout << h->srcCode() << endl;
+	cout << h->dstType() << endl;
+	cout << h->dstCode() << endl;
 }*/
 
+/*
 char* MessageManager::HeaderToCharPtr(Header *h)
 {
 	char* head = new char[20];
@@ -85,3 +76,4 @@ char* MessageManager::BodyToCharPtr(Command command, char* data)
 
 	return body;
 }
+*/

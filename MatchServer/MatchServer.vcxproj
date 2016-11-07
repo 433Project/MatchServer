@@ -102,7 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,8 +146,6 @@
   <ItemGroup>
     <ClCompile Include="src\service\CommandHandler.cpp" />
     <ClCompile Include="src\util\LatencyGenerator.cpp" />
-    <ClCompile Include="lib\idl_gen_text.cpp" />
-    <ClCompile Include="lib\idl_parser.cpp" />
     <ClCompile Include="src\ProcessManager.cpp" />
     <ClCompile Include="src\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
@@ -161,14 +159,11 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClInclude Include="src\service\AbstractCommand.h" />
     <ClInclude Include="src\service\CommandHandler.h" />
     <ClInclude Include="src\util\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
-=======
     <ClInclude Include="src\Packet_generated.h" />
->>>>>>> c305c8f7904e0a5ddca0f9e542c4a7f8617f47d6
     <ClInclude Include="src\ProcessManager.h" />
     <ClInclude Include="src\MessageManager.h" />
     <ClInclude Include="lib\Protocol.h" />
