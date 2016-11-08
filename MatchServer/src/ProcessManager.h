@@ -1,4 +1,5 @@
 #pragma once
+#include "MessageManager.h"
 class ProcessManager
 {
 public:

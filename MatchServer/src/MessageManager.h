@@ -8,24 +8,10 @@
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 using namespace fb;
-/*
-struct PER_HANDLE_DATA
-{
-	//SOCKET hClntSock;
-	int clntID;
-
-	PER_HANDLE_DATA(SOCKET sock)
-	{
-		memset(this, 0, sizeof(*this));
-		hClntSock = sock;
-	}
-};
-typedef PER_HANDLE_DATA* LPPER_HANDLE_DATA;*/
 
 struct PER_IO_DATA : OVERLAPPED
 {
 	char buffer[512];
-	WSABUF wsaBuf;
 	SOCKET hClntSock;
 
 	PER_IO_DATA(SOCKET sock)

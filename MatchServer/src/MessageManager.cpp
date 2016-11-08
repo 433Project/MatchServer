@@ -28,7 +28,7 @@ void MessageManager::ReceivePacket(LPPER_IO_DATA PerIoData)
 	DWORD flags = MSG_PUSH_IMMEDIATE;
 	WSABUF wb;
 	wb.buf = PerIoData->buffer, wb.len = sizeof(PerIoData->buffer);
-	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
+	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, &flags, PerIoData, NULL);
 }
 
 char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data)

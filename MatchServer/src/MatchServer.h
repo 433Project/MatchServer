@@ -56,8 +56,8 @@ private:
 	SYSTEM_INFO si;
 	HANDLE hCompletion;
 
-	//LPPER_IO_DATA PerIoData;			//CompletionKey
-	LPPER_HANDLE_DATA PerHandleData;	//Overlapped Struct
+	LPPER_IO_DATA PerIoData;		
+	//LPPER_HANDLE_DATA PerHandleData;
 
 	int port = 10000;
 };
