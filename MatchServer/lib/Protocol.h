@@ -10,18 +10,6 @@ enum SrcDstType :int
 	CONNECTION_SERVER
 };
 
-enum Command
-{
-	MATCH_REQUEST,
-	MATCH_COMPLET,
-	LATENCY,
-	HEALTH_CHECK,
-	MSLIST_REQUEST,
-	MSLIST_RESPONSE,
-	PG_START,
-	PG_END
-};
-
 struct Header
 {
 	int length;
@@ -29,7 +17,7 @@ struct Header
 	int srcCode;
 	SrcDstType dstType;
 	int dstCode;
-
+	Header() {};
 	Header(int len, SrcDstType srcType, int srcCode, SrcDstType dstType, int dstCode)
 	{
 		this->length = len;

@@ -3,24 +3,24 @@
 #include <winsock2.h>
 #include <MSWSock.h>
 #include "Packet_generated.h"
+#include "Protocol.h"
 
-//#include "Protocol.h"
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 using namespace fb;
-
+/*
 struct PER_HANDLE_DATA
 {
 	//SOCKET hClntSock;
 	int clntID;
 
-	/*PER_HANDLE_DATA(SOCKET sock)
+	PER_HANDLE_DATA(SOCKET sock)
 	{
 		memset(this, 0, sizeof(*this));
 		hClntSock = sock;
-	}*/
+	}
 };
-typedef PER_HANDLE_DATA* LPPER_HANDLE_DATA;
+typedef PER_HANDLE_DATA* LPPER_HANDLE_DATA;*/
 
 struct PER_IO_DATA : OVERLAPPED
 {
@@ -41,14 +41,15 @@ class MessageManager
 public:
 	MessageManager();
 	~MessageManager();
-	void MessageManager::SendPacket(SOCKET socket, char* buf, int len);
+	DWORD SendPacket(SOCKET s, char* data);
 	void ReceivePacket(LPPER_IO_DATA PerIoData);
-	void ReceiveFlatBuffers(SOCKET s);
-	//char* HeaderToCharPtr(Header *h);
-	//char* BodyToCharPtr(Command command, char* data);
-	//Header* CharPtrToHeader(char* bytes);
+	char* MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data);
+	Header* ReadHeader(char* data);
+	const Body* ReadBody(int len, char* data);
 
-public:
-	int HEAD_SIZE = 20;
+private:
+	int headSize = 20;
+	int packetSize = 100;
+
 };
 

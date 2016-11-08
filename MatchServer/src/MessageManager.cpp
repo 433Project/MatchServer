@@ -11,10 +11,15 @@ MessageManager::~MessageManager()
 {
 }
 
-void MessageManager::SendPacket(SOCKET socket, char* buf, int len)
+DWORD MessageManager::SendPacket(SOCKET s, char* data)
 {
-	//WSASend(socket, &(ov->wsaBuf), 1, NULL, 0, NULL, NULL);
-	send(socket, buf, len, 0);
+	WSABUF wsabuf;
+	wsabuf.buf = data;
+	wsabuf.len = packetSize;
+
+	DWORD bytesSent;
+	WSASend(s, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+	return bytesSent;
 }
 
 
@@ -25,55 +30,42 @@ void MessageManager::ReceivePacket(LPPER_IO_DATA PerIoData)
 	wb.buf = PerIoData->buffer, wb.len = sizeof(PerIoData->buffer);
 	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, (LPDWORD)&flags, PerIoData, NULL);
 }
-/*
-void MessageManager::ReceiveFlatBuffers(SOCKET s) 
-{
-	char* buf;
-	recv(s, buf, 8, 0);
-//	const Packet * p = GetPacket(buf);
-//	const Header *h = p->header();
-	cout << h->length() << endl;
-	cout << h->srcType() << endl;
-	cout << h->srcCode() << endl;
-	cout << h->dstType() << endl;
-	cout << h->dstCode() << endl;
-}*/
 
-/*
-char* MessageManager::HeaderToCharPtr(Header *h)
+char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data)
 {
-	char* head = new char[20];
+	flatbuffers::FlatBufferBuilder builder;
+	flatbuffers::Offset<Body> body = CreateBody(builder, comm, st, builder.CreateString(data));
+	builder.Finish(body);
 
-	memcpy(head, &(h->length), 4);
-	memcpy(&head[4], &(h->srcType), 4);
-	memcpy(&head[8], &(h->srcCode), 4);
-	memcpy(&head[12], &(h->dstType), 4);
-	memcpy(&head[16], &(h->dstCode), 4);
-	
-	return head;
+	uint8_t* buf = builder.GetBufferPointer();
+	char* b = reinterpret_cast<char*>(buf);
+	int len = builder.GetSize();
+
+	Header* h = new Header(len, MATCHING_SERVER, 0, dstType, dstCode);
+
+	char* bytes = new char[packetSize];
+	memset(bytes, 0, packetSize);
+	memcpy(bytes, h, sizeof(Header));
+	memcpy(&bytes[sizeof(Header)], b, len);
+
+	delete h;
+
+	return bytes;
 }
 
-Header* MessageManager::CharPtrToHeader(char* bytes)
+Header* MessageManager::ReadHeader(char* data)
 {
-	Header* head;
+	Header* h = new Header();
+	memcpy(h, data, sizeof(Header));
 
-	memcpy(&(head->length),bytes, 4);
-	memcpy(&(head->srcType), &bytes[4], 4);
-	memcpy(&(head->srcCode), &bytes[8], 4);
-	memcpy(&(head->dstType), &bytes[12], 4);
-	memcpy(&(head->dstCode), &bytes[16], 4);
-
-	return head;
+	return h;
 }
 
-char* MessageManager::BodyToCharPtr(Command command, char* data)
+const Body* MessageManager::ReadBody(int len, char* data)
 {
-	int dataLen = sizeof(*data);
-	char* body = new char[sizeof(Command)+ dataLen];
-
-	memcpy(body, &(command), 4);
-	memcpy(&body[4], &data, dataLen);
-
-	return body;
+	char* d = new char[len];
+	memset(d, 0, len);
+	memcpy(d, &data[sizeof(Header)], len);
+	const Body* b = GetBody(d);
+	return b;
 }
-*/

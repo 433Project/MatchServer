@@ -9,6 +9,8 @@ MatchServer::MatchServer()
 
 MatchServer::~MatchServer()
 {
+	WSACleanup();
+	delete mm;
 }
 
 void MatchServer::RunServer() {
@@ -42,23 +44,24 @@ void MatchServer::RunServer() {
 	if (hConfigSock == INVALID_SOCKET)
 		return;
 
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, CONFIG_SERVER);
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, KEY_CONFIG_SERVER);
 	LPPER_IO_DATA ov = new PER_IO_DATA(hConfigSock);
 	mm->ReceivePacket(ov);
+//REQUSET SEND
 	
 	//==================Connect to Connection Server
 	hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, KEY_CONNECTION_SERVER);
 	ov = new PER_IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
 	
 	//=================== Listen Socket for Match Server
 	hsoListen = GetListenSocket(port, backlog);
 	
-	bool a = AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hsoListen, LISTEN_SOCKET);
+	bool a = AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hsoListen, KEY_LISTEN_SOCKET);
 	AcceptEX(hsoListen, 2);
 
 	while (TRUE)
@@ -218,8 +221,28 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			(LPOVERLAPPED*)&perIoData,
 			INFINITE
 		);
-		mm->ReceivePacket(perIoData);
 
+		if (key == KEY_LISTEN_SOCKET) 
+		{
+			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)perIoData->hClntSock, KEY_MATCH_SERVER);
+			cout << " ==> New Matching Server " << perIoData->hClntSock << " connected..." << endl;
+		}
+		else if (key == KEY_CONFIG_SERVER) 
+		{
+			if (bytesTransferred == 0)
+			{
+				cout << " ==> Config Server is disconnected..." << endl;
+				continue;
+			}
+
+				
+		}
+		else if (key == KEY_CONNECTION_SERVER) 
+		{
+
+		}
+		
+		mm->ReceivePacket(perIoData);
 	}
 	return 0;
 }

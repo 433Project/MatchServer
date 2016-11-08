@@ -11,10 +11,10 @@ using namespace std;
 
 enum CompletionKey :int
 {
-	CONFIG_SERVER,
-	CONNECTION_SERVER,
-	MATCH_SERVER,
-	LISTEN_SOCKET
+	KEY_CONFIG_SERVER,
+	KEY_CONNECTION_SERVER,
+	KEY_MATCH_SERVER,
+	KEY_LISTEN_SOCKET
 };
 
 class MatchServer

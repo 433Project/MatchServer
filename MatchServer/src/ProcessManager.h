@@ -4,8 +4,8 @@ class ProcessManager
 public:
 	ProcessManager();
 	~ProcessManager();
-	void ProcessConfigServer(char* buf);
-	void ProcessConnectionServer(char* buf);
-	void ProcessMatchingServer(char* buf);
+	void ProcessConfigServer(Body* body);
+	void ProcessConnectionServer(Body* body);
+	void ProcessMatchingServer(Body* body);
 };
 
