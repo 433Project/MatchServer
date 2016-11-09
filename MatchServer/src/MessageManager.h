@@ -11,7 +11,7 @@ using namespace fb;
 
 struct PER_IO_DATA : OVERLAPPED
 {
-	char buffer[512];
+	char* buffer;		
 	SOCKET hClntSock;
 
 	PER_IO_DATA(SOCKET sock)
@@ -24,6 +24,7 @@ typedef PER_IO_DATA* LPPER_IO_DATA;
 
 class MessageManager
 {
+
 public:
 	MessageManager();
 	~MessageManager();
@@ -33,9 +34,10 @@ public:
 	Header* ReadHeader(char* data);
 	const Body* ReadBody(int len, char* data);
 
-private:
+public:
 	int headSize = 20;
 	int packetSize = 100;
+
 
 };
 

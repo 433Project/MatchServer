@@ -11,40 +11,26 @@ namespace fb {
 
 	enum Command {
 		Command_MATCH_REQUEST = 0,
-		Command_MATCH_COMPLET = 1,
+		Command_MATCH_RESPONSE = 1,
 		Command_LATENCY = 2,
 		Command_HEALTH_CHECK = 3,
 		Command_MSLIST_REQUEST = 4,
-		Command_PG_START = 5,
-		Command_PG_END = 6,
-		Command_PG_DUMMY = 7,
-		Command_ROOM_CREATE_REQUEST,
-		Command_ROOM_CREATE_RESPONSE,
-		Command_ROOM_JOIN_REQUEST,
-		Command_ROOM_JOIN_RESPONSE,
-		Command_GAME_START,
-		Command_GAME_END,
+		Command_MSLIST_RESPONSE = 5,
+		Command_PG_START = 6,
+		Command_PG_END = 7,
+		Command_PG_DUMMY = 8,
+		Command_ROOM_CREATE_REQUEST = 9,
+		Command_ROOM_CREATE_RESPONSE = 10,
+		Command_ROOM_JOIN_REQUEST = 11,
+		Command_ROOM_JOIN_RESPONSE = 12,
+		Command_GAME_START = 13,
+		Command_GAME_END = 14,
 		Command_MIN = Command_MATCH_REQUEST,
 		Command_MAX = Command_GAME_END
 	};
 
 	inline const char **EnumNamesCommand() {
-		static const char *names[] = {
-			"MATCH_REQUEST",
-			"MATCH_COMPLET",
-			"LATENCY",
-			"HEALTH_CHECK",
-			"MSLIST_REQUEST",
-			"PG_START",
-			"PG_END",
-			"PG_DUMMY",
-			"ROOM_CREATE_REQUEST",
-			"ROOM_CREATE_RESPONSE",
-			"ROOM_JOIN_REQUEST",
-			"ROOM_JOIN_RESPONSE",
-			"GAME_START",
-			"GAME_END",
-			nullptr };
+		static const char *names[] = { "MATCH_REQUEST", "MATCH_RESPONSE", "LATENCY", "HEALTH_CHECK", "MSLIST_REQUEST", "MSLIST_RESPONSE", "PG_START", "PG_END", "PG_DUMMY", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", nullptr };
 		return names;
 	}
 

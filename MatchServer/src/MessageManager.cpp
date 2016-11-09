@@ -25,9 +25,12 @@ DWORD MessageManager::SendPacket(SOCKET s, char* data)
 
 void MessageManager::ReceivePacket(LPPER_IO_DATA PerIoData)
 {
+	PerIoData->buffer = new char[packetSize];
+
 	DWORD flags = MSG_PUSH_IMMEDIATE;
 	WSABUF wb;
-	wb.buf = PerIoData->buffer, wb.len = sizeof(PerIoData->buffer);
+	wb.buf = PerIoData->buffer;
+	wb.len = packetSize;
 	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, &flags, PerIoData, NULL);
 }
 
@@ -63,9 +66,9 @@ Header* MessageManager::ReadHeader(char* data)
 
 const Body* MessageManager::ReadBody(int len, char* data)
 {
-	char* d = new char[len];
+	uint8_t* d = new uint8_t[len];
 	memset(d, 0, len);
 	memcpy(d, &data[sizeof(Header)], len);
-	const Body* b = GetBody(d);
+	auto b = GetBody(d);
 	return b;
 }

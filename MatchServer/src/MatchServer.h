@@ -36,11 +36,13 @@ private:
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
-	WSADATA wsd;
+	int packetSize;
+	int headerSize;
 
+	WSADATA wsd;
 	//Config Server 
-	char* confIP = "10.100.10.6";
-	int confPort = 10433;
+	char* confIP = "10.100.10.10";
+	int confPort = 14040;
 	SOCKET hConfigSock;
 	SOCKADDR_IN configAddr;
 
