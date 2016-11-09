@@ -12,18 +12,13 @@ CommandHandler::~CommandHandler()
 }
 
 
-void CommandHandler::HandleCommand(Packet packet) 
+void CommandHandler::HandleCommand() 
 {
 
 	switch (packet.body.command) {
 		// ¸ÅÄª ¿äÃ» 
-	case Command::MATCH_REQUEST:
 
-		MatchingRequest
-
-		break;
 
 	}
-	
 
 }

@@ -26,7 +26,7 @@ ClientHolder::~ClientHolder()
 }
 
 // 대기열 포인터 반환
-WaitingList ClientHolder::GetWaitingList() {
+WaitingRoomList ClientHolder::GetWaitingList() {
 	return this->waitingList;
 }
 
@@ -42,7 +42,7 @@ bool ClientHolder::AddClient(int metric, Client client) {
 	(waitingList + idx)->clientList.push_back(client);
 
 	// client info list에 넣는다.
-	clientInfoList.insert({client.GetClientId(), client});
+	connectedClientList.insert({client.GetClientId(), client});
 	
 	return true;
 }
@@ -54,10 +54,12 @@ bool ClientHolder::AddClient(int metric, Client client) {
 //	return ;
 //}
 
+
+
 // waiting list, info list에서 매칭 완료된 client를 제거한다. 
 bool ClientHolder::DeleteClient(CLIENTID clientId) {
 
-	Client client = clientInfoList[clientId];
+	Client client = connectedClientList[clientId];
 
 	int idx = sizeof(ROOM) * client.GetClientId();
 
@@ -67,16 +69,15 @@ bool ClientHolder::DeleteClient(CLIENTID clientId) {
 
 		if (it->GetClientId() == clientId) {
 			// waiting list clear
-			(waitingList + idx)->clientList.erase((waitingList + idx)->clientList.begin()+ clientIdx); // 뭐지 
-			
+			(waitingList + idx)->clientList.erase((waitingList + idx)->clientList.begin() + clientIdx); // 뭐지 
+
 			// client info list clear
-			clientInfoList.erase(clientId);
+			connectedClientList.erase(clientId);
 			return true;
 		}
 
 		clientIdx++;
 	}
-
 	return false;
 }
 

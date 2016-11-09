@@ -1,6 +1,20 @@
+#pragma once
 #include "Matcher.h"
+#include "MessageQueue.h"
 
 Matcher* Matcher::instance = nullptr;
+
+MessageQueue* messageQueue;
+
+Matcher::Matcher() {
+	messageQueue = MessageQueue::GetInstance();
+	commandHandler = new CommandHandler();
+}
+
+Matcher::~Matcher() {
+
+}
+
 Matcher* Matcher::GetInstance() {
 	if (!instance) {
 		instance = new Matcher();
@@ -8,6 +22,61 @@ Matcher* Matcher::GetInstance() {
 	return instance;
 }
 
+void Matcher::MainLogic() {
+
+	while (true) {
+		Matching();
+		HandleMessage();
+	}
+}
+
+// 그냥 waitingroomlist에서 맞는 짝을 찾기만 하면됨.
+void Matcher::Matching() {
+
+
+}
+
+void Matcher::HandleMessage() {
+	
+	Message msg;
+
+	while (!messageQueue->IsEmpty()) {
+		msg = messageQueue->Pop();
+
+		commandHandler->HandleCommand(msg);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 Matcher::Matcher() {
 	clientHolder = ClientHolder::GetInstance();
 	metricGenerator = new MetricGenerator();
@@ -34,13 +103,14 @@ void Matcher::Matching(Client client) {
 	// 3) br
 
 	// 4) matching 수행
-	int oppositeId = FindOpposite(client);
+	// int oppositeId = FindOpposite(client);
 
 	// 5) 매칭결과 BR 
 }
 
 
 // Room Manager로부터 matching 에 대해 응답을 받으면, delete Client를 수행하고, client에게 돌려준다. 
+
 
 
 int Matcher::FindOpposite(Client client) {
@@ -58,9 +128,7 @@ int Matcher::FindOpposite(Client client) {
 			// metric과 가까운 대기 client가 존재한다.
 			if ((waitingList + (currentClientMetric + move)*moveUnit )->clientList.size() != 0) {
 
-				/*
-					구현해야함.
-				*/
+			
 				// latency check
 				// get oppoisite client
 				//opposite = (waitingList + move)->clientList.begin()->second;
@@ -97,3 +165,4 @@ int Matcher::FindOpposite(Client client) {
 
 	return 0;
 }
+*/

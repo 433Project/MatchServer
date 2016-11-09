@@ -1,17 +1,14 @@
 #pragma once
 
-
 class CommandHandler
 {
 public:
 	CommandHandler();
 	~CommandHandler();
 
-	void HandleCommand(Packet packet);
+	void HandleCommand(Message message);
 
 private:
-
-
 
 };
 

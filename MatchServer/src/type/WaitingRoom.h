@@ -10,4 +10,4 @@ struct WaitingRoom {
 };
 
 typedef WaitingRoom ROOM;
-typedef WaitingRoom* WaitingList;
+typedef WaitingRoom* WaitingRoomList;

@@ -1,10 +1,7 @@
 #pragma once
 
-
-
 class AbstractCommand {
 
 public:
-	virtual DoCommand() {};
-
+	virtual void DoCommand();
 };

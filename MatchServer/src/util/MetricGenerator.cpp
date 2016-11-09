@@ -16,7 +16,6 @@ int MetricGenerator::GenerateLevel() {
 	return rand() % 100;
 }
 
-
 int MetricGenerator::GenerateOffense() {
 	return rand() % 100;
 }
@@ -24,7 +23,6 @@ int MetricGenerator::GenerateOffense() {
 int MetricGenerator::GenerateDefense() {
 	return rand() % 100;// 0 ~ 99
 }
-
 
 int MetricGenerator::GenerateMetric() {
 
