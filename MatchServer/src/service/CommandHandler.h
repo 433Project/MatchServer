@@ -9,6 +9,7 @@ public:
 	void HandleCommand(Message message);
 
 private:
-
+	
+	
 };
 

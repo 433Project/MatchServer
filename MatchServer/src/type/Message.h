@@ -9,7 +9,6 @@ class Message {
 
 public :
 	Command cmd;
-	string data;
-
-
+	Status status;
+	char* data;
 };

@@ -1,0 +1,39 @@
+namespace fb;
+
+enum Command : int 
+{
+	 NOTI_MATCH_REQUEST = 0,
+	 NOTI_MATCH_SUCCESS,
+	 LATENCY,
+	 MATCH_REQUEST,
+	 MATCH_RESPONSE,
+	 HEALTH_CHECK,
+	 MSLIST_REQUEST,
+	 MSLIST_RESPONSE,
+	 PG_START,
+	 PG_END,
+	 PG_DUMMY,
+	 ROOM_CREATE_REQUEST,
+	 ROOM_CREATE_RESPONSE,
+	 ROOM_JOIN_REQUEST,
+	 ROOM_JOIN_RESPONSE,
+	 GAME_START,
+	 GAME_END
+}
+
+enum Status : int
+{
+	  SUCCESS,
+	  FAIL,
+	  NONE
+}
+
+table Body
+{
+	cmd: Command;
+	status: Status;
+	data: string;
+}
+
+root_type Body;
+
