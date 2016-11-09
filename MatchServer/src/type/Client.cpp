@@ -10,7 +10,7 @@ Client::Client()
 	this->attacthed = attacthed;
 }
 
-Client::Client(int clientId, int metric, int serverId, int state, bool attacthed) {
+Client::Client(int clientId, int metric, int serverId, ClientState state, bool attacthed) {
 	this->clientId = clientId;
 	this->metric = metric;
 	this->serverId = serverId;
@@ -39,4 +39,13 @@ CLIENTID Client::GetClientId() {
 
 int Client::GetServerId() {
 	return this->serverId;
+}
+
+ClientState Client::GetState() {
+	return this->state;
+}
+
+bool Client::SetState(ClientState state) {
+	this->state = state;
+	return true;
 }
