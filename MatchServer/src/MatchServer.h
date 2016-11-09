@@ -11,10 +11,10 @@ using namespace std;
 
 enum CompletionKey :int
 {
-	CONFIG_SERVER,
-	CONNECTION_SERVER,
-	MATCH_SERVER,
-	LISTEN_SOCKET
+	KEY_CONFIG_SERVER,
+	KEY_CONNECTION_SERVER,
+	KEY_MATCH_SERVER,
+	KEY_LISTEN_SOCKET
 };
 
 class MatchServer
@@ -36,11 +36,13 @@ private:
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
-	WSADATA wsd;
+	int packetSize;
+	int headerSize;
 
+	WSADATA wsd;
 	//Config Server 
-	char* confIP = "10.100.10.6";
-	int confPort = 10433;
+	char* confIP = "10.100.10.10";
+	int confPort = 14040;
 	SOCKET hConfigSock;
 	SOCKADDR_IN configAddr;
 
@@ -56,8 +58,8 @@ private:
 	SYSTEM_INFO si;
 	HANDLE hCompletion;
 
-	//LPPER_IO_DATA PerIoData;			//CompletionKey
-	LPPER_HANDLE_DATA PerHandleData;	//Overlapped Struct
+	LPPER_IO_DATA PerIoData;		
+	//LPPER_HANDLE_DATA PerHandleData;
 
 	int port = 10000;
 };

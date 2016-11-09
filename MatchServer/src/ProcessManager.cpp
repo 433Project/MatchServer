@@ -12,18 +12,18 @@ ProcessManager::~ProcessManager()
 {
 }
 
-void ProcessManager::ProcessConfigServer(char* buf) 
+void ProcessManager::ProcessConfigServer(Body* body) 
 {
 	//Body를 읽어서 HEALTH_CHECK인지 MSLIST_RESPONSE인지에따라 process
 }
 
-void ProcessManager::ProcessConnectionServer(char* buf)
+void ProcessManager::ProcessConnectionServer(Body* body)
 {
 	//Header* h = mManager->CharPtrToHeader(buf);
 
 }
 
-void ProcessManager::ProcessMatchingServer(char* buf)
+void ProcessManager::ProcessMatchingServer(Body* body)
 {
 
 }
