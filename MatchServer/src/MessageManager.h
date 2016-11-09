@@ -9,18 +9,17 @@
 using namespace std;
 using namespace fb;
 
-struct PER_IO_DATA : OVERLAPPED
+struct IO_DATA : OVERLAPPED
 {
 	char* buffer;		
 	SOCKET hClntSock;
 
-	PER_IO_DATA(SOCKET sock)
+	IO_DATA(SOCKET sock)
 	{
 		memset(this, 0, sizeof(*this));
 		hClntSock = sock;
 	}
 };
-typedef PER_IO_DATA* LPPER_IO_DATA;
 
 class MessageManager
 {
@@ -29,7 +28,7 @@ public:
 	MessageManager();
 	~MessageManager();
 	DWORD SendPacket(SOCKET s, char* data);
-	void ReceivePacket(LPPER_IO_DATA PerIoData);
+	void ReceivePacket(IO_DATA* ioData);
 	char* MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data);
 	Header* ReadHeader(char* data);
 	const Body* ReadBody(int len, char* data);

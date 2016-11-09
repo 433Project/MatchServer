@@ -23,15 +23,15 @@ DWORD MessageManager::SendPacket(SOCKET s, char* data)
 }
 
 
-void MessageManager::ReceivePacket(LPPER_IO_DATA PerIoData)
+void MessageManager::ReceivePacket(IO_DATA* ioData)
 {
-	PerIoData->buffer = new char[packetSize];
+	ioData->buffer = new char[packetSize];
 
 	DWORD flags = MSG_PUSH_IMMEDIATE;
 	WSABUF wb;
-	wb.buf = PerIoData->buffer;
+	wb.buf = ioData->buffer;
 	wb.len = packetSize;
-	WSARecv(PerIoData->hClntSock, &wb, 1, NULL, &flags, PerIoData, NULL);
+	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
 }
 
 char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data)
