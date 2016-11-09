@@ -47,7 +47,7 @@ void MatchServer::RunServer() {
 		return;
 
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, KEY_CONFIG_SERVER);
-	LPPER_IO_DATA ov = new PER_IO_DATA(hConfigSock);
+	IO_DATA* ov = new IO_DATA(hConfigSock);
 	mm->ReceivePacket(ov);
 	char* data = mm->MakePacket(CONFIG_SERVER, 0, Command_MSLIST_REQUEST, Status_NONE, "");
 	mm->SendPacket(hConfigSock, data);
@@ -58,7 +58,7 @@ void MatchServer::RunServer() {
 		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, KEY_CONNECTION_SERVER);
-	ov = new PER_IO_DATA(hConnSock);
+	ov = new IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
 	
 	//=================== Listen Socket for Match Server
@@ -181,7 +181,7 @@ void MatchServer::AcceptEX(SOCKET hsoListen, int count)
 		if (sock == INVALID_SOCKET)
 			return;
 
-		LPPER_IO_DATA ov = new PER_IO_DATA(sock);
+		IO_DATA* ov = new IO_DATA(sock);
 		ov->buffer = new char[512];
 		BOOL bIsOK = pfnAcceptEx
 		(
@@ -213,59 +213,58 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 	HANDLE hCompletionPort = hCompletion;
 
 	DWORD bytesTransferred;
-	LPPER_IO_DATA perIoData;
+	IO_DATA* ioData;
 	ULONG_PTR	key = 0;
+	
 	while (TRUE)
 	{
 		GetQueuedCompletionStatus(
 			hCompletionPort,
 			&bytesTransferred,
 			&key,
-			(LPOVERLAPPED*)&perIoData,
+			(LPOVERLAPPED*)&ioData,
 			INFINITE
 		);
 
+		if (bytesTransferred != 0) {
+			Header* h = mm->ReadHeader(ioData->buffer);
+			const Body* b = mm->ReadBody(h->length, ioData->buffer);
+		}
+		
 		if (key == KEY_LISTEN_SOCKET) 
 		{
-			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)perIoData->hClntSock, KEY_MATCH_SERVER);
-			cout << " ==> New Matching Server " << perIoData->hClntSock << " connected..." << endl;
+			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, KEY_MATCH_SERVER);
+			cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
 		}
 		else if (key == KEY_CONFIG_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
 				cout << " ==> Config Server is disconnected..." << endl;
+				closesocket(ioData->hClntSock);
 				continue;
-			}
-			
-			Header* h = mm->ReadHeader(perIoData->buffer);
-			const Body* b = mm->ReadBody(h->length, perIoData->buffer);
-				
+			}	
 		}
 		else if (key == KEY_CONNECTION_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
-				cout << " ==> Connection Server(" << perIoData->hClntSock << ") is disconnected..." << endl;
+				cout << " ==> Connection Server(" << ioData->hClntSock << ") is disconnected..." << endl;
+				closesocket(ioData->hClntSock);
 				continue;
 			}
-
-			Header* h = mm->ReadHeader(perIoData->buffer);
-			const Body* b = mm->ReadBody(h->length, perIoData->buffer);
 		}
 		else if (key == KEY_MATCH_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
-				cout << " ==> Matching Server("<< perIoData->hClntSock <<") is disconnected..." << endl;
+				cout << " ==> Matching Server("<< ioData->hClntSock <<") is disconnected..." << endl;
+				closesocket(ioData->hClntSock);
 				continue;
 			}
-
-			Header* h = mm->ReadHeader(perIoData->buffer);
-			const Body* b = mm->ReadBody(h->length, perIoData->buffer);
 		}
 		
-		mm->ReceivePacket(perIoData);
+		mm->ReceivePacket(ioData);
 	}
 	return 0;
 }

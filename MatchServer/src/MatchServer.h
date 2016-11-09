@@ -54,13 +54,11 @@ private:
 
 	SOCKET hsoListen;
 	int backlog = 10;
+	int port = 10000;
 
 	SYSTEM_INFO si;
 	HANDLE hCompletion;
-
-	LPPER_IO_DATA PerIoData;		
-	//LPPER_HANDLE_DATA PerHandleData;
-
-	int port = 10000;
+		
+	
 };
 
