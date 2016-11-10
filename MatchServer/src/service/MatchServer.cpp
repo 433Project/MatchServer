@@ -48,7 +48,7 @@ void MatchServer::RunServer() {
 	}
 
 	//==================Connect to Config Server
-	hConfigSock = sm->GetConnectSocket(confIP, confPort);	// Config Server ip, port
+	hConfigSock = sm->GetConnectSocket("CF", confIP, confPort);	// Config Server ip, port
 	if (hConfigSock == INVALID_SOCKET)
 		return;
 
@@ -57,17 +57,19 @@ void MatchServer::RunServer() {
 	mm->ReceivePacket(ov);
 
 	//==================Connect to Connection Server
-	hConnSock = sm->GetConnectSocket(connIP, connPort);	// Connection Server ip, port
+	hConnSock = sm->GetConnectSocket("CS", connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
-	
+	cout << "Connected CS" << endl;
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, KEY_CONNECTION_SERVER);
+
 	ov = new IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
-
-	char* data = mm->MakePacket(ROOM_SERVER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
-	mm->SendPacket(hConnSock, data);
 	
+	char* data = mm->MakePacket(ROOM_SERVER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
+	
+		mm->SendPacket(hConnSock, data);
+		cout << "sent" << endl;
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
 	
@@ -120,10 +122,8 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		{
 			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, KEY_MATCH_SERVER);
 			cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
-			struct sockaddr_in sin;
-			int len = sizeof(sin);
-			if (getsockname(ioData->hClntSock, (struct sockaddr *)&sin, &len) != -1)
-				cout << inet_ntoa(sin.sin_addr) << endl;
+			
+			sm->AcceptEX(1);
 		}
 		else if (key == KEY_CONFIG_SERVER) 
 		{
@@ -144,10 +144,14 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			{
 				if (b->status() == Status_SUCCESS)
 				{
-					sm->GetConnectSocket((char*)b->data()->c_str(), 12000);
-					sm->AcceptEX(1);
+					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data()->c_str(), 12000);
+					if (s != INVALID_SOCKET)
+						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, KEY_MATCH_SERVER);
+					else
+						closesocket(s);
 				}
 			}
+			
 			
 		}
 		else if (key == KEY_CONNECTION_SERVER) 

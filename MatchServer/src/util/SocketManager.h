@@ -14,7 +14,7 @@ class SocketManager
 public:
 	SocketManager();
 	~SocketManager();
-	SOCKET GetConnectSocket(char* ip, int port);
+	SOCKET GetConnectSocket(char* type, char* ip, int port);
 	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
 	void AcceptEX(int count);
 	SOCKET GetListenSocket(short shPortNo, int nBacklog);

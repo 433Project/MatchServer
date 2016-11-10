@@ -37,6 +37,5 @@ public:
 	int headSize = 20;
 	int packetSize = 100;
 
-
 };
 

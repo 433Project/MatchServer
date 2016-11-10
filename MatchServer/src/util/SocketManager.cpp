@@ -47,12 +47,12 @@ SOCKET SocketManager::GetListenSocket(short shPortNo, int nBacklog)
 	return listenSock;
 }
 
-SOCKET SocketManager::GetConnectSocket(char* ip, int port)
+SOCKET SocketManager::GetConnectSocket(char* type, char* ip, int port)
 {
 	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (hSock == INVALID_SOCKET)
 	{
-		cout << "socket failed, code : " << WSAGetLastError() << endl;
+		cout << "[" << type <<"] socket failed, code : " << WSAGetLastError() << endl;
 		return hSock;
 	}
 	SOCKADDR_IN addr;
@@ -61,11 +61,11 @@ SOCKET SocketManager::GetConnectSocket(char* ip, int port)
 	addr.sin_addr.s_addr = inet_addr(ip);			//Server IP
 	addr.sin_port = htons(port);					//Server Port
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		if (connect(hSock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 		{
-			cout << "connect failed, code : " << WSAGetLastError() << endl;
+			cout << "[" << type << "] connect failed, code : " << WSAGetLastError() << endl;
 			continue;
 		}
 		return hSock;
