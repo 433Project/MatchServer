@@ -65,7 +65,7 @@ void MatchServer::RunServer() {
 	ov = new IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
 
-	char* data = mm->MakePacket(ROOM_MANAGER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
+	char* data = mm->MakePacket(ROOM_SERVER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
 	mm->SendPacket(hConnSock, data);
 	
 	//=================== Listen Socket for Match Server
@@ -133,13 +133,14 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				closesocket(ioData->hClntSock);
 				continue;
 			}
-			if (b->cmd() == Command_MS_ID) 
+
+			if (b->cmd() == Command_MS_ID)
 			{
-				cout << "My ID : " << b->data()->c_str()<< endl;
+				cout << "My ID : " << b->data()->c_str() << endl;
 				char* data = mm->MakePacket(CONFIG_SERVER, 0, Command_MSLIST_REQUEST, Status_NONE, "");
 				mm->SendPacket(ioData->hClntSock, data);
 			}
-			else if (b->cmd() == Command_MSLIST_RESPONSE) 
+			else if (b->cmd() == Command_MSLIST_RESPONSE)
 			{
 				if (b->status() == Status_SUCCESS)
 				{
