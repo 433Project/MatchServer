@@ -14,6 +14,9 @@ MatchServer::MatchServer()
 MatchServer::~MatchServer()
 {
 	WSACleanup();
+	closesocket(hConfigSock);
+	closesocket(hConnSock);
+	closesocket(hsoListen);
 	delete mm;
 	delete sm;
 }
@@ -54,13 +57,16 @@ void MatchServer::RunServer() {
 	mm->ReceivePacket(ov);
 
 	//==================Connect to Connection Server
-	/*hConnSock = GetConnectSocket(connIP, connPort);	// Connection Server ip, port
+	hConnSock = sm->GetConnectSocket(connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, KEY_CONNECTION_SERVER);
 	ov = new IO_DATA(hConnSock);
-	mm->ReceivePacket(ov);*/
+	mm->ReceivePacket(ov);
+
+	char* data = mm->MakePacket(ROOM_MANAGER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
+	mm->SendPacket(hConnSock, data);
 	
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
