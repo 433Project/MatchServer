@@ -135,6 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +145,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ProcessMS.cpp" />
+    <ClCompile Include="src\util\SocketManager.cpp" />
+    <ClCompile Include="src\service\command\ProcessCS.cpp" />
+    <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\service\command\MatchingRequest.cpp" />
     <ClCompile Include="src\util\MessageConverter.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
@@ -162,6 +167,10 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ProcessMS.h" />
+    <ClInclude Include="src\util\SocketManager.h" />
+    <ClInclude Include="src\service\command\ProcessCS.h" />
+    <ClInclude Include="src\service\command\ProcessConfig.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
     <ClInclude Include="src\service\command\MatchingRequest.h" />
     <ClInclude Include="src\type\Message.h" />

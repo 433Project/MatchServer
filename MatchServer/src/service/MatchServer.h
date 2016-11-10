@@ -5,6 +5,7 @@
 #include <process.h>
 
 #include "MessageManager.h"
+#include "SocketManager.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
@@ -25,14 +26,8 @@ public:
 	void RunServer();
 
 private:
-	SOCKET GetConnectSocket(char* ip, int port);
 	static HANDLE CreateNewCompletionPort(DWORD dwNumberOfConcurrentThreads);
 	static BOOL AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HANDLE hDevice, DWORD dwCompletionKey);
-
-	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
-	void AcceptEX(SOCKET hsoListen, int count);
-	SOCKET GetListenSocket(short shPortNo, int nBacklog);
-
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
@@ -48,13 +43,13 @@ private:
 
 	//Connection Server
 	char* connIP = "10.100.10.6";
-	int connPort = 10433;
+	int connPort = 8433;
 	SOCKET hConnSock;
 	SOCKADDR_IN connAddr;
 
 	SOCKET hsoListen;
 	int backlog = 10;
-	int port = 10000;
+	int port = 12000;
 
 	SYSTEM_INFO si;
 	HANDLE hCompletion;

@@ -18,6 +18,7 @@ namespace fb {
 		Command_MATCH_RESPONSE = 14,
 		Command_MSLIST_REQUEST = 30,
 		Command_MSLIST_RESPONSE = 31,
+		Command_MS_ID = 32,
 		Command_ROOM_CREATE_REQUEST = 40,
 		Command_ROOM_CREATE_RESPONSE = 41,
 		Command_ROOM_JOIN_REQUEST = 50,
@@ -32,7 +33,7 @@ namespace fb {
 	};
 
 	inline const char **EnumNamesCommand() {
-		static const char *names[] = { "HEALTH_CHECK", "", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_SUCCESS", "LATENCY", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
+		static const char *names[] = { "HEALTH_CHECK", "", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_SUCCESS", "LATENCY", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "MS_ID", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
 		return names;
 	}
 

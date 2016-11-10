@@ -17,6 +17,10 @@
     <ClCompile Include="src\util\MessageManager.cpp" />
     <ClCompile Include="src\service\MatchServer.cpp" />
     <ClCompile Include="src\util\ProcessManager.cpp" />
+    <ClCompile Include="src\service\command\ProcessConfig.cpp" />
+    <ClCompile Include="src\service\command\ProcessCS.cpp" />
+    <ClCompile Include="ProcessMS.cpp" />
+    <ClCompile Include="src\util\SocketManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
@@ -42,6 +46,10 @@
     <ClInclude Include="src\service\MatchServer.h" />
     <ClInclude Include="src\util\ProcessManager.h" />
     <ClInclude Include="src\Packet_generated.h" />
+    <ClInclude Include="src\service\command\ProcessConfig.h" />
+    <ClInclude Include="src\service\command\ProcessCS.h" />
+    <ClInclude Include="ProcessMS.h" />
+    <ClInclude Include="src\util\SocketManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
