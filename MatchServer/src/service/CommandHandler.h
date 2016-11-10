@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Protocol.h"
 
 class CommandHandler
 {

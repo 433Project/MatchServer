@@ -3,13 +3,10 @@
   <ItemGroup>
     <ClCompile Include="src\service\CommandHandler.cpp" />
     <ClCompile Include="src\util\LatencyGenerator.cpp" />
-    <ClCompile Include="src\ProcessManager.cpp" />
-    <ClCompile Include="src\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />
     <ClCompile Include="config\AppConfig.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\MatchServer.cpp" />
     <ClCompile Include="src\util\ConsoleLogger.h" />
     <ClCompile Include="src\service\matching\Matcher.cpp" />
     <ClCompile Include="src\util\MetricGenerator.cpp" />
@@ -17,15 +14,15 @@
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\util\MessageConverter.cpp" />
     <ClCompile Include="src\service\command\MatchingRequest.cpp" />
+    <ClCompile Include="src\util\MessageManager.cpp" />
+    <ClCompile Include="src\service\MatchServer.cpp" />
+    <ClCompile Include="src\util\ProcessManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
     <ClInclude Include="src\service\CommandHandler.h" />
     <ClInclude Include="src\util\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
-    <ClInclude Include="src\Packet_generated.h" />
-    <ClInclude Include="src\ProcessManager.h" />
-    <ClInclude Include="src\MessageManager.h" />
     <ClInclude Include="lib\Protocol.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />
     <ClInclude Include="src\service\matching\Matcher.h" />
@@ -35,13 +32,16 @@
     <ClInclude Include="config\AppConfig.h" />
     <ClInclude Include="lib\json.hpp" />
     <ClInclude Include="src\type\common.h" />
-    <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="src\util\MetricGenerator.h" />
     <ClInclude Include="src\util\MessageQueue.h" />
     <ClInclude Include="src\util\MessageConverter.h" />
     <ClInclude Include="src\type\Message.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
     <ClInclude Include="src\service\command\MatchingRequest.h" />
+    <ClInclude Include="src\util\MessageManager.h" />
+    <ClInclude Include="src\service\MatchServer.h" />
+    <ClInclude Include="src\util\ProcessManager.h" />
+    <ClInclude Include="src\Packet_generated.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

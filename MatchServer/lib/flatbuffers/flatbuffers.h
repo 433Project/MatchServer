@@ -30,6 +30,7 @@
 #include <set>
 #include <algorithm>
 #include <memory>
+using namespace std;
 
 #ifdef _STLPORT_VERSION
   #define FLATBUFFERS_CPP98_STL

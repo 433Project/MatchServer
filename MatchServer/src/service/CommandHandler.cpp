@@ -14,7 +14,7 @@ CommandHandler::~CommandHandler()
 
 void CommandHandler::HandleCommand(Packet packet) 
 {
-
+	/*
 	switch (packet.body.command) {
 		// ¸ÅÄª ¿äÃ» 
 	case Command::MATCH_REQUEST:
@@ -23,7 +23,7 @@ void CommandHandler::HandleCommand(Packet packet)
 
 		break;
 
-	}
+	}*/
 	
 
 }

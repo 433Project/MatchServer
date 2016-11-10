@@ -2,6 +2,7 @@
 #include <string>
 #include "Packet_generated.h"
 using namespace std;
+using namespace fb;
 
 enum SrcDstType :int
 {
