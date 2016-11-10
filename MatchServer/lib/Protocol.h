@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include "Packet_generated.h"
 using namespace std;
 
 enum SrcDstType :int
@@ -32,15 +32,10 @@ struct Header
 	}
 };
 
-struct Body {
-
-	Command command;
-	string data;
-};
 
 struct Packet {
 	Header header;
-	Body body;
+	Body* body;
 };
 
 struct UserInfo

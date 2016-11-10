@@ -10,27 +10,29 @@ namespace fb {
 	struct Body;
 
 	enum Command {
-		Command_MATCH_REQUEST = 0,
-		Command_MATCH_RESPONSE = 1,
-		Command_LATENCY = 2,
-		Command_HEALTH_CHECK = 3,
-		Command_MSLIST_REQUEST = 4,
-		Command_MSLIST_RESPONSE = 5,
-		Command_PG_START = 6,
-		Command_PG_END = 7,
-		Command_PG_DUMMY = 8,
-		Command_ROOM_CREATE_REQUEST = 9,
-		Command_ROOM_CREATE_RESPONSE = 10,
-		Command_ROOM_JOIN_REQUEST = 11,
-		Command_ROOM_JOIN_RESPONSE = 12,
-		Command_GAME_START = 13,
-		Command_GAME_END = 14,
-		Command_MIN = Command_MATCH_REQUEST,
-		Command_MAX = Command_GAME_END
+		Command_HEALTH_CHECK = 0,
+		Command_NOTI_MATCH_REQUEST = 10,
+		Command_NOTI_MATCH_SUCCESS = 11,
+		Command_LATENCY = 12,
+		Command_MATCH_REQUEST = 13,
+		Command_MATCH_RESPONSE = 14,
+		Command_MSLIST_REQUEST = 30,
+		Command_MSLIST_RESPONSE = 31,
+		Command_ROOM_CREATE_REQUEST = 40,
+		Command_ROOM_CREATE_RESPONSE = 41,
+		Command_ROOM_JOIN_REQUEST = 50,
+		Command_ROOM_JOIN_RESPONSE = 51,
+		Command_GAME_START = 52,
+		Command_GAME_END = 53,
+		Command_PG_START = 60,
+		Command_PG_END = 61,
+		Command_PG_DUMMY = 62,
+		Command_MIN = Command_HEALTH_CHECK,
+		Command_MAX = Command_PG_DUMMY
 	};
 
 	inline const char **EnumNamesCommand() {
-		static const char *names[] = { "MATCH_REQUEST", "MATCH_RESPONSE", "LATENCY", "HEALTH_CHECK", "MSLIST_REQUEST", "MSLIST_RESPONSE", "PG_START", "PG_END", "PG_DUMMY", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", nullptr };
+		static const char *names[] = { "HEALTH_CHECK", "", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_SUCCESS", "LATENCY", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
 		return names;
 	}
 
@@ -85,7 +87,7 @@ namespace fb {
 	};
 
 	inline flatbuffers::Offset<Body> CreateBody(flatbuffers::FlatBufferBuilder &_fbb,
-		Command cmd = Command_MATCH_REQUEST,
+		Command cmd = Command_HEALTH_CHECK,
 		Status status = Status_SUCCESS,
 		flatbuffers::Offset<flatbuffers::String> data = 0) {
 		BodyBuilder builder_(_fbb);
@@ -96,7 +98,7 @@ namespace fb {
 	}
 
 	inline flatbuffers::Offset<Body> CreateBodyDirect(flatbuffers::FlatBufferBuilder &_fbb,
-		Command cmd = Command_MATCH_REQUEST,
+		Command cmd = Command_HEALTH_CHECK,
 		Status status = Status_SUCCESS,
 		const char *data = nullptr) {
 		return CreateBody(_fbb, cmd, status, data ? _fbb.CreateString(data) : 0);
