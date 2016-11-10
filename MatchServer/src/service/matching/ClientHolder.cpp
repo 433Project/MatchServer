@@ -13,21 +13,26 @@ ClientHolder* ClientHolder::GetInstance() {
 ClientHolder::ClientHolder()
 {	
 	// metric의 크기만큼의 배열을 미리 할당 & set 0
-	waitingList = (ROOM*) malloc(sizeof(ROOM) * MAX_METRIC);
-	memset(waitingList, 0, sizeof(ROOM) * MAX_METRIC);
+	waitingRoomList = (ROOM*) malloc(sizeof(ROOM) * MAX_METRIC);
+	memset(waitingRoomList, 0, sizeof(ROOM) * MAX_METRIC);
 	
 	ConsoleLogger::PrintMessage("ClientHolder 초기화");
 }
 
 ClientHolder::~ClientHolder()
 {
-	delete waitingList;
+	delete waitingRoomList;
 	delete instance;
 }
 
-// 대기열 포인터 반환
-WaitingRoomList ClientHolder::GetWaitingList() {
-	return this->waitingList;
+//return  waitingroomlist 
+WaitingRoomList ClientHolder::GetWaitingRoomList() {
+	return this->waitingRoomList;
+}
+
+// return connected client list 
+unordered_map<CLIENTID, Client>* ClientHolder::GetConnectedClientList() {
+	return &(this->connectedClientList);
 }
 
 // =========================================
@@ -39,22 +44,13 @@ bool ClientHolder::AddClient(int metric, Client client) {
 	
 	// 대기열에 넣는다.
 	int idx = sizeof(ROOM) * metric;
-	(waitingList + idx)->clientList.push_back(client);
+	(waitingRoomList + idx)->clientList.push_back(client);
 
 	// client info list에 넣는다.
 	connectedClientList.insert({client.GetClientId(), client});
 	
 	return true;
 }
-
-// 아직 미구현
-
-//Client ClientHolder::GetClient(CLIENTID clientId) {
-//	//
-//	return ;
-//}
-
-
 
 // waiting list, info list에서 매칭 완료된 client를 제거한다. 
 bool ClientHolder::DeleteClient(CLIENTID clientId) {
@@ -63,13 +59,13 @@ bool ClientHolder::DeleteClient(CLIENTID clientId) {
 
 	int idx = sizeof(ROOM) * client.GetClientId();
 
-	//(waitingList + idx)->clientList.insert({ client.GetClientId, client });
+	//(waitingRoomList + idx)->clientList.insert({ client.GetClientId, client });
 	int clientIdx = 0;
-	for (auto it = (waitingList + idx)->clientList.begin(); ; ++it) {
+	for (auto it = (waitingRoomList + idx)->clientList.begin(); ; ++it) {
 
 		if (it->GetClientId() == clientId) {
 			// waiting list clear
-			(waitingList + idx)->clientList.erase((waitingList + idx)->clientList.begin() + clientIdx); // 뭐지 
+			(waitingRoomList + idx)->clientList.erase((waitingRoomList + idx)->clientList.begin() + clientIdx); // 뭐지 
 
 			// client info list clear
 			connectedClientList.erase(clientId);

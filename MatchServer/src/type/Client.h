@@ -6,6 +6,7 @@ class Client
 {
 public:
 	Client();
+	Client(int clientId, int metric, int serverId, bool attacthed);
 	Client(int clientId, int metric, int serverId, ClientState state, bool attacthed);
 	~Client();
 	
@@ -21,10 +22,10 @@ public:
 	ClientState GetState();
 	
 private: 
-	CLIENTID clientId;
-	int metric;
-	int serverId;
-	ClientState state;
+	CLIENTID clientId; // client unique id
+	int metric; // 능력치
+	int serverId; // connected server unique id 
+	ClientState state; // 
 	
 	bool attacthed;// 내 서버인지 남의 서버인지 // 필요한가?
 

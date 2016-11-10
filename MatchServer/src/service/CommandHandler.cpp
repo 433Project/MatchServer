@@ -14,6 +14,7 @@ CommandHandler::~CommandHandler()
 }
 
 
+// command¿¡ µû¶ó message handle
 void CommandHandler::HandleCommand(Message message) 
 {
 	

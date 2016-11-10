@@ -17,6 +17,8 @@ private:
 
 	MetricGenerator* metricGenerator;
 	CommandHandler* commandHandler;
+	
+	ClientHolder* clientHolder;
 
 public:
 
@@ -27,6 +29,9 @@ public:
 	void Matching();
 	//void Matching(Client client);
 	void HandleMessage();
+
+	// find opposite client id 
+	int FindOpposite(Client client);
 };
 
 

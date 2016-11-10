@@ -17,6 +17,7 @@
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\util\MessageConverter.cpp" />
     <ClCompile Include="src\service\command\MatchingRequest.cpp" />
+    <ClCompile Include="MatchingServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
@@ -42,8 +43,10 @@
     <ClInclude Include="src\type\Message.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
     <ClInclude Include="src\service\command\MatchingRequest.h" />
+    <ClInclude Include="MatchingServer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
+    <None Include="lib\Packet.fbs" />
   </ItemGroup>
 </Project>
