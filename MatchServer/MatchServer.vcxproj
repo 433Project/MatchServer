@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\workspace\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,9 +152,7 @@
     <ClCompile Include="src\service\command\ProcessCS.cpp" />
     <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\service\command\MatchingRequest.cpp" />
-    <ClCompile Include="src\util\MessageConverter.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
-    <ClCompile Include="src\service\CommandHandler.cpp" />
     <ClCompile Include="src\util\LatencyGenerator.cpp" />
     <ClCompile Include="src\util\ProcessManager.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
@@ -185,12 +183,9 @@
     <ClInclude Include="src\service\command\ProcessCS.h" />
     <ClInclude Include="src\service\command\ProcessConfig.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
-    <ClInclude Include="src\service\command\MatchingRequest.h" />
     <ClInclude Include="src\type\Message.h" />
-    <ClInclude Include="src\util\MessageConverter.h" />
     <ClInclude Include="src\util\MessageQueue.h" />
     <ClInclude Include="src\service\AbstractCommand.h" />
-    <ClInclude Include="src\service\CommandHandler.h" />
     <ClInclude Include="src\util\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="src\Packet_generated.h" />

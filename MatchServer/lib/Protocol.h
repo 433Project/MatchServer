@@ -57,6 +57,6 @@ public:
 	static const int MATCHING_ATTEMPT = 3; // 3È¸ ½Ãµµ 
 	static const int LATENCY_MIN = 0;
 	static const int LATENCY_MAX = 1;
-	static const double Policy::LATENCY_THRESHOLD = 0.5;
+
 };
 
