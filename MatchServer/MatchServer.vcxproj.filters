@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\service\CommandHandler.cpp" />
     <ClCompile Include="src\util\LatencyGenerator.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />
@@ -12,7 +11,6 @@
     <ClCompile Include="src\util\MetricGenerator.cpp" />
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
-    <ClCompile Include="src\service\command\MatchingRequest.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
     <ClCompile Include="src\service\MatchServer.cpp" />
     <ClCompile Include="src\util\ProcessManager.cpp" />
@@ -23,7 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
-    <ClInclude Include="src\service\CommandHandler.h" />
     <ClInclude Include="src\util\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="lib\Protocol.h" />
@@ -39,7 +36,6 @@
     <ClInclude Include="src\util\MessageQueue.h" />
     <ClInclude Include="src\type\Message.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
-    <ClInclude Include="src\service\command\MatchingRequest.h" />
     <ClInclude Include="src\util\MessageManager.h" />
     <ClInclude Include="src\service\MatchServer.h" />
     <ClInclude Include="src\util\ProcessManager.h" />
