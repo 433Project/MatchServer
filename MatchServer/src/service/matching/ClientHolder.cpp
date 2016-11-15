@@ -30,6 +30,10 @@ WaitingList ClientHolder::GetWaitingList() {
 	return this->waitingList;
 }
 
+unordered_map<CLIENTID, Client>* ClientHolder::GetClientInfoList() {
+	return &(this->clientInfoList);
+}
+
 // =========================================
 // ===================Business Logic
 // =========================================

@@ -2,9 +2,18 @@
 
 LatencyGenerator::LatencyGenerator()
 {
+
+
 }
 
 
 LatencyGenerator::~LatencyGenerator()
 {
+
+
+}
+
+void LatencyGenerator::Generate() {
+
+
 }

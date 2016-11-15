@@ -4,5 +4,9 @@ class LatencyGenerator
 public:
 	LatencyGenerator();
 	~LatencyGenerator();
+
+	void Generate();
+
+
 };
 
