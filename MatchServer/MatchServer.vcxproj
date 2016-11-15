@@ -151,7 +151,6 @@
     <ClCompile Include="src\util\SocketManager.cpp" />
     <ClCompile Include="src\service\command\ProcessCS.cpp" />
     <ClCompile Include="src\service\command\ProcessConfig.cpp" />
-    <ClCompile Include="src\service\command\MatchingRequest.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\util\LatencyGenerator.cpp" />
     <ClCompile Include="src\util\ProcessManager.cpp" />
