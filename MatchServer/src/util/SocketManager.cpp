@@ -49,7 +49,7 @@ SOCKET SocketManager::GetListenSocket(short shPortNo, int nBacklog)
 
 SOCKET SocketManager::GetConnectSocket(char* type, char* ip, int port)
 {
-	SOCKET hSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	SOCKET hSock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (hSock == INVALID_SOCKET)
 	{
 		cout << "[" << type <<"] socket failed, code : " << WSAGetLastError() << endl;
