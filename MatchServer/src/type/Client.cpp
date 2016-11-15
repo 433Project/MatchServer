@@ -8,6 +8,7 @@ Client::Client()
 	this->serverId = 0;
 	this->state = state;
 	this->attacthed = attacthed;
+	this->cntTry = 0;
 }
 
 Client::Client(int clientId, int metric, int serverId, ClientState state, bool attacthed) {
@@ -16,6 +17,7 @@ Client::Client(int clientId, int metric, int serverId, ClientState state, bool a
 	this->serverId = serverId;
 	this->state = state;
 	this->attacthed = attacthed;
+	this->cntTry = 0;
 }
 
 Client::~Client() {
@@ -48,4 +50,15 @@ ClientState Client::GetState() {
 bool Client::SetState(ClientState state) {
 	this->state = state;
 	return true;
+}
+
+int Client::GetCntTry() {
+	return this->cntTry;
+}
+
+// inc된 값을 반환
+int Client::IncCntTry() {
+	++(this->cntTry);
+
+	return this->cntTry;
 }

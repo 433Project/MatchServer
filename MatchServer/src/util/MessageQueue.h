@@ -1,7 +1,6 @@
 #pragma once
-#include "Message.h"
+#include "Protocol.h"
 #include <deque>
-
 
 class MessageQueue
 {
@@ -9,14 +8,16 @@ public:
 	//---- constr
 	MessageQueue();
 	~MessageQueue();
+	static MessageQueue* GetInstance();
 
 	//---- service
-	bool Push(Message message);
-	Message Pop();
+	bool Push(Packet packet);
+	Packet Pop();
+	bool IsEmpty();
+	int Length();
 	
-
 private: 
-	deque<Message> mailbox;
-
+	deque<Packet> queue;
+	static MessageQueue* messageQueue;
 };
 

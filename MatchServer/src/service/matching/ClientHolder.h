@@ -15,6 +15,8 @@ public:
 	static ClientHolder* GetInstance();
 
 	WaitingList GetWaitingList();
+	unordered_map<CLIENTID, Client>* GetClientInfoList();
+
 	// =============== Business Logic 
 	bool AddClient(int metric, Client client);
 
