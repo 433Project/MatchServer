@@ -1,7 +1,8 @@
 #include "MatchServer.h"
-
+#include "json\json.h"
 MessageManager* mm;
 SocketManager* sm;
+
 MatchServer::MatchServer()
 {
 	mm = new MessageManager();
@@ -9,6 +10,19 @@ MatchServer::MatchServer()
 	headerSize = mm->headSize;
 
 	sm = new SocketManager();
+	
+	//========================== Config.ini
+	//confIP = "10.100.10.10";
+	//connIP = new char[16];
+	
+	
+	//GetPrivateProfileString(L"Config", L"ip", L"*", (LPWSTR)confIP, sizeof(confIP), L".\\Config.ini");
+	//cout << confIP << endl;
+	//confPort = GetPrivateProfileInt(L"Config", L"port", 14040, L".\\Config.ini");
+
+	//GetPrivateProfileString(L"Connection", L"ip", L"*", (LPWSTR)connIP, sizeof(connIP), L".\\Config.ini");
+	//cout << connIP << endl;
+	//connPort = GetPrivateProfileInt(L"Connection", L"port", -1, L".\\Config.ini");
 }
 
 MatchServer::~MatchServer()
@@ -55,7 +69,8 @@ void MatchServer::RunServer() {
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, KEY_CONFIG_SERVER);
 	IO_DATA* ov = new IO_DATA(hConfigSock);
 	mm->ReceivePacket(ov);
-
+	
+	
 	//==================Connect to Connection Server
 	hConnSock = sm->GetConnectSocket("CS", connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
@@ -66,10 +81,6 @@ void MatchServer::RunServer() {
 	ov = new IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
 	
-	char* data = mm->MakePacket(ROOM_SERVER, 0, Command_ROOM_CREATE_REQUEST, Status_NONE, "");
-	
-		mm->SendPacket(hConnSock, data);
-		cout << "sent" << endl;
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
 	
@@ -117,12 +128,14 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			h = mm->ReadHeader(ioData->buffer);
 			b = mm->ReadBody(h->length, ioData->buffer);
 		}
-		
-		if (key == KEY_LISTEN_SOCKET) 
+
+		if (b->cmd() == Command_HEALTH_CHECK) {
+
+		}
+		else if (key == KEY_LISTEN_SOCKET) 
 		{
 			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, KEY_MATCH_SERVER);
 			cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
-			
 			sm->AcceptEX(1);
 		}
 		else if (key == KEY_CONFIG_SERVER) 
@@ -136,23 +149,22 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 
 			if (b->cmd() == Command_MS_ID)
 			{
-				cout << "My ID : " << b->data()->c_str() << endl;
-				char* data = mm->MakePacket(CONFIG_SERVER, 0, Command_MSLIST_REQUEST, Status_NONE, "");
+				cout << "My ID : " << b->data1()->c_str() << endl;
+				char* data = mm->MakePacket(CONFIG_SERVER, 0, Command_MSLIST_REQUEST, Status_NONE, "", "");
 				mm->SendPacket(ioData->hClntSock, data);
 			}
 			else if (b->cmd() == Command_MSLIST_RESPONSE)
 			{
 				if (b->status() == Status_SUCCESS)
 				{
-					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data()->c_str(), 12000);
+					cout << "Connecting to Matching Server(" << b->data1()->c_str() << ")" << endl;
+					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data2()->c_str(), port);
 					if (s != INVALID_SOCKET)
 						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, KEY_MATCH_SERVER);
 					else
 						closesocket(s);
 				}
 			}
-			
-			
 		}
 		else if (key == KEY_CONNECTION_SERVER) 
 		{

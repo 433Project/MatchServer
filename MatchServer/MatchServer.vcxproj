@@ -74,6 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -102,11 +103,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>json_vc71_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -167,6 +169,17 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\json\allocator.h" />
+    <ClInclude Include="lib\json\assertions.h" />
+    <ClInclude Include="lib\json\autolink.h" />
+    <ClInclude Include="lib\json\config.h" />
+    <ClInclude Include="lib\json\features.h" />
+    <ClInclude Include="lib\json\forwards.h" />
+    <ClInclude Include="lib\json\json.h" />
+    <ClInclude Include="lib\json\reader.h" />
+    <ClInclude Include="lib\json\value.h" />
+    <ClInclude Include="lib\json\version.h" />
+    <ClInclude Include="lib\json\writer.h" />
     <ClInclude Include="src\service\command\ProcessMS.h" />
     <ClInclude Include="src\util\SocketManager.h" />
     <ClInclude Include="src\service\command\ProcessCS.h" />
@@ -197,10 +210,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
+    <None Include="src\Config.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

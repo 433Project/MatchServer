@@ -33,7 +33,6 @@ struct Header
 	}
 };
 
-
 struct Packet {
 	Header header;
 	Body* body;

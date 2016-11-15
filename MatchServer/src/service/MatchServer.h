@@ -1,13 +1,7 @@
 #pragma once
-#include <iostream>
-#include <winsock2.h>
-#include <MSWSock.h>
-#include <process.h>
 
 #include "MessageManager.h"
 #include "SocketManager.h"
-
-#pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
 enum CompletionKey :int
@@ -49,7 +43,7 @@ private:
 
 	SOCKET hsoListen;
 	int backlog = 10;
-	int port = 12000;
+	static const int port = 10000;
 
 	SYSTEM_INFO si;
 	HANDLE hCompletion;

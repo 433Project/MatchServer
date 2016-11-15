@@ -1,6 +1,5 @@
 #include "MessageManager.h"
 
-
 MessageManager::MessageManager()
 {
 
@@ -34,10 +33,18 @@ void MessageManager::ReceivePacket(IO_DATA* ioData)
 	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
 }
 
-char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data)
+char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, Command comm, Status st, string data1, string data2)
 {
 	flatbuffers::FlatBufferBuilder builder;
-	flatbuffers::Offset<Body> body = CreateBody(builder, comm, st, builder.CreateString(data));
+	flatbuffers::Offset<Body> body;
+	
+	if(data1.empty() && data2.empty())
+		body = CreateBody(builder, comm, st);
+	else if (data2.empty())
+		body = CreateBody(builder, comm, st, builder.CreateString(data1));
+	else
+		body = CreateBody(builder, comm, st, builder.CreateString(data1), builder.CreateString(data1));
+
 	builder.Finish(body);
 
 	uint8_t* buf = builder.GetBufferPointer();

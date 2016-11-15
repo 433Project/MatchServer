@@ -1,7 +1,5 @@
 #include "ProcessCS.h"
 
-
-
 ProcessCS::ProcessCS()
 {
 }

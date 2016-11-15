@@ -50,8 +50,20 @@
     <ClInclude Include="src\service\command\ProcessCS.h" />
     <ClInclude Include="src\util\SocketManager.h" />
     <ClInclude Include="src\service\command\ProcessMS.h" />
+    <ClInclude Include="lib\json\allocator.h" />
+    <ClInclude Include="lib\json\assertions.h" />
+    <ClInclude Include="lib\json\autolink.h" />
+    <ClInclude Include="lib\json\config.h" />
+    <ClInclude Include="lib\json\features.h" />
+    <ClInclude Include="lib\json\forwards.h" />
+    <ClInclude Include="lib\json\json.h" />
+    <ClInclude Include="lib\json\reader.h" />
+    <ClInclude Include="lib\json\value.h" />
+    <ClInclude Include="lib\json\version.h" />
+    <ClInclude Include="lib\json\writer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
+    <None Include="src\Config.ini" />
   </ItemGroup>
 </Project>
