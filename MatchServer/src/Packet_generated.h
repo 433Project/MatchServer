@@ -9,7 +9,7 @@ namespace fb {
 
 	struct Body;
 
-	enum Command {
+	enum COMMAND {
 		Command_HEALTH_CHECK = 0,
 		Command_NOTI_MATCH_REQUEST = 10,
 		Command_NOTI_MATCH_SUCCESS = 11,
@@ -37,9 +37,9 @@ namespace fb {
 		return names;
 	}
 
-	inline const char *EnumNameCommand(Command e) { return EnumNamesCommand()[static_cast<int>(e)]; }
+	inline const char *EnumNameCommand(COMMAND e) { return EnumNamesCommand()[static_cast<int>(e)]; }
 
-	enum Status {
+	enum STATUS {
 		Status_SUCCESS = 0,
 		Status_FAIL = 1,
 		Status_NONE = 2,
@@ -52,7 +52,7 @@ namespace fb {
 		return names;
 	}
 
-	inline const char *EnumNameStatus(Status e) { return EnumNamesStatus()[static_cast<int>(e)]; }
+	inline const char *EnumNameStatus(STATUS e) { return EnumNamesStatus()[static_cast<int>(e)]; }
 
 	struct Body FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 		enum {
@@ -61,8 +61,8 @@ namespace fb {
 			VT_DATA1 = 8,
 			VT_DATA2 = 10
 		};
-		Command cmd() const { return static_cast<Command>(GetField<int32_t>(VT_CMD, 0)); }
-		Status status() const { return static_cast<Status>(GetField<int32_t>(VT_STATUS, 0)); }
+		COMMAND cmd() const { return static_cast<COMMAND>(GetField<int32_t>(VT_CMD, 0)); }
+		STATUS status() const { return static_cast<STATUS>(GetField<int32_t>(VT_STATUS, 0)); }
 		const flatbuffers::String *data1() const { return GetPointer<const flatbuffers::String *>(VT_DATA1); }
 		const flatbuffers::String *data2() const { return GetPointer<const flatbuffers::String *>(VT_DATA2); }
 		bool Verify(flatbuffers::Verifier &verifier) const {
@@ -80,8 +80,8 @@ namespace fb {
 	struct BodyBuilder {
 		flatbuffers::FlatBufferBuilder &fbb_;
 		flatbuffers::uoffset_t start_;
-		void add_cmd(Command cmd) { fbb_.AddElement<int32_t>(Body::VT_CMD, static_cast<int32_t>(cmd), 0); }
-		void add_status(Status status) { fbb_.AddElement<int32_t>(Body::VT_STATUS, static_cast<int32_t>(status), 0); }
+		void add_cmd(COMMAND cmd) { fbb_.AddElement<int32_t>(Body::VT_CMD, static_cast<int32_t>(cmd), 0); }
+		void add_status(STATUS status) { fbb_.AddElement<int32_t>(Body::VT_STATUS, static_cast<int32_t>(status), 0); }
 		void add_data1(flatbuffers::Offset<flatbuffers::String> data1) { fbb_.AddOffset(Body::VT_DATA1, data1); }
 		void add_data2(flatbuffers::Offset<flatbuffers::String> data2) { fbb_.AddOffset(Body::VT_DATA2, data2); }
 		BodyBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) { start_ = fbb_.StartTable(); }
@@ -93,8 +93,8 @@ namespace fb {
 	};
 
 	inline flatbuffers::Offset<Body> CreateBody(flatbuffers::FlatBufferBuilder &_fbb,
-		Command cmd = Command_HEALTH_CHECK,
-		Status status = Status_SUCCESS,
+		COMMAND cmd = Command_HEALTH_CHECK,
+		STATUS status = Status_SUCCESS,
 		flatbuffers::Offset<flatbuffers::String> data1 = 0,
 		flatbuffers::Offset<flatbuffers::String> data2 = 0) {
 		BodyBuilder builder_(_fbb);
@@ -106,8 +106,8 @@ namespace fb {
 	}
 
 	inline flatbuffers::Offset<Body> CreateBodyDirect(flatbuffers::FlatBufferBuilder &_fbb,
-		Command cmd = Command_HEALTH_CHECK,
-		Status status = Status_SUCCESS,
+		COMMAND cmd = Command_HEALTH_CHECK,
+		STATUS status = Status_SUCCESS,
 		const char *data1 = nullptr,
 		const char *data2 = nullptr) {
 		return CreateBody(_fbb, cmd, status, data1 ? _fbb.CreateString(data1) : 0, data2 ? _fbb.CreateString(data2) : 0);
