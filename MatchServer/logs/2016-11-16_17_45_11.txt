@@ -1,1 +1,0 @@
-[2016-11-16 17:45:11.370] [ms_file_logger] [info] test

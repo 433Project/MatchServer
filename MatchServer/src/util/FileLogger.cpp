@@ -1,6 +1,5 @@
 #include "FileLogger.h"
 
-
 FileLogger::FileLogger()
 {
 	string fileName = "";
@@ -24,8 +23,6 @@ FileLogger::FileLogger()
 
 		spdlog::set_level(spdlog::level::info); //Set global log level to info
 		this->logger = spdlog::basic_logger_mt("ms_file_logger", fileName);
-
-
 	}
 	catch (const spdlog::spdlog_ex& ex) {
 		cout << "Log setting error" << endl;
@@ -34,6 +31,7 @@ FileLogger::FileLogger()
 
 FileLogger::~FileLogger()
 {
+	this->logger = NULL;
 }
 
 FileLogger* FileLogger::fileLogger = nullptr;
@@ -44,10 +42,13 @@ FileLogger* FileLogger::GetInstance() {
 	return fileLogger;
 }
 
-void FileLogger::info(string message) {
-	this->logger->info(message);
+void FileLogger::info_func_name(string funcName, string message) {
+	string msg = "[" + funcName + "]" + message;
+
+	this->logger->info(msg);
 	this->logger->flush();
 }
+
 
 void FileLogger::error(string message) {
 	logger->error(message);
