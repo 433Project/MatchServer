@@ -11,13 +11,13 @@ public:
 	static MessageQueue* GetInstance();
 
 	//---- service
-	bool Push(Packet packet);
-	Packet Pop();
+	bool Push(Packet* packet);
+	Packet* Pop();
 	bool IsEmpty();
 	int Length();
 	
 private: 
-	deque<Packet> queue;
+	deque<Packet*> queue;
 	static MessageQueue* messageQueue;
 };
 

@@ -19,15 +19,15 @@ MessageQueue* MessageQueue::GetInstance() {
 	return messageQueue;
 }
 
-Packet MessageQueue::Pop() {
-	Packet msg = this->queue.front();
+Packet* MessageQueue::Pop() {
+	Packet* msg = this->queue.front();
 
 	this->messageQueue->queue.pop_front();
 
 	return msg;
 }
 
-bool MessageQueue::Push(Packet message) {
+bool MessageQueue::Push(Packet* message) {
 	this->messageQueue->queue.push_back(message);
 	
 	return true;

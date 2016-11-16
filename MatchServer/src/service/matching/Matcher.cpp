@@ -63,7 +63,7 @@ void Matcher::Matching() {
 // MessageQueue¿¡ ½×¿©ÀÖ´Â Message Handle
 void Matcher::HandleMessageQueue() {
 
-	Packet packet;
+	Packet* packet;
 	while (!messageQueue->IsEmpty()) {
 		packet = messageQueue->Pop();
 

@@ -103,12 +103,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\workspace\MatchServer\MatchServer\src\service\matching;D:\workspace\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\dongqlee\Downloads\log4cpp-1.1.2rc5.tar\log4cpp-1.1.2rc5\log4cpp\msvc10\log4cppLIB;D:\workspace\MatchServer\MatchServer\src\service\matching;D:\workspace\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\dongqlee\Downloads\log4cpp-1.1.2rc5.tar\log4cpp-1.1.2rc5\log4cpp\msvc10\log4cppLIB\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\util\FileLogger.cpp" />
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
     <ClCompile Include="src\service\command\ProcessMS.cpp" />
@@ -168,6 +170,7 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\util\FileLogger.h" />
     <ClInclude Include="lib\json\allocator.h" />
     <ClInclude Include="lib\json\assertions.h" />
     <ClInclude Include="lib\json\autolink.h" />

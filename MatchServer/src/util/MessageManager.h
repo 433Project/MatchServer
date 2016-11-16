@@ -31,7 +31,7 @@ public:
 	~MessageManager();
 	DWORD SendPacket(SOCKET s, char* data);
 	void ReceivePacket(IO_DATA* ioData);
-	char* MakePacket(SrcDstType dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2);
+	char* MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2);
 	Header* ReadHeader(char* data);
 	const Body* ReadBody(int len, char* data);
 

@@ -20,6 +20,7 @@
     <ClCompile Include="src\service\command\ProcessMS.cpp" />
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
+    <ClCompile Include="src\util\FileLogger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
@@ -57,6 +58,7 @@
     <ClInclude Include="lib\json\value.h" />
     <ClInclude Include="lib\json\version.h" />
     <ClInclude Include="lib\json\writer.h" />
+    <ClInclude Include="src\util\FileLogger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

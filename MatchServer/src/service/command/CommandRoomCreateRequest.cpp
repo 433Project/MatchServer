@@ -10,9 +10,9 @@ public:
 
 	void HandleCommand(Client c1, Client c2) {
 		
-		Header header = Header(0, SrcDstType::MATCHING_SERVER, 0, SrcDstType::);
+		Header header = Header(0, TERMINALTYPE::MATCHING_SERVER, 0, TERMINALTYPE::ROOM_SERVER, 0);
 		// generate packet
-		Packet packet = Packet();
+		//Packet packet = Packet();
 
 		// send 
 	}
