@@ -18,6 +18,8 @@
     <ClCompile Include="src\service\command\ProcessCS.cpp" />
     <ClCompile Include="src\util\SocketManager.cpp" />
     <ClCompile Include="src\service\command\ProcessMS.cpp" />
+    <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
+    <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />

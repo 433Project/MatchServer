@@ -36,6 +36,11 @@ struct Header
 struct Packet {
 	Header header;
 	Body* body;
+
+	Packet(Header header, Body* body) {
+		this->header = header;
+		this->body = body;
+	}
 };
 
 struct UserInfo

@@ -41,7 +41,7 @@ void Matcher::Matching() {
 			// exceed attempt limit.
 			// matching fail 
 			
-			// do matching fail algorithm 
+			// handle matching fail 
 		}
 		else {
 			oppositeId = FindOpposite(client->second);
@@ -53,7 +53,6 @@ void Matcher::Matching() {
 			else {
 				// found fail : no opposite
 				
-
 			}
 			// inc matching attempts
 			client->second.IncCntTry();

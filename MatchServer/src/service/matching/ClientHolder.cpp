@@ -21,8 +21,14 @@ ClientHolder::ClientHolder()
 
 ClientHolder::~ClientHolder()
 {
-	delete waitingList;
-	delete instance;
+	if (waitingList != nullptr) {
+		delete waitingList;
+	}
+	
+	if (instance != nullptr) {
+		delete instance;
+	}
+	
 }
 
 // 대기열 포인터 반환

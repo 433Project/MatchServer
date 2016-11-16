@@ -1,19 +1,15 @@
 #include "LatencyGenerator.h"
+#include <cstdlib>
 
 LatencyGenerator::LatencyGenerator()
 {
-
-
 }
 
 
 LatencyGenerator::~LatencyGenerator()
 {
-
-
 }
 
-void LatencyGenerator::Generate() {
-
-
+double LatencyGenerator::Generate() {
+	return (double) rand() / (double)RAND_MAX;
 }
