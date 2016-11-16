@@ -4,13 +4,9 @@
 void main() {
 	
 	FileLogger logger = FileLogger();
-	logger.info("test");
-	
-	/*
+	logger.info("info test");
+	logger.error("error test");
+
 	MatchServer* s = new MatchServer();
 	s->RunServer();	
-	*/
-
-	while (true) {}
-	
 }

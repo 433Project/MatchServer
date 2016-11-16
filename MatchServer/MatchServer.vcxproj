@@ -104,6 +104,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\dongqlee\Downloads\log4cpp-1.1.2rc5.tar\log4cpp-1.1.2rc5\log4cpp\msvc10\log4cppLIB;D:\workspace\MatchServer\MatchServer\src\service\matching;D:\workspace\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib\json;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;D:\workspace\MatchServer\MatchServer\src\util;D:\workspace\MatchServer\MatchServer\src\type;D:\workspace\MatchServer\MatchServer\src;D:\workspace\MatchServer\MatchServer\lib\flatbuffers;D:\workspace\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\type;$(ProjectDir)src\util;$(ProjectDir)src\service\command;$(ProjectDir)src\service\matching;$(ProjectDir)src\service;$(ProjectDir)src;$(ProjectDir)lib\flatbuffers;$(ProjectDir)lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\util;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\type;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src\service;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\src;C:\Users\Yungyung\Documents\Visual Studio 2015\Projects\MatchServer\MatchServer\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\type;$(ProjectDir)src\util;$(ProjectDir)src\service\command;$(ProjectDir)src\service\matching;$(ProjectDir)src\service;$(ProjectDir)src;$(ProjectDir)lib\flatbuffers;$(ProjectDir)lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

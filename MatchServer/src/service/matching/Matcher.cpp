@@ -64,8 +64,9 @@ void Matcher::Matching() {
 void Matcher::HandleMessageQueue() {
 
 	Packet* packet;
+	//Packet packet;
 	while (!messageQueue->IsEmpty()) {
-		packet = messageQueue->Pop();
+//		packet = messageQueue->Pop();
 
 		// pass packet to packet handler 
 	}

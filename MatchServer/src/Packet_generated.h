@@ -10,49 +10,49 @@ namespace fb {
 	struct Body;
 
 	enum COMMAND {
-		Command_HEALTH_CHECK = 0,
-		Command_NOTI_MATCH_REQUEST = 10,
-		Command_NOTI_MATCH_SUCCESS = 11,
-		Command_LATENCY = 12,
-		Command_MATCH_REQUEST = 13,
-		Command_MATCH_RESPONSE = 14,
-		Command_MSLIST_REQUEST = 30,
-		Command_MSLIST_RESPONSE = 31,
-		Command_MS_ID = 32,
-		Command_ROOM_CREATE_REQUEST = 40,
-		Command_ROOM_CREATE_RESPONSE = 41,
-		Command_ROOM_JOIN_REQUEST = 50,
-		Command_ROOM_JOIN_RESPONSE = 51,
-		Command_GAME_START = 52,
-		Command_GAME_END = 53,
-		Command_PG_START = 60,
-		Command_PG_END = 61,
-		Command_PG_DUMMY = 62,
-		Command_MIN = Command_HEALTH_CHECK,
-		Command_MAX = Command_PG_DUMMY
+		COMMAND_HEALTH_CHECK = 0,
+		COMMAND_NOTI_MATCH_REQUEST = 10,
+		COMMAND_NOTI_MATCH_SUCCESS = 11,
+		COMMAND_LATENCY = 12,
+		COMMAND_MATCH_REQUEST = 13,
+		COMMAND_MATCH_RESPONSE = 14,
+		COMMAND_MSLIST_REQUEST = 30,
+		COMMAND_MSLIST_RESPONSE = 31,
+		COMMAND_MS_ID = 32,
+		COMMAND_ROOM_CREATE_REQUEST = 40,
+		COMMAND_ROOM_CREATE_RESPONSE = 41,
+		COMMAND_ROOM_JOIN_REQUEST = 50,
+		COMMAND_ROOM_JOIN_RESPONSE = 51,
+		COMMAND_GAME_START = 52,
+		COMMAND_GAME_END = 53,
+		COMMAND_PG_START = 60,
+		COMMAND_PG_END = 61,
+		COMMAND_PG_DUMMY = 62,
+		COMMAND_MIN = COMMAND_HEALTH_CHECK,
+		COMMAND_MAX = COMMAND_PG_DUMMY
 	};
 
-	inline const char **EnumNamesCommand() {
+	inline const char **EnumNamesCOMMAND() {
 		static const char *names[] = { "HEALTH_CHECK", "", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_SUCCESS", "LATENCY", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "MS_ID", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
 		return names;
 	}
 
-	inline const char *EnumNameCommand(COMMAND e) { return EnumNamesCommand()[static_cast<int>(e)]; }
+	inline const char *EnumNameCOMMAND(COMMAND e) { return EnumNamesCOMMAND()[static_cast<int>(e)]; }
 
 	enum STATUS {
-		Status_SUCCESS = 0,
-		Status_FAIL = 1,
-		Status_NONE = 2,
-		Status_MIN = Status_SUCCESS,
-		Status_MAX = Status_NONE
+		STATUS_SUCCESS = 0,
+		STATUS_FAIL = 1,
+		STATUS_NONE = 2,
+		STATUS_MIN = STATUS_SUCCESS,
+		STATUS_MAX = STATUS_NONE
 	};
 
-	inline const char **EnumNamesStatus() {
+	inline const char **EnumNamesSTATUS() {
 		static const char *names[] = { "SUCCESS", "FAIL", "NONE", nullptr };
 		return names;
 	}
 
-	inline const char *EnumNameStatus(STATUS e) { return EnumNamesStatus()[static_cast<int>(e)]; }
+	inline const char *EnumNameSTATUS(STATUS e) { return EnumNamesSTATUS()[static_cast<int>(e)]; }
 
 	struct Body FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 		enum {
@@ -93,8 +93,8 @@ namespace fb {
 	};
 
 	inline flatbuffers::Offset<Body> CreateBody(flatbuffers::FlatBufferBuilder &_fbb,
-		COMMAND cmd = Command_HEALTH_CHECK,
-		STATUS status = Status_SUCCESS,
+		COMMAND cmd = COMMAND_HEALTH_CHECK,
+		STATUS status = STATUS_SUCCESS,
 		flatbuffers::Offset<flatbuffers::String> data1 = 0,
 		flatbuffers::Offset<flatbuffers::String> data2 = 0) {
 		BodyBuilder builder_(_fbb);
@@ -106,8 +106,8 @@ namespace fb {
 	}
 
 	inline flatbuffers::Offset<Body> CreateBodyDirect(flatbuffers::FlatBufferBuilder &_fbb,
-		COMMAND cmd = Command_HEALTH_CHECK,
-		STATUS status = Status_SUCCESS,
+		COMMAND cmd = COMMAND_HEALTH_CHECK,
+		STATUS status = STATUS_SUCCESS,
 		const char *data1 = nullptr,
 		const char *data2 = nullptr) {
 		return CreateBody(_fbb, cmd, status, data1 ? _fbb.CreateString(data1) : 0, data2 ? _fbb.CreateString(data2) : 0);
