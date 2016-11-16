@@ -4,13 +4,6 @@
 #include "SocketManager.h"
 using namespace std;
 
-enum CompletionKey :int
-{
-	KEY_CONFIG_SERVER,
-	KEY_CONNECTION_SERVER,
-	KEY_MATCH_SERVER,
-	KEY_LISTEN_SOCKET
-};
 
 class MatchServer
 {
@@ -25,6 +18,9 @@ private:
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
+	MessageManager* mm;
+	SocketManager* sm;
+
 	int packetSize;
 	int headerSize;
 
