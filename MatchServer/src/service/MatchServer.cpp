@@ -5,34 +5,32 @@ SocketManager* sm;
 
 MatchServer::MatchServer()
 {
-	mm = new MessageManager();
-	packetSize = mm->packetSize;
-	headerSize = mm->headSize;
+	try 
+	{
+		mm = new MessageManager();
+		packetSize = mm->packetSize;
+		headerSize = mm->headSize;
 
-	sm = new SocketManager();
-	
-	//========================== Config.ini
-	//confIP = "10.100.10.10";
-	//connIP = new char[16];
-	
-	
-	//GetPrivateProfileString(L"Config", L"ip", L"*", (LPWSTR)confIP, sizeof(confIP), L".\\Config.ini");
-	//cout << confIP << endl;
-	//confPort = GetPrivateProfileInt(L"Config", L"port", 14040, L".\\Config.ini");
-
-	//GetPrivateProfileString(L"Connection", L"ip", L"*", (LPWSTR)connIP, sizeof(connIP), L".\\Config.ini");
-	//cout << connIP << endl;
-	//connPort = GetPrivateProfileInt(L"Connection", L"port", -1, L".\\Config.ini");
+		sm = new SocketManager();
+	}
+	catch (exception e) 
+	{
+	}
 }
 
 MatchServer::~MatchServer()
 {
 	WSACleanup();
-	closesocket(hConfigSock);
-	closesocket(hConnSock);
-	closesocket(hsoListen);
-	delete mm;
-	delete sm;
+	if (hConfigSock != INVALID_SOCKET)
+		closesocket(hConfigSock);
+	if (hConnSock != INVALID_SOCKET)
+		closesocket(hConnSock);
+	if (hsoListen != INVALID_SOCKET)
+		closesocket(hsoListen);
+	if(mm != nullptr)
+		delete mm;
+	if (sm != nullptr)
+		delete sm;
 }
 
 void MatchServer::RunServer() {
@@ -129,7 +127,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			b = mm->ReadBody(h->length, ioData->buffer);
 		}
 
-		if (b->cmd() == Command_HEALTH_CHECK) {
+		if (b->cmd() == COMMAND_HEALTH_CHECK) {
 
 		}
 		else if (key == KEY_LISTEN_SOCKET) 
@@ -147,15 +145,15 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				continue;
 			}
 
-			if (b->cmd() == Command_MS_ID)
+			if (b->cmd() == COMMAND_MS_ID)
 			{
 				cout << "My ID : " << b->data1()->c_str() << endl;
-				char* data = mm->MakePacket(CONFIG_SERVER, 0, Command_MSLIST_REQUEST, Status_NONE, "", "");
+				char* data = mm->MakePacket(CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 				mm->SendPacket(ioData->hClntSock, data);
 			}
-			else if (b->cmd() == Command_MSLIST_RESPONSE)
+			else if (b->cmd() == COMMAND_MSLIST_RESPONSE)
 			{
-				if (b->status() == Status_SUCCESS)
+				if (b->status() == STATUS_SUCCESS)
 				{
 					cout << "Connecting to Matching Server(" << b->data1()->c_str() << ")" << endl;
 					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data2()->c_str(), port);

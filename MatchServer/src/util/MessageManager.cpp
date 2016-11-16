@@ -33,7 +33,7 @@ void MessageManager::ReceivePacket(IO_DATA* ioData)
 	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
 }
 
-char* MessageManager::MakePacket(SrcDstType dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
+char* MessageManager::MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
 {
 	flatbuffers::FlatBufferBuilder builder;
 	flatbuffers::Offset<Body> body;
