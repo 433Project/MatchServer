@@ -8,15 +8,22 @@ using namespace std;
 using namespace spdlog;
 
 typedef std::shared_ptr<logger> MSLogger;
+
 class FileLogger
 {
 public:
 	FileLogger();
 	~FileLogger();
+
 	void info(string message);
 	void error(string message);
+	void setPattern(string pattern);
 	
+	static FileLogger* GetInstance();
+
 private:
 	MSLogger logger;
+	static FileLogger* fileLogger;
+	
 };
 

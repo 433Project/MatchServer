@@ -24,6 +24,8 @@ FileLogger::FileLogger()
 
 		spdlog::set_level(spdlog::level::info); //Set global log level to info
 		this->logger = spdlog::basic_logger_mt("ms_file_logger", fileName);
+
+
 	}
 	catch (const spdlog::spdlog_ex& ex) {
 		cout << "Log setting error" << endl;
@@ -32,6 +34,14 @@ FileLogger::FileLogger()
 
 FileLogger::~FileLogger()
 {
+}
+
+FileLogger* FileLogger::fileLogger = nullptr;
+FileLogger* FileLogger::GetInstance() {
+	if (fileLogger == nullptr) {
+		fileLogger = new FileLogger();
+	}
+	return fileLogger;
 }
 
 void FileLogger::info(string message) {

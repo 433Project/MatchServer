@@ -3,9 +3,9 @@
 
 void main() {
 	
-	FileLogger logger = FileLogger();
-	logger.info("info test");
-	logger.error("error test");
+	FileLogger* logger = FileLogger::GetInstance();
+	logger->info("info test");
+	logger->error("error test");
 
 	MatchServer* s = new MatchServer();
 	s->RunServer();	
