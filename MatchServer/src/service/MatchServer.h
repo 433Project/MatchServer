@@ -2,6 +2,8 @@
 
 #include "MessageManager.h"
 #include "SocketManager.h"
+#include "FileLogger.h"
+
 using namespace std;
 
 
@@ -20,6 +22,7 @@ private:
 private:
 	MessageManager* mm;
 	SocketManager* sm;
+	FileLogger* log;
 
 	int packetSize;
 	int headerSize;
