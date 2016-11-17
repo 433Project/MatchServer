@@ -9,7 +9,19 @@ using namespace spdlog;
 
 typedef std::shared_ptr<logger> MSLogger;
 
-#define info2(message) info_func_name(__FUNCTION__, message)
+#define LogInfo(message) infoFuncName(__FUNCTION__,  message)
+#define LogError(message) errFuncName(__FUNCTION__, message)
+
+inline std::string className(const std::string& prettyFunction)
+{
+	size_t colons = prettyFunction.find("::");
+	if (colons == std::string::npos)
+		return "::";
+	size_t begin = prettyFunction.substr(0, colons).rfind(" ") + 1;
+	size_t end = colons - begin;
+
+	return prettyFunction.substr(begin, end);
+}
 
 class FileLogger
 {
@@ -17,9 +29,10 @@ public:
 	FileLogger();
 	~FileLogger();
 
-	//void info(string message);
-	void info_func_name(string funcName, string message);
-	void error(string message);
+
+	void infoFuncName(string funcName, string message);
+	void errFuncName(string funcName, string message);
+	//void error(string message);
 	void setPattern(string pattern);
 	
 	static FileLogger* GetInstance();
@@ -27,6 +40,5 @@ public:
 private:
 	MSLogger logger;
 	static FileLogger* fileLogger;
-	
 };
 

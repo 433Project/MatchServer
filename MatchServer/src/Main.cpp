@@ -4,7 +4,7 @@
 void main() {
 	
 	FileLogger* logger = FileLogger::GetInstance();
-	logger->info2("info test");
+	logger->LogInfo("info test");
 	//logger->error("error test");
 
 	MatchServer* s = new MatchServer();

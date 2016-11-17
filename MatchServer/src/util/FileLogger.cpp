@@ -42,16 +42,16 @@ FileLogger* FileLogger::GetInstance() {
 	return fileLogger;
 }
 
-void FileLogger::info_func_name(string funcName, string message) {
-	string msg = "[" + funcName + "]" + message;
+void FileLogger::infoFuncName(string funcName, string message) {
+	string msg = "[" + funcName + "()] " + message;
 
 	this->logger->info(msg);
 	this->logger->flush();
 }
 
-
-void FileLogger::error(string message) {
-	logger->error(message);
+void FileLogger::errFuncName(string funcName, string message) {
+	string msg =  "[" + funcName + "()] " + message;
+	logger->error(msg);
 	this->logger->flush();
 }
 
