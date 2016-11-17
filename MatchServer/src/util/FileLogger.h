@@ -9,8 +9,8 @@ using namespace spdlog;
 
 typedef std::shared_ptr<logger> MSLogger;
 
-#define LogInfo(message) infoFuncName(__FUNCTION__,  message)
-#define LogError(message) errFuncName(__FUNCTION__, message)
+#define INFO(message) infoFuncName(__FUNCTION__,  message)
+#define ERROR(message) errFuncName(__FUNCTION__, message)
 
 inline std::string className(const std::string& prettyFunction)
 {

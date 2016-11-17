@@ -23,9 +23,7 @@ public:
 	void Matching();
 	void HandleMessageQueue();
 
-
 	int FindOpposite(Client client);
-
 };
 
 

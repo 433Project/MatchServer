@@ -1,2 +1,0 @@
-[2016-11-16 18:09:49.208] [ms_file_logger] [info] info test
-[2016-11-16 18:09:49.208] [ms_file_logger] [error] error test

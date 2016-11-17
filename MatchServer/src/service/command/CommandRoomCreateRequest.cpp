@@ -5,7 +5,6 @@
 
 class CommandRoomCreateRequest {
 
-
 public:
 
 	void HandleCommand(Client c1, Client c2) {
