@@ -2,13 +2,11 @@
 #include <iostream>
 #include <winsock2.h>
 #include <MSWSock.h>
-#include "Packet_generated.h"
 #include "Protocol.h"
 
 
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
-using namespace fb;
 
 struct IO_DATA : OVERLAPPED
 {

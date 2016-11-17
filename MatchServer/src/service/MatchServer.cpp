@@ -115,11 +115,11 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			INFINITE
 		);
 
-		//Packet* p = new Packet();
+		Packet* p = new Packet();
 		if (bytesTransferred != 0) {
-			//mm->ReadPacket(p, ioData->buffer);
+			mm->ReadPacket(p, ioData->buffer);
 		}
-		/*
+		
 		if (p->body->cmd() == COMMAND_HEALTH_CHECK) {
 			char* data = mm->MakePacket((TERMINALTYPE)key, 0, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
 			mm->SendPacket(ioData->hClntSock, data);
@@ -178,7 +178,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				continue;
 			}
 		}
-		*/
+		
 		mm->ReceivePacket(ioData);
 	}
 	return 0;
