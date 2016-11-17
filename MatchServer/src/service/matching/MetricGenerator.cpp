@@ -2,7 +2,6 @@
 #include "MetricGenerator.h"
 #include <cstdlib>
 
-
 MetricGenerator::MetricGenerator() {
 
 }

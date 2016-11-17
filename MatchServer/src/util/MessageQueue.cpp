@@ -2,12 +2,11 @@
 
 MessageQueue::MessageQueue()
 {
-}
 
+}
 
 MessageQueue::~MessageQueue()
 {
-
 }
 
 MessageQueue* MessageQueue::messageQueue = nullptr;
@@ -35,7 +34,10 @@ bool MessageQueue::Push(Packet* message) {
 
 // true: empty, false: not 
 bool MessageQueue::IsEmpty() {
-	return this->messageQueue->queue.empty();
+	if (this->messageQueue->queue.size() !=0 ) {
+		return this->messageQueue->queue.empty();	
+	}
+	return 0;
 }
 
 //  return MessageQueue length 

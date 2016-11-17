@@ -1,23 +1,23 @@
 #include "AppConfig.h"
-
-#include <iostream>
-#include <fstream>
-#include "json.hpp"
-
-using json = nlohmann::json;
+#include "ConsoleLogger.h"
 
 AppConfig::AppConfig() {
 	LoadConfig();
 }
 
 AppConfig::~AppConfig() {
-
+	
 }
 
 void AppConfig::LoadConfig() {
-	ifstream  confFile;
-	confFile.open("app.json");
+	ConsoleLogger::PrintMessage("load . . .");
 
+	ifstream  configFile;
+	configFile.open("./config/app.json");
+
+	json j(configFile);
+
+	configFile.close();
 }
 
 string AppConfig::GetAppConfig() {
