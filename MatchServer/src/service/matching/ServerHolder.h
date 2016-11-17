@@ -3,7 +3,13 @@
 class ServerHolder
 {
 public:
-	ServerHolder();
+	
 	~ServerHolder();
+
+private:
+
+	ServerHolder();
+
+
 };
 

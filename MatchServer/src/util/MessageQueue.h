@@ -6,7 +6,6 @@ class MessageQueue
 {
 public:
 	//---- constr
-	MessageQueue();
 	~MessageQueue();
 	static MessageQueue* GetInstance();
 
@@ -19,5 +18,7 @@ public:
 private: 
 	deque<Packet*> queue;
 	static MessageQueue* messageQueue;
+
+	MessageQueue();
 };
 

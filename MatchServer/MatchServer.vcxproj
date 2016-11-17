@@ -149,7 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\util\FileLogger.cpp" />
+    <ClCompile Include="src\util\Logger.cpp" />
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
     <ClCompile Include="src\service\command\ProcessMS.cpp" />
@@ -170,7 +170,7 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\util\FileLogger.h" />
+    <ClInclude Include="src\util\Logger.h" />
     <ClInclude Include="lib\json\allocator.h" />
     <ClInclude Include="lib\json\assertions.h" />
     <ClInclude Include="lib\json\autolink.h" />

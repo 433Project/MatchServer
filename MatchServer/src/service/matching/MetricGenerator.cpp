@@ -3,18 +3,24 @@
 #include <cstdlib>
 
 MetricGenerator::MetricGenerator() {
+	
+	//
+	//AppConfig* appConfig = AppConfig::GetInstance();
+	//json weights = appConfig->GetConfig<json>("as");
 
+	//this->levelWeight = weights["level"];
+	//this->defenseWeight = weights["defense"];
+	//this->offsenseWeight = weights["offense"]; 
+	//
 }
 
 MetricGenerator::~MetricGenerator() {
 
 }
 
-
 int MetricGenerator::GenerateLevel() {
 	return rand() % 100;
 }
-
 
 int MetricGenerator::GenerateOffense() {
 	return rand() % 100;

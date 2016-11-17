@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\util\FileLogger.cpp" />
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
     <ClCompile Include="src\service\command\ProcessMS.cpp" />
@@ -10,7 +9,6 @@
     <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\service\matching\LatencyGenerator.cpp" />
-    <ClCompile Include="src\util\ProcessManager.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />
@@ -21,9 +19,9 @@
     <ClCompile Include="src\service\matching\Matcher.cpp" />
     <ClCompile Include="src\service\matching\MetricGenerator.cpp" />
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
+    <ClCompile Include="src\util\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\util\FileLogger.h" />
     <ClInclude Include="lib\json\allocator.h" />
     <ClInclude Include="lib\json\assertions.h" />
     <ClInclude Include="lib\json\autolink.h" />
@@ -59,6 +57,7 @@
     <ClInclude Include="src\service\MatchServer.h" />
     <ClInclude Include="src\service\matching\MetricGenerator.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="src\util\Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

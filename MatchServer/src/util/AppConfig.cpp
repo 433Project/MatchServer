@@ -1,6 +1,7 @@
 #pragma once
 #include "AppConfig.h"
-#include "ConsoleLogger.h"
+
+//Logger AppConfig::logger = Logger::GetInstance();
 
 AppConfig::AppConfig() {
 	LoadConfig();
@@ -20,20 +21,20 @@ AppConfig* AppConfig::GetInstance() {
 }
 
 void AppConfig::LoadConfig() {
-	ConsoleLogger::PrintMessage("load . . .");
-
 	ifstream  configFile;
 	configFile.open("./config/app.json");
 
-	json j(configFile);
+	this->config = json(configFile);
 
 	configFile.close();
 }
 
 json AppConfig::GetAppConfig() {
-	return "";
+	return config;
 }
 
-string AppConfig::GetConfig(string key) {
-	
+template<typename T>
+T AppConfig::GetConfig(string key) {
+	return config[key];
 }
+
