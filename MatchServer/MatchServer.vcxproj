@@ -158,7 +158,6 @@
     <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\service\matching\LatencyGenerator.cpp" />
-    <ClCompile Include="src\util\ProcessManager.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />

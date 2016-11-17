@@ -95,8 +95,6 @@ BOOL MatchServer::AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HAND
 
 unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 {
-	MessageManager *mm = new MessageManager();
-	SocketManager * sm = new SocketManager();
 	HANDLE hCompletionPort = hCompletion;
 
 	DWORD bytesTransferred;

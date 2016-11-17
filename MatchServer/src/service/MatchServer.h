@@ -20,8 +20,8 @@ private:
 	static unsigned int __stdcall ProcessThread(LPVOID hCompletion);
 
 private:
-	MessageManager* mm;
-	SocketManager* sm;
+	static MessageManager* mm;
+	static SocketManager* sm;
 	FileLogger* log;
 
 	int packetSize;
