@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\util\LatencyGenerator.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />
     <ClCompile Include="config\AppConfig.cpp" />
@@ -21,10 +20,10 @@
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
     <ClCompile Include="src\util\FileLogger.cpp" />
+    <ClCompile Include="src\service\matching\LatencyGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\service\AbstractCommand.h" />
-    <ClInclude Include="src\util\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="lib\Protocol.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />
@@ -59,6 +58,7 @@
     <ClInclude Include="lib\json\version.h" />
     <ClInclude Include="lib\json\writer.h" />
     <ClInclude Include="src\util\FileLogger.h" />
+    <ClInclude Include="src\service\matching\LatencyGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

@@ -4,17 +4,15 @@
 
 MatchServer::MatchServer()
 {
-	try 
-	{
-		mm = new MessageManager();
-		packetSize = mm->packetSize;
-		headerSize = mm->headSize;
+	mm = new MessageManager();
+	sm = new SocketManager();
+	log = FileLogger::GetInstance();
 
-		sm = new SocketManager();
-	}
-	catch (exception e) 
-	{
-	}
+	if (mm == nullptr || sm == nullptr || log == nullptr)
+		exit(0);
+
+	packetSize = mm->packetSize;
+	headerSize = mm->headSize;
 }
 
 MatchServer::~MatchServer()
@@ -33,16 +31,13 @@ MatchServer::~MatchServer()
 }
 
 void MatchServer::RunServer() {
-	cout << "#############################################################" << endl;
-	cout << "#####################=================#######################" << endl;
-	cout << "#####################   Match Server  #######################" << endl;
-	cout << "#####################=================#######################" << endl;
-	cout << "#############################################################" << endl;
+
+	log->INFO("Server Start");
 
 	int nErrCode = WSAStartup(MAKEWORD(2, 2), &wsd);
 	if (nErrCode)
 	{
-		cout << "WSAStartup failed, code : " << nErrCode << endl;
+		log->ERROR("WSAStartup failed, code : " + nErrCode);
 		return;
 	}
 
@@ -72,7 +67,6 @@ void MatchServer::RunServer() {
 	hConnSock = sm->GetConnectSocket("CS", connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
 		return;
-	cout << "Connected CS" << endl;
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
 
 	ov = new IO_DATA(hConnSock);
@@ -121,14 +115,12 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			INFINITE
 		);
 
-		Header* h = NULL;
-		const Body* b = NULL;
+		//Packet* p = new Packet();
 		if (bytesTransferred != 0) {
-			h = mm->ReadHeader(ioData->buffer);
-			b = mm->ReadBody(h->length, ioData->buffer);
+			//mm->ReadPacket(p, ioData->buffer);
 		}
-
-		if (b->cmd() == COMMAND_HEALTH_CHECK) {
+		/*
+		if (p->body->cmd() == COMMAND_HEALTH_CHECK) {
 			char* data = mm->MakePacket((TERMINALTYPE)key, 0, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
 			mm->SendPacket(ioData->hClntSock, data);
 			delete data;
@@ -148,19 +140,19 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				continue;
 			}
 
-			if (b->cmd() == COMMAND_MS_ID)
+			if (p->body->cmd() == COMMAND_MS_ID)
 			{
-				cout << "My ID : " << b->data1()->c_str() << endl;
+				cout << "My ID : " << p->body->data1()->c_str() << endl;
 				char* data = mm->MakePacket(CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 				mm->SendPacket(ioData->hClntSock, data);
 				delete data;
 			}
-			else if (b->cmd() == COMMAND_MSLIST_RESPONSE)
+			else if (p->body->cmd() == COMMAND_MSLIST_RESPONSE)
 			{
-				if (b->status() == STATUS_SUCCESS)
+				if (p->body->status() == STATUS_SUCCESS)
 				{
-					cout << "Connecting to Matching Server(" << b->data1()->c_str() << ")" << endl;
-					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data2()->c_str(), port);
+					cout << "Connecting to Matching Server(" << p->body->data1()->c_str() << ")" << endl;
+					SOCKET s = sm->GetConnectSocket("MS", (char*)p->body->data2()->c_str(), port);
 					if (s != INVALID_SOCKET)
 						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, MATCHING_SERVER);
 					else
@@ -186,7 +178,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				continue;
 			}
 		}
-		
+		*/
 		mm->ReceivePacket(ioData);
 	}
 	return 0;

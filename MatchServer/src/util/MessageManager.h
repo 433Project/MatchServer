@@ -32,8 +32,7 @@ public:
 	DWORD SendPacket(SOCKET s, char* data);
 	void ReceivePacket(IO_DATA* ioData);
 	char* MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2);
-	Header* ReadHeader(char* data);
-	const Body* ReadBody(int len, char* data);
+	void ReadPacket(Packet* p, char* data);
 
 public:
 	int headSize = 20;

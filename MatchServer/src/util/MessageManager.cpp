@@ -63,19 +63,13 @@ char* MessageManager::MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm
 	return bytes;
 }
 
-Header* MessageManager::ReadHeader(char* data)
+void MessageManager::ReadPacket(Packet* p, char* data)
 {
-	Header* h = new Header();
-	memcpy(h, data, sizeof(Header));
+	memcpy(p->header, data, sizeof(Header));
 
-	return h;
+	uint8_t* d = new uint8_t[p->header->length];
+	memset(d, 0, p->header->length);
+	memcpy(d, &data[sizeof(Header)], p->header->length);
+	p->body = (Body*)GetBody(d);
 }
 
-const Body* MessageManager::ReadBody(int len, char* data)
-{
-	uint8_t* d = new uint8_t[len];
-	memset(d, 0, len);
-	memcpy(d, &data[sizeof(Header)], len);
-	auto b = GetBody(d);
-	return b;
-}

@@ -17,7 +17,7 @@ public:
 
 		int metric = metricGenerator->GenerateMetric();
 
-		clientHolder->AddClient(metric, Client(packet.header.srcCode,metric, 0, ClientState::Waiting, true));
+		clientHolder->AddClient(metric, Client(packet.header->srcCode,metric, 0, ClientState::Waiting, true));
 	}
 
 };
