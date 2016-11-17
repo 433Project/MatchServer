@@ -27,14 +27,9 @@ class MessageManager
 public:
 	MessageManager();
 	~MessageManager();
-	DWORD SendPacket(SOCKET s, char* data);
-	void ReceivePacket(IO_DATA* ioData);
-	char* MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2);
+	void MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2);
 	void ReadPacket(Packet* p, char* data);
 
-public:
-	int headSize = 20;
-	int packetSize = 100;
 
 };
 

@@ -10,30 +10,9 @@ MessageManager::~MessageManager()
 {
 }
 
-DWORD MessageManager::SendPacket(SOCKET s, char* data)
-{
-	WSABUF wsabuf;
-	wsabuf.buf = data;
-	wsabuf.len = packetSize;
-
-	DWORD bytesSent;
-	WSASend(s, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
-	return bytesSent;
-}
 
 
-void MessageManager::ReceivePacket(IO_DATA* ioData)
-{
-	ioData->buffer = new char[packetSize];
-
-	DWORD flags = MSG_PUSH_IMMEDIATE;
-	WSABUF wb;
-	wb.buf = ioData->buffer;
-	wb.len = packetSize;
-	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
-}
-
-char* MessageManager::MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
+void MessageManager::MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
 {
 	flatbuffers::FlatBufferBuilder builder;
 	flatbuffers::Offset<Body> body;
@@ -53,14 +32,10 @@ char* MessageManager::MakePacket(TERMINALTYPE dstType, int dstCode, COMMAND comm
 
 	Header* h = new Header(len, MATCHING_SERVER, 0, dstType, dstCode);
 
-	char* bytes = new char[packetSize];
-	memset(bytes, 0, packetSize);
 	memcpy(bytes, h, sizeof(Header));
 	memcpy(&bytes[sizeof(Header)], b, len);
 
 	delete h;
-
-	return bytes;
 }
 
 void MessageManager::ReadPacket(Packet* p, char* data)

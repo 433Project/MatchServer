@@ -194,7 +194,6 @@
     <ClInclude Include="src\service\matching\LatencyGenerator.h" />
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="src\Packet_generated.h" />
-    <ClInclude Include="src\util\ProcessManager.h" />
     <ClInclude Include="src\util\MessageManager.h" />
     <ClInclude Include="lib\Protocol.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />

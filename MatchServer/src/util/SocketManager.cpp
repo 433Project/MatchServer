@@ -136,3 +136,26 @@ PVOID SocketManager::GetSockExtAPI(SOCKET sock, GUID guidFn)
 	}
 	return pfnEx;
 }
+
+DWORD SocketManager::SendPacket(SOCKET s, char* data)
+{
+	WSABUF wsabuf;
+	wsabuf.buf = data;
+	wsabuf.len = packetSize;
+
+	DWORD bytesSent;
+	WSASend(s, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+	return bytesSent;
+}
+
+
+void SocketManager::ReceivePacket(IO_DATA* ioData)
+{
+	ioData->buffer = new char[packetSize];
+
+	DWORD flags = MSG_PUSH_IMMEDIATE;
+	WSABUF wb;
+	wb.buf = ioData->buffer;
+	wb.len = packetSize;
+	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
+}
