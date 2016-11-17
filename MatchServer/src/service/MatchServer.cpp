@@ -1,14 +1,15 @@
 #include "MatchServer.h"
 
 #define LISTEN_SOCKET 0
+SocketManager* MatchServer::sm = nullptr;
+FileLogger* MatchServer::logger = nullptr;
 
 MatchServer::MatchServer()
 {
-	mm = new MessageManager();
 	sm = new SocketManager();
-	log = FileLogger::GetInstance();
+	logger = FileLogger::GetInstance();
 
-	if (mm == nullptr || sm == nullptr || log == nullptr)
+	if (sm == nullptr || logger == nullptr)
 		exit(0);
 
 }
@@ -22,20 +23,18 @@ MatchServer::~MatchServer()
 		closesocket(hConnSock);
 	if (hsoListen != INVALID_SOCKET)
 		closesocket(hsoListen);
-	if(mm != nullptr)
-		delete mm;
 	if (sm != nullptr)
 		delete sm;
 }
 
 void MatchServer::RunServer() {
 
-	log->INFO("Server Start");
+	logger->INFO("Server Start");
 
 	int nErrCode = WSAStartup(MAKEWORD(2, 2), &wsd);
 	if (nErrCode)
 	{
-		log->ERROR("WSAStartup failed, code : " + nErrCode);
+		logger->ERROR("WSAStartup failed, code : " + nErrCode);
 		return;
 	}
 
@@ -48,7 +47,7 @@ void MatchServer::RunServer() {
 
 	for (int i = 0; i < numOfThreads; i++)
 	{
-		_beginthreadex(NULL, 0, ProcessThread, (LPVOID)hCompletion, 0, NULL);
+		_beginthreadex(NULL, 0, &ProcessThread, (LPVOID)hCompletion, 0, NULL);
 	}
 
 	//==================Connect to Config Server
@@ -58,9 +57,10 @@ void MatchServer::RunServer() {
 
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, CONFIG_SERVER);
 	IO_DATA* ov = new IO_DATA(hConfigSock);
-	sm->ReceivePacket(ov);
-	
-	
+	if (ov != nullptr) 
+	{
+		sm->ReceivePacket(ov);
+	}
 	//==================Connect to Connection Server
 	hConnSock = sm->GetConnectSocket("CS", connIP, connPort);	// Connection Server ip, port
 	if (hConnSock == INVALID_SOCKET)
@@ -68,7 +68,10 @@ void MatchServer::RunServer() {
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
 
 	ov = new IO_DATA(hConnSock);
-	sm->ReceivePacket(ov);
+	if (ov != nullptr)
+	{
+		sm->ReceivePacket(ov);
+	}
 	
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
@@ -95,6 +98,8 @@ BOOL MatchServer::AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HAND
 
 unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 {
+	MessageManager* mm = new MessageManager();
+
 	HANDLE hCompletionPort = hCompletion;
 
 	DWORD bytesTransferred;
@@ -115,6 +120,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		if (bytesTransferred != 0) {
 			mm->ReadPacket(p, ioData->buffer);
 		}
+		
 		char* data = new char[sm->packetSize];
 		memset(data, 0, sm->packetSize);
 		if (p->body->cmd() == COMMAND_HEALTH_CHECK) {
@@ -124,21 +130,22 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		else if (key == LISTEN_SOCKET) 
 		{
 			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, MATCHING_SERVER);
-			cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
+			//cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
+			logger->INFO("New Matching Server " + ioData->hClntSock);
 			sm->AcceptEX(1);
 		}
 		else if (key == CONFIG_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
-				cout << " ==> Config Server is disconnected..." << endl;
+				logger->INFO("Config Server is disconnected");
 				closesocket(ioData->hClntSock);
 				continue;
 			}
 
 			if (p->body->cmd() == COMMAND_MS_ID)
 			{
-				cout << "My ID : " << p->body->data1()->c_str() << endl;
+				//cout << "My ID : " << p->body->data1()->c_str() << endl;
 				memset(data, 0, sm->packetSize);
 				mm->MakePacket(data, CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 				sm->SendPacket(ioData->hClntSock, data);
@@ -149,6 +156,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				if (p->body->status() == STATUS_SUCCESS)
 				{
 					cout << "Connecting to Matching Server(" << p->body->data1()->c_str() << ")" << endl;
+
 					SOCKET s = sm->GetConnectSocket("MS", (char*)p->body->data2()->c_str(), port);
 					if (s != INVALID_SOCKET)
 						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, MATCHING_SERVER);

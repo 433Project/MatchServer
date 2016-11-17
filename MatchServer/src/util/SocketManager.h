@@ -15,14 +15,18 @@ public:
 	SocketManager();
 	~SocketManager();
 	SOCKET GetConnectSocket(char* type, char* ip, int port);
-	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
+	
 	void AcceptEX(int count);
 	SOCKET GetListenSocket(short shPortNo, int nBacklog);
-	DWORD SendPacket(SOCKET s, char* data);
+	DWORD SendPacket(char* data);
 	void ReceivePacket(IO_DATA* ioData);
 
 private:
-	SOCKET listenSock;
+	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
+
+private:
+	SOCKET socket;
+	int socketType;
 
 public:
 	static const int packetSize = 100;

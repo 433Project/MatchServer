@@ -34,7 +34,7 @@ struct Header
 };
 
 struct Packet {
-	Header* header;
+	Header* header = new Header();
 	Body* body;
 
 	Packet() {};

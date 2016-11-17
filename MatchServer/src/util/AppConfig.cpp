@@ -1,3 +1,4 @@
+#pragma once
 #include "AppConfig.h"
 #include "ConsoleLogger.h"
 
@@ -7,6 +8,15 @@ AppConfig::AppConfig() {
 
 AppConfig::~AppConfig() {
 	
+}
+
+AppConfig* AppConfig::appConfig = nullptr;
+AppConfig* AppConfig::GetInstance() {
+
+	if (appConfig == nullptr) {
+		appConfig = new AppConfig();
+	}
+	return appConfig;
 }
 
 void AppConfig::LoadConfig() {
@@ -20,6 +30,10 @@ void AppConfig::LoadConfig() {
 	configFile.close();
 }
 
-string AppConfig::GetAppConfig() {
+json AppConfig::GetAppConfig() {
+	return "";
+}
+
+string AppConfig::GetConfig(string key) {
 	return "";
 }

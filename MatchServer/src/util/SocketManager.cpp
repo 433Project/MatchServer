@@ -111,7 +111,7 @@ void SocketManager::AcceptEX(int count)
 	}
 }
 
-PVOID SocketManager::GetSockExtAPI(SOCKET sock, GUID guidFn)
+PVOID SocketManager::GetSockExtAPI(GUID guidFn)
 {
 	PVOID pfnEx = NULL;
 	GUID guid = guidFn;
@@ -119,7 +119,7 @@ PVOID SocketManager::GetSockExtAPI(SOCKET sock, GUID guidFn)
 
 	LONG lRet = ::WSAIoctl
 	(
-		sock,									//Socket
+		socket,									//Socket
 		SIO_GET_EXTENSION_FUNCTION_POINTER,		//dwIoControlCode
 		&guid,									//lpvInBuffer
 		sizeof(guid),							//cbInBuffer
@@ -137,14 +137,14 @@ PVOID SocketManager::GetSockExtAPI(SOCKET sock, GUID guidFn)
 	return pfnEx;
 }
 
-DWORD SocketManager::SendPacket(SOCKET s, char* data)
+DWORD SocketManager::SendPacket(char* data)
 {
 	WSABUF wsabuf;
 	wsabuf.buf = data;
 	wsabuf.len = packetSize;
 
 	DWORD bytesSent;
-	WSASend(s, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+	WSASend(socket, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
 	return bytesSent;
 }
 
