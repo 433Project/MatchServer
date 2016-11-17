@@ -1,7 +1,6 @@
 #include "MatchServer.h"
 
-MessageManager* mm;
-SocketManager* sm;
+#define LISTEN_SOCKET 0
 
 MatchServer::MatchServer()
 {
@@ -64,7 +63,7 @@ void MatchServer::RunServer() {
 	if (hConfigSock == INVALID_SOCKET)
 		return;
 
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, KEY_CONFIG_SERVER);
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, CONFIG_SERVER);
 	IO_DATA* ov = new IO_DATA(hConfigSock);
 	mm->ReceivePacket(ov);
 	
@@ -74,7 +73,7 @@ void MatchServer::RunServer() {
 	if (hConnSock == INVALID_SOCKET)
 		return;
 	cout << "Connected CS" << endl;
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, KEY_CONNECTION_SERVER);
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
 
 	ov = new IO_DATA(hConnSock);
 	mm->ReceivePacket(ov);
@@ -82,7 +81,7 @@ void MatchServer::RunServer() {
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
 	
-	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hsoListen, KEY_LISTEN_SOCKET);
+	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hsoListen, LISTEN_SOCKET);
 	sm->AcceptEX(2);
 
 	while (TRUE)
@@ -104,6 +103,8 @@ BOOL MatchServer::AssociateDeviceWithCompletionPort(HANDLE hCompletionPort, HAND
 
 unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 {
+	MessageManager *mm = new MessageManager();
+	SocketManager * sm = new SocketManager();
 	HANDLE hCompletionPort = hCompletion;
 
 	DWORD bytesTransferred;
@@ -128,15 +129,17 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		}
 
 		if (b->cmd() == COMMAND_HEALTH_CHECK) {
-
+			char* data = mm->MakePacket((TERMINALTYPE)key, 0, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
+			mm->SendPacket(ioData->hClntSock, data);
+			delete data;
 		}
-		else if (key == KEY_LISTEN_SOCKET) 
+		else if (key == LISTEN_SOCKET) 
 		{
-			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, KEY_MATCH_SERVER);
+			AssociateDeviceWithCompletionPort(hCompletionPort, (HANDLE)ioData->hClntSock, MATCHING_SERVER);
 			cout << " ==> New Matching Server " << ioData->hClntSock << " connected..." << endl;
 			sm->AcceptEX(1);
 		}
-		else if (key == KEY_CONFIG_SERVER) 
+		else if (key == CONFIG_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
@@ -150,6 +153,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				cout << "My ID : " << b->data1()->c_str() << endl;
 				char* data = mm->MakePacket(CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 				mm->SendPacket(ioData->hClntSock, data);
+				delete data;
 			}
 			else if (b->cmd() == COMMAND_MSLIST_RESPONSE)
 			{
@@ -158,13 +162,13 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 					cout << "Connecting to Matching Server(" << b->data1()->c_str() << ")" << endl;
 					SOCKET s = sm->GetConnectSocket("MS", (char*)b->data2()->c_str(), port);
 					if (s != INVALID_SOCKET)
-						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, KEY_MATCH_SERVER);
+						AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)s, MATCHING_SERVER);
 					else
 						closesocket(s);
 				}
 			}
 		}
-		else if (key == KEY_CONNECTION_SERVER) 
+		else if (key == CONNECTION_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
@@ -173,7 +177,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 				continue;
 			}
 		}
-		else if (key == KEY_MATCH_SERVER) 
+		else if (key == MATCHING_SERVER) 
 		{
 			if (bytesTransferred == 0)
 			{
