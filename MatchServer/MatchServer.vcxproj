@@ -158,7 +158,6 @@
     <ClCompile Include="src\service\command\ProcessCS.cpp" />
     <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
-    <ClCompile Include="src\util\ProcessManager.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
     <ClCompile Include="src\type\Client.cpp" />
     <ClCompile Include="src\service\matching\ClientHolder.cpp" />
@@ -194,7 +193,6 @@
     <ClInclude Include="src\service\AbstractCommand.h" />
     <ClInclude Include="lib\flatbuffers.h" />
     <ClInclude Include="src\Packet_generated.h" />
-    <ClInclude Include="src\util\ProcessManager.h" />
     <ClInclude Include="src\util\MessageManager.h" />
     <ClInclude Include="lib\Protocol.h" />
     <ClInclude Include="src\type\WaitingRoom.h" />

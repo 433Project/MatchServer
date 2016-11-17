@@ -11,8 +11,6 @@ MatchServer::MatchServer()
 	if (mm == nullptr || sm == nullptr || log == nullptr)
 		exit(0);
 
-	packetSize = mm->packetSize;
-	headerSize = mm->headSize;
 }
 
 MatchServer::~MatchServer()
@@ -60,7 +58,7 @@ void MatchServer::RunServer() {
 
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConfigSock, CONFIG_SERVER);
 	IO_DATA* ov = new IO_DATA(hConfigSock);
-	mm->ReceivePacket(ov);
+	sm->ReceivePacket(ov);
 	
 	
 	//==================Connect to Connection Server
@@ -70,7 +68,7 @@ void MatchServer::RunServer() {
 	AssociateDeviceWithCompletionPort(hCompletion, (HANDLE)hConnSock, CONNECTION_SERVER);
 
 	ov = new IO_DATA(hConnSock);
-	mm->ReceivePacket(ov);
+	sm->ReceivePacket(ov);
 	
 	//=================== Listen Socket for Match Server
 	hsoListen = sm->GetListenSocket(port, backlog);
@@ -119,11 +117,11 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 		if (bytesTransferred != 0) {
 			mm->ReadPacket(p, ioData->buffer);
 		}
-		
+		char* data = new char[sm->packetSize];
+		memset(data, 0, sm->packetSize);
 		if (p->body->cmd() == COMMAND_HEALTH_CHECK) {
-			char* data = mm->MakePacket((TERMINALTYPE)key, 0, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
-			mm->SendPacket(ioData->hClntSock, data);
-			delete data;
+			mm->MakePacket(data, (TERMINALTYPE)key, 0, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
+			sm->SendPacket(ioData->hClntSock, data);
 		}
 		else if (key == LISTEN_SOCKET) 
 		{
@@ -143,8 +141,9 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			if (p->body->cmd() == COMMAND_MS_ID)
 			{
 				cout << "My ID : " << p->body->data1()->c_str() << endl;
-				char* data = mm->MakePacket(CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
-				mm->SendPacket(ioData->hClntSock, data);
+				memset(data, 0, sm->packetSize);
+				mm->MakePacket(data, CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
+				sm->SendPacket(ioData->hClntSock, data);
 				delete data;
 			}
 			else if (p->body->cmd() == COMMAND_MSLIST_RESPONSE)
@@ -179,7 +178,7 @@ unsigned int __stdcall MatchServer::ProcessThread(LPVOID hCompletion)
 			}
 		}
 		
-		mm->ReceivePacket(ioData);
+		sm->ReceivePacket(ioData);
 	}
 	return 0;
 }
