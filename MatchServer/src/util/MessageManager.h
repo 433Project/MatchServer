@@ -4,11 +4,8 @@
 #include <MSWSock.h>
 #include "Protocol.h"
 
-
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
-
-
 
 class MessageManager
 {

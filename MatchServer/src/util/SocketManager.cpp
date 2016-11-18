@@ -1,19 +1,11 @@
 #include "SocketManager.h"
 
 SocketManager* SocketManager::instance = 0;
-SocketManager* SocketManager::Instance()
-{
-	if (instance == 0)
-	{
-		instance = new SocketManager();
-	}
-	return instance;
-}
 
 SocketManager::SocketManager()
 {
+	iocp = IOCPManager::GetInstance();
 }
-
 
 SocketManager::~SocketManager()
 {
@@ -29,6 +21,13 @@ SocketManager::~SocketManager()
 	{
 		closesocket(*iter);
 	}
+}
+
+SocketManager* SocketManager::GetInstance()
+{
+	if (instance == 0)
+		instance = new SocketManager();
+	return instance;
 }
 
 bool SocketManager::CreateLinstenSocket(int port)
@@ -62,24 +61,26 @@ bool SocketManager::CreateLinstenSocket(int port)
 		closesocket(listenSock);
 		return false;
 	}
+
+	iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN);
 	return true;
 }
-
 
 bool SocketManager::CreateSocket(int type, char* ip, int port)
 {
 	SOCKET sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	
 	if (sock == INVALID_SOCKET)
 	{
-		///cout << "create socket failed, code : " << WSAGetLastError() << endl;
+		//cout << "create socket failed, code : " << WSAGetLastError() << endl;
 		return false;
 	}
+
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr(ip);			//Server IP
 	addr.sin_port = htons(port);					//Server Port
-
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
@@ -87,18 +88,28 @@ bool SocketManager::CreateSocket(int type, char* ip, int port)
 		return false;
 	}
 
+	//IOCP µî·Ï
 	if (type == CONNECTION_SERVER) 
 	{
 		csSocket = sock;
+		iocp->AssociateDeviceWithCompletionPort((HANDLE)csSocket, CONNECTION);
 	}
 	else if (type == CONFIG_SERVER) 
 	{
 		cfSocket = sock;
+		iocp->AssociateDeviceWithCompletionPort((HANDLE)cfSocket, CONFIG);
 	}
 	else if (type == MATCHING_SERVER) 
 	{
 		msList.insert(sock);
+		iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
 	}
+
+	//initial receive
+	IO_DATA* ioData = new IO_DATA(sock);
+	ReceivePacket(sock, ioData);
+
+	return true;
 }
 
 void SocketManager::AcceptEX(int count)
@@ -163,4 +174,28 @@ PVOID SocketManager::GetSockExtAPI(GUID guidFn)
 		return NULL;
 	}
 	return pfnEx;
+}
+
+
+DWORD SocketManager::SendPacket(SOCKET socket, char* data)
+{
+	WSABUF wsabuf;
+	wsabuf.buf = data;
+	wsabuf.len = packetSize;
+
+	DWORD bytesSent;
+	WSASend(socket, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+	return bytesSent;
+}
+
+
+void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
+{
+	ioData->buffer = new char[packetSize];
+
+	DWORD flags = MSG_PUSH_IMMEDIATE;
+	WSABUF wb;
+	wb.buf = ioData->buffer;
+	wb.len = packetSize;
+	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
 }

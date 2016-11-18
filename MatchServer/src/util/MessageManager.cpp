@@ -11,7 +11,6 @@ MessageManager::~MessageManager()
 }
 
 
-
 void MessageManager::MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
 {
 	flatbuffers::FlatBufferBuilder builder;

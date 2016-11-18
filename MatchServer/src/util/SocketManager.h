@@ -3,6 +3,7 @@
 #include <iostream>
 #include "IOCPManager.h"
 #include "MessageManager.h"
+
 using namespace std;
 
 class SocketManager
@@ -12,21 +13,26 @@ protected:
 	~SocketManager();
 
 public:
-	static SocketManager* Instance();
+	static SocketManager* GetInstance();
 	bool CreateSocket(int type, char* ip, int port);
 	bool CreateLinstenSocket(int port);
 	void AcceptEX(int count);
+	DWORD SendPacket(SOCKET socket, char* data);
+	void ReceivePacket(SOCKET socket, IO_DATA* ioData);
 
 private:
-	static SocketManager* instance;
 	PVOID GetSockExtAPI(GUID guidFn);
-	IOCPManager *iocp;
-
-public:
+	
+private:
 	SOCKET listenSock;
 	const int backlog = 10;
 	SOCKET csSocket;
 	SOCKET cfSocket;
 	set<SOCKET> msList;
+
+
+	static SocketManager* instance;
+	IOCPManager* iocp;
+	int packetSize = 100;
 };
 

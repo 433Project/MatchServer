@@ -16,8 +16,8 @@ MetricGenerator::MetricGenerator()
 	this->defenseMax= max["defense"];
 	this->offenseMax= max["offense"];
 
-	if(appConfig)
-		delete appConfig;
+	//if(appConfig)
+		//delete appConfig;
 }
 
 MetricGenerator::~MetricGenerator() 

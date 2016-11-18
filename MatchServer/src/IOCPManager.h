@@ -1,6 +1,9 @@
 #pragma once
 #include <winsock2.h>
 #include <process.h>
+#include "Logger.h"
+#include "MessageManager.h"
+
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
@@ -32,7 +35,7 @@ protected:
 	~IOCPManager();
 	
 public:
-	static IOCPManager* Instance();
+	static IOCPManager* GetInstance();
 	void Start();
 	BOOL AssociateDeviceWithCompletionPort(HANDLE handle, DWORD completionKey);
 
@@ -41,8 +44,10 @@ private:
 	static unsigned __stdcall ProcessThread(void* iocp);
 
 private:
+	static IOCPManager* instance;
+	static MessageManager* mm;
+
 	HANDLE iocp;
 	int numOfThreads;
-	static IOCPManager* instance;
 };
 

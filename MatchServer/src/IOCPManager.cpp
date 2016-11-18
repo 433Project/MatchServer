@@ -1,21 +1,21 @@
 #include "IOCPManager.h"
 
-IOCPManager* IOCPManager::instance = 0;
 
 IOCPManager::IOCPManager()
 {
+	mm = new MessageManager();
 }
+
 IOCPManager::~IOCPManager()
 {
 	delete iocp;
 }
 
-IOCPManager* IOCPManager::Instance() 
+
+IOCPManager* IOCPManager::GetInstance()
 {
 	if (instance == 0)
-	{
 		instance = new IOCPManager();
-	}
 	return instance;
 }
 
@@ -77,6 +77,19 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			(LPOVERLAPPED*)&ioData,
 			INFINITE
 		);
+
+		if (bytesTransferred == 0) 
+		{
+			//closesocket;
+			continue;
+		}
+		Packet* p = new Packet();
+		mm->ReadPacket(p, ioData->buffer);
+		
+		//if srcType이 MS 나 RS일 경우
+		//메세지큐에 넣기
+		//else 
+		//커맨드핸들러에게 넘기기
 	}
 	_endthreadex(0);
 	return 0;
