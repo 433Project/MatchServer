@@ -1,16 +1,11 @@
 #include "ClientHolder.h"
 
-
-//ClientHolder* ClientHolder::instance = nullptr;
 ClientHolder& ClientHolder::GetInstance() {
 
 	static ClientHolder instance;
 
 	return instance;
 }
-
-
-
 
 ClientHolder::ClientHolder()
 {	
@@ -24,11 +19,6 @@ ClientHolder::~ClientHolder()
 	if (waitingList != nullptr) 
 	{
 		delete waitingList;
-	}
-	
-	if (instance != nullptr) 
-	{
-		delete instance;
 	}
 }
 

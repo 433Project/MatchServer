@@ -1,9 +1,9 @@
 #include "IOCPManager.h"
 
+IOCPManager* IOCPManager::instance = 0;
 
 IOCPManager::IOCPManager()
 {
-	mm = new MessageManager();
 }
 
 IOCPManager::~IOCPManager()
@@ -62,12 +62,13 @@ BOOL IOCPManager::AssociateDeviceWithCompletionPort(HANDLE handle, DWORD complet
 
 unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
+
+	MessageManager* mm = new MessageManager();
 	HANDLE completionPort = iocp;
 
 	DWORD bytesTransferred;
 	IO_DATA* ioData;
 	ULONG_PTR completionKey = 0;
-
 	while (TRUE)
 	{
 		GetQueuedCompletionStatus(
@@ -91,6 +92,8 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 		//else 
 		//커맨드핸들러에게 넘기기
 	}
+
+	delete mm;
 	_endthreadex(0);
 	return 0;
 }

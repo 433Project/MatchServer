@@ -1,6 +1,7 @@
 #pragma once
 #include "AppConfig.h"
 #include "Logger.h"
+#include "json.hpp"
 
 // client 능력치 생성
 class MetricGenerator {

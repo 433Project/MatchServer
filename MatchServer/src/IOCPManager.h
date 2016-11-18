@@ -35,6 +35,7 @@ protected:
 	~IOCPManager();
 	
 public:
+	
 	static IOCPManager* GetInstance();
 	void Start();
 	BOOL AssociateDeviceWithCompletionPort(HANDLE handle, DWORD completionKey);
@@ -45,8 +46,6 @@ private:
 
 private:
 	static IOCPManager* instance;
-	static MessageManager* mm;
-
 	HANDLE iocp;
 	int numOfThreads;
 };
