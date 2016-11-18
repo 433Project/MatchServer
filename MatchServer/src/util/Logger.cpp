@@ -7,7 +7,7 @@ Logger::Logger()
 	// console logger
 	try 
 	{
-		this->logger = spdlog::stdout_color_mt("console");
+		this->spdLogger = spdlog::stdout_color_mt("console");
 	}
 	catch (const spdlog::spdlog_ex& ex) 
 	{
@@ -49,7 +49,7 @@ Logger::Logger()
 
 Logger::~Logger()
 {
-	this->logger = NULL;
+	this->spdLogger = NULL;
 }
 
 Logger& Logger::GetInstance() 
@@ -63,15 +63,15 @@ void Logger::infoFuncName(string funcName, string message)
 {
 	string msg = "[" + funcName + "()] " + message;
 
-	this->logger->info(msg);
-	this->logger->flush();
+	this->spdLogger->info(msg);
+	this->spdLogger->flush();
 }
 
 void Logger::errFuncName(string funcName, string message) 
 {
 	string msg =  "[" + funcName + "()] " + message;
 
-	this->logger->error(msg);
-	this->logger->flush();
+	this->spdLogger->error(msg);
+	this->spdLogger->flush();
 }
 

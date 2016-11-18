@@ -5,7 +5,7 @@
 MetricGenerator::MetricGenerator() 
 {
 	AppConfig appConfig = AppConfig::GetInstance();
-
+/*
 	json weights = appConfig.GetConfig<json>("weight");
 	json max = appConfig.GetConfig<json>("max");
 	this->levelWeight = weights["level"];
@@ -15,9 +15,9 @@ MetricGenerator::MetricGenerator()
 	this->levelMax = max["level"];
 	this->defenseMax= max["defense"];
 	this->offenseMax= max["offense"];
-
-	if(appConfig)
-		delete appConfig;
+*/
+	//if(appConfig)
+	//	delete appConfig;
 }
 
 MetricGenerator::~MetricGenerator() 

@@ -1,14 +1,15 @@
 #pragma once
 #include "AppConfig.h"
+#include "Matcher.h"
 
-AppConfig::AppConfig() 
+AppConfig::AppConfig()
 {
 	LoadConfig();
 }
 
 AppConfig::~AppConfig() 
 {
-	
+
 }
 
 //AppConfig* AppConfig::appConfig = nullptr;
@@ -25,8 +26,9 @@ void AppConfig::LoadConfig()
 	configFile.open("./config/app.json");
 
 	this->config = json(configFile);
-
+	
 	configFile.close();
+	cout << "load configuration" << endl;
 	logger.INFO("Server Configuration load");
 }
 

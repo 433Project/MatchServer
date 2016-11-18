@@ -26,10 +26,10 @@ public:
 
 	void infoFuncName(string funcName, string message);
 	void errFuncName(string funcName, string message);
-	//void error(string message);
-	//void setPattern(string pattern);
-	
-private:
-	MSLogger logger;
+
+protected:
 	Logger();
+
+private:
+	MSLogger spdLogger;
 };

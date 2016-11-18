@@ -29,7 +29,6 @@ public:
 	Client ClientHolder::operator[](int a);
 
 private: 
-	static ClientHolder* instance;
 	WaitingList waitingList;
 	
 	unordered_map<CLIENTID, Client> clientInfoList;  // 현재 MS에 접속해 있는 CLIENT 리스트.

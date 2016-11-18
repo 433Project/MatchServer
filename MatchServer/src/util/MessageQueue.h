@@ -1,6 +1,7 @@
 #pragma once
 #include "Protocol.h"
 #include <deque>
+#include <Windows.h>
 #include <WinBase.h>
 
 class MessageQueue

@@ -2,6 +2,7 @@
 #include "AppConfig.h"
 
 void main() {
-	AppConfig* config = new AppConfig();
-	config->GetAppConfig();
+	AppConfig config = AppConfig::GetInstance();
+	config.GetAppConfig();
+	while (true) {}
 }
