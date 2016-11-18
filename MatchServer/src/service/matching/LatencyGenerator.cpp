@@ -10,6 +10,7 @@ LatencyGenerator::~LatencyGenerator()
 {
 }
 
-double LatencyGenerator::Generate() {
+double LatencyGenerator::Generate() 
+{
 	return (double) rand() / (double)RAND_MAX;
 }

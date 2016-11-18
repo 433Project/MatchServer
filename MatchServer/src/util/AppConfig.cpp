@@ -1,40 +1,43 @@
 #pragma once
 #include "AppConfig.h"
 
-//Logger AppConfig::logger = Logger::GetInstance();
-
-AppConfig::AppConfig() {
+AppConfig::AppConfig() 
+{
 	LoadConfig();
 }
 
-AppConfig::~AppConfig() {
+AppConfig::~AppConfig() 
+{
 	
 }
 
-AppConfig* AppConfig::appConfig = nullptr;
-AppConfig* AppConfig::GetInstance() {
+//AppConfig* AppConfig::appConfig = nullptr;
+AppConfig& AppConfig::GetInstance() 
+{
+	static AppConfig instance;
 
-	if (appConfig == nullptr) {
-		appConfig = new AppConfig();
-	}
-	return appConfig;
+	return instance;
 }
 
-void AppConfig::LoadConfig() {
+void AppConfig::LoadConfig() 
+{
 	ifstream  configFile;
 	configFile.open("./config/app.json");
 
 	this->config = json(configFile);
 
 	configFile.close();
+	logger.INFO("Server Configuration load");
 }
 
-json AppConfig::GetAppConfig() {
+json AppConfig::GetAppConfig() 
+{
 	return config;
 }
 
 template<typename T>
-T AppConfig::GetConfig(string key) {
+T AppConfig::GetConfig(string key) 
+{
 	return config[key];
 }
 

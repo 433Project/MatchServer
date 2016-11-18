@@ -10,14 +10,10 @@ public:
 	~Client();
 	
 	//------- Getter, Setter
-	//-- metric
 	bool SetMetric(int);
 	int GetMetric();
-	//-- serverid
 	int GetServerId();
-	//-- clientid
 	CLIENTID GetClientId();
-	//-- state
 	bool SetState(ClientState state);
 	ClientState GetState();
 	

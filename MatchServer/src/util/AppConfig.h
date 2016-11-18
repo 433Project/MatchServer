@@ -13,27 +13,22 @@ class AppConfig
 {
 public:
 	//---const
-	AppConfig();
+
 	~AppConfig();
-	static AppConfig* GetInstance();
+	static AppConfig& GetInstance();
 
 	//---logic
 	json GetAppConfig();
 
-	/*
-	string GetConfig(string key);
-	json GetConfig(string key);
-	*/
-
 	template <typename T>
 	T GetConfig(string key);
-
-	Logger logger = Logger::GetInstance();
+protected:
+	AppConfig();
 
 private:
 	void LoadConfig();
-	static AppConfig* appConfig;
+	//static AppConfig& appConfig;
 	json config;
-	
+	Logger logger = Logger::GetInstance();
 };
 

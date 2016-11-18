@@ -3,11 +3,14 @@
 #include "Client.h"
 #include "Protocol.h"
 
-class CommandRoomCreateRequest {
+// Command : 
+class CommandRoomCreateRequest 
+{
 
 public:
 
-	void HandleCommand(Client c1, Client c2) {
+	void HandleCommand(Client c1, Client c2) 
+	{
 		
 		Header header = Header(0, TERMINALTYPE::MATCHING_SERVER, 0, TERMINALTYPE::ROOM_SERVER, 0);
 		// generate packet

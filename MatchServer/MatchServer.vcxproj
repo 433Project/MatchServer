@@ -165,7 +165,6 @@
     <ClCompile Include="src\util\AppConfig.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
-    <ClCompile Include="src\util\ConsoleLogger.h" />
     <ClCompile Include="src\service\matching\Matcher.cpp" />
     <ClCompile Include="src\service\matching\MetricGenerator.cpp" />
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
