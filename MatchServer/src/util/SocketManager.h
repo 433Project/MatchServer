@@ -1,35 +1,32 @@
 #pragma once
 
 #include <iostream>
-#include <winsock2.h>
-#include <MSWSock.h>
-#include <process.h>
+#include "IOCPManager.h"
 #include "MessageManager.h"
-
-#pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
 class SocketManager
 {
-public:
+protected:
 	SocketManager();
 	~SocketManager();
-	SOCKET GetConnectSocket(char* type, char* ip, int port);
-	
-	void AcceptEX(int count);
-	SOCKET GetListenSocket(short shPortNo, int nBacklog);
-	DWORD SendPacket(char* data);
-	void ReceivePacket(IO_DATA* ioData);
-
-private:
-	PVOID GetSockExtAPI(SOCKET sock, GUID guidFn);
-
-private:
-	SOCKET socket;
-	int socketType;
 
 public:
-	static const int packetSize = 100;
+	static SocketManager* Instance();
+	bool CreateSocket(int type, char* ip, int port);
+	bool CreateLinstenSocket(int port);
+	void AcceptEX(int count);
 
+private:
+	static SocketManager* instance;
+	PVOID GetSockExtAPI(GUID guidFn);
+	IOCPManager *iocp;
+
+public:
+	SOCKET listenSock;
+	const int backlog = 10;
+	SOCKET csSocket;
+	SOCKET cfSocket;
+	set<SOCKET> msList;
 };
 

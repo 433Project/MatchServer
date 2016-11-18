@@ -1,4 +1,6 @@
 #pragma once
+#include "AppConfig.h"
+#include "Logger.h"
 
 // client 능력치 생성
 class MetricGenerator {
@@ -16,6 +18,10 @@ private:
 	int offsenseWeight;
 	int defenseWeight;
 	int levelWeight;
+
+	int offenseMax;
+	int defenseMax;
+	int levelMax;
 
 	int GenerateOffense();
 	int GenerateDefense();

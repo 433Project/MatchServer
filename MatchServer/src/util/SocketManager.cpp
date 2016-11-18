@@ -1,59 +1,78 @@
 #include "SocketManager.h"
 
-
+SocketManager* SocketManager::instance = 0;
+SocketManager* SocketManager::Instance()
+{
+	if (instance == 0)
+	{
+		instance = new SocketManager();
+	}
+	return instance;
+}
 
 SocketManager::SocketManager()
 {
-	listenSock = NULL;
 }
 
 
 SocketManager::~SocketManager()
 {
+	if (listenSock != INVALID_SOCKET)
+		closesocket(listenSock);
+	if (cfSocket != INVALID_SOCKET)
+		closesocket(listenSock);
+	if (csSocket != INVALID_SOCKET)
+		closesocket(listenSock);
+
+	set<SOCKET>::iterator iter;
+	for (iter = msList.begin(); iter != msList.end(); iter++) 
+	{
+		closesocket(*iter);
+	}
 }
 
-SOCKET SocketManager::GetListenSocket(short shPortNo, int nBacklog)
+bool SocketManager::CreateLinstenSocket(int port)
 {
 	listenSock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	if (listenSock == INVALID_SOCKET)
 	{
-		cout << "socket failed, code : " << WSAGetLastError() << endl;
-		return INVALID_SOCKET;
+		//cout << "socket failed, code : " << WSAGetLastError() << endl;
+		return false;;
 	}
 
 	SOCKADDR_IN	sa;
 	memset(&sa, 0, sizeof(SOCKADDR_IN));
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(shPortNo);
+	sa.sin_port = htons(port);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	LONG lSockRet = ::bind(listenSock, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
-		cout << "bind failed, code : " << WSAGetLastError() << endl;
+		//cout << "bind failed, code : " << WSAGetLastError() << endl;
 		closesocket(listenSock);
-		return INVALID_SOCKET;
+		return false;
 	}
 
-	lSockRet = listen(listenSock, nBacklog);
+	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
-		cout << "listen failed, code : " << WSAGetLastError() << endl;
+		//cout << "listen failed, code : " << WSAGetLastError() << endl;
 		closesocket(listenSock);
-		return INVALID_SOCKET;
+		return false;
 	}
-
-	return listenSock;
+	return true;
 }
 
-SOCKET SocketManager::GetConnectSocket(char* type, char* ip, int port)
+
+bool SocketManager::CreateSocket(int type, char* ip, int port)
 {
-	SOCKET hSock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	if (hSock == INVALID_SOCKET)
+	SOCKET sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	if (sock == INVALID_SOCKET)
 	{
-		cout << "[" << type <<"] socket failed, code : " << WSAGetLastError() << endl;
-		return hSock;
+		///cout << "create socket failed, code : " << WSAGetLastError() << endl;
+		return false;
 	}
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
@@ -61,22 +80,31 @@ SOCKET SocketManager::GetConnectSocket(char* type, char* ip, int port)
 	addr.sin_addr.s_addr = inet_addr(ip);			//Server IP
 	addr.sin_port = htons(port);					//Server Port
 
-	for (int i = 0; i < 5; i++)
+	
+	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		if (connect(hSock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
-		{
-			cout << "[" << type << "] connect failed, code : " << WSAGetLastError() << endl;
-			continue;
-		}
-		return hSock;
+		//cout << "connect failed, code : " << WSAGetLastError() << endl;
+		return false;
 	}
-	return INVALID_SOCKET;
+
+	if (type == CONNECTION_SERVER) 
+	{
+		csSocket = sock;
+	}
+	else if (type == CONFIG_SERVER) 
+	{
+		cfSocket = sock;
+	}
+	else if (type == MATCHING_SERVER) 
+	{
+		msList.insert(sock);
+	}
 }
 
 void SocketManager::AcceptEX(int count)
 {
 	LPFN_ACCEPTEX pfnAcceptEx = (LPFN_ACCEPTEX)
-		GetSockExtAPI(listenSock, WSAID_ACCEPTEX);
+		GetSockExtAPI(WSAID_ACCEPTEX);
 
 	for (int i = 0; i < count; i++)
 	{
@@ -119,7 +147,7 @@ PVOID SocketManager::GetSockExtAPI(GUID guidFn)
 
 	LONG lRet = ::WSAIoctl
 	(
-		socket,									//Socket
+		listenSock,									//Socket
 		SIO_GET_EXTENSION_FUNCTION_POINTER,		//dwIoControlCode
 		&guid,									//lpvInBuffer
 		sizeof(guid),							//cbInBuffer
@@ -135,27 +163,4 @@ PVOID SocketManager::GetSockExtAPI(GUID guidFn)
 		return NULL;
 	}
 	return pfnEx;
-}
-
-DWORD SocketManager::SendPacket(char* data)
-{
-	WSABUF wsabuf;
-	wsabuf.buf = data;
-	wsabuf.len = packetSize;
-
-	DWORD bytesSent;
-	WSASend(socket, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
-	return bytesSent;
-}
-
-
-void SocketManager::ReceivePacket(IO_DATA* ioData)
-{
-	ioData->buffer = new char[packetSize];
-
-	DWORD flags = MSG_PUSH_IMMEDIATE;
-	WSABUF wb;
-	wb.buf = ioData->buffer;
-	wb.len = packetSize;
-	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
 }

@@ -8,18 +8,7 @@
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
 
-struct IO_DATA : OVERLAPPED
-{
-	char* buffer;		
-	SOCKET hClntSock;
 
-	IO_DATA(SOCKET sock)
-
-	{
-		memset(this, 0, sizeof(*this));
-		hClntSock = sock;
-	}
-};
 
 class MessageManager
 {

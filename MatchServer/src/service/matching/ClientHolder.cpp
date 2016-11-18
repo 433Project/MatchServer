@@ -10,6 +10,9 @@ ClientHolder* ClientHolder::GetInstance() {
 	return instance;
 }
 
+
+
+
 ClientHolder::ClientHolder()
 {	
 	// metric의 크기만큼의 배열을 미리 할당 & set 0

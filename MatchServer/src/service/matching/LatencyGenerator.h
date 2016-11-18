@@ -1,4 +1,5 @@
 #pragma once
+#include "AppConfig.h"
 
 class LatencyGenerator
 {

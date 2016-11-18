@@ -8,7 +8,7 @@ class ClientHolder
 {
 
 public:
-	ClientHolder();
+
 	~ClientHolder();
 
 	//================ 초기화 관련 
@@ -30,7 +30,7 @@ private:
 	WaitingList waitingList;
 	
 	unordered_map<CLIENTID, Client> clientInfoList; 
-	
+	ClientHolder();
 	
 };
 

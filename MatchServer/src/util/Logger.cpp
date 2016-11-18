@@ -1,11 +1,26 @@
-#include "FileLogger.h"
+#include "Logger.h"
 
-FileLogger::FileLogger()
+Logger::Logger()
 {
+#ifdef _DEBUG
+	// dev
+	// console logger
+	try {
+		this->logger = spdlog::stdout_color_mt("console");
+	}
+	catch (const spdlog::spdlog_ex& ex) {
+		cout << "Log setting error" << endl;
+	}
+
+
+#else
+	// live
+	// file logger
+
 	string fileName = "";
-	string path="logs/";
+	string path = "logs/";
 	string extension = ".txt";
-	
+
 	try {
 		time_t     now = time(0);
 		struct tm  tstruct;
@@ -17,7 +32,7 @@ FileLogger::FileLogger()
 		fileName += path;
 		fileName.append(string(buf));
 		fileName += extension;
-		
+
 		size_t q_size = 4096; //queue size must be power of 2
 		spdlog::set_async_mode(q_size);
 
@@ -27,31 +42,31 @@ FileLogger::FileLogger()
 	catch (const spdlog::spdlog_ex& ex) {
 		cout << "Log setting error" << endl;
 	}
+#endif // DEBUG
 }
 
-FileLogger::~FileLogger()
+Logger::~Logger()
 {
 	this->logger = NULL;
 }
 
-FileLogger* FileLogger::fileLogger = nullptr;
-FileLogger* FileLogger::GetInstance() {
-	if (fileLogger == nullptr) {
-		fileLogger = new FileLogger();
-	}
-	return fileLogger;
+Logger& Logger::GetInstance() {
+	static Logger instance;
+
+	return instance;
 }
 
-void FileLogger::infoFuncName(string funcName, string message) {
+void Logger::infoFuncName(string funcName, string message) {
 	string msg = "[" + funcName + "()] " + message;
 
 	this->logger->info(msg);
 	this->logger->flush();
 }
 
-void FileLogger::errFuncName(string funcName, string message) {
+void Logger::errFuncName(string funcName, string message) {
 	string msg =  "[" + funcName + "()] " + message;
-	logger->error(msg);
+
+	this->logger->error(msg);
 	this->logger->flush();
 }
 
