@@ -5,14 +5,14 @@ Logger::Logger()
 #ifdef _DEBUG
 	// dev
 	// console logger
-	try {
+	try 
+	{
 		this->logger = spdlog::stdout_color_mt("console");
 	}
-	catch (const spdlog::spdlog_ex& ex) {
+	catch (const spdlog::spdlog_ex& ex) 
+	{
 		cout << "Log setting error" << endl;
 	}
-
-
 #else
 	// live
 	// file logger
@@ -21,7 +21,8 @@ Logger::Logger()
 	string path = "logs/";
 	string extension = ".txt";
 
-	try {
+	try 
+	{
 		time_t     now = time(0);
 		struct tm  tstruct;
 		char       buf[80];
@@ -39,7 +40,8 @@ Logger::Logger()
 		spdlog::set_level(spdlog::level::info); //Set global log level to info
 		this->logger = spdlog::basic_logger_mt("ms_file_logger", fileName);
 	}
-	catch (const spdlog::spdlog_ex& ex) {
+	catch (const spdlog::spdlog_ex& ex) 
+	{
 		cout << "Log setting error" << endl;
 	}
 #endif // DEBUG
@@ -50,20 +52,23 @@ Logger::~Logger()
 	this->logger = NULL;
 }
 
-Logger& Logger::GetInstance() {
+Logger& Logger::GetInstance() 
+{
 	static Logger instance;
 
 	return instance;
 }
 
-void Logger::infoFuncName(string funcName, string message) {
+void Logger::infoFuncName(string funcName, string message) 
+{
 	string msg = "[" + funcName + "()] " + message;
 
 	this->logger->info(msg);
 	this->logger->flush();
 }
 
-void Logger::errFuncName(string funcName, string message) {
+void Logger::errFuncName(string funcName, string message) 
+{
 	string msg =  "[" + funcName + "()] " + message;
 
 	this->logger->error(msg);

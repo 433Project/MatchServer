@@ -1,5 +1,4 @@
 #include "Matcher.h"
-#include "ConsoleLogger.h"
 
 Matcher* Matcher::instance = nullptr;
 Matcher* Matcher::GetInstance() {
@@ -10,49 +9,89 @@ Matcher* Matcher::GetInstance() {
 }
 
 Matcher::Matcher() {
-	clientHolder = ClientHolder::GetInstance();
 	metricGenerator = new MetricGenerator();
 	messageQueue = MessageQueue::GetInstance();
 }
 
 Matcher::~Matcher() {
-	delete clientHolder;
 	delete metricGenerator;
 }
 
-void Matcher::Process() {
+void Matcher::Process() 
+{
 
 	while (true) {
 		Matching();
+		/*
+			delay가 필요한가?
+		*/
 		HandleMessageQueue();
 	}
 }
 
-// metric, latency 계산을 통한 상대편 찾기.
-void Matcher::Matching() {
+// 매칭 시도
+void Matcher::Matching() 
+{
 	
-	unordered_map<CLIENTID, Client>* clientList;
+	unordered_map<CLIENTID, Client> clientList;
 	int oppositeId;
 
-	clientList = clientHolder->GetClientInfoList();
-	for (auto client = clientList->begin(); client != clientList->end(); ++client) {
+	// 현재 ms에 접속해 있는 client list
+	clientList = clientHolder.GetClientInfoList();
 
-		if (client->second.GetCntTry() >= Policy::MATCHING_ATTEMPT) {
+	for (auto client = clientList.begin(); client != clientList.end(); ++client) 
+	{
+
+		if (client->second.GetCntTry() >= Policy::MATCHING_ATTEMPT) 
+		{
 			// exceed attempt limit.
 			// matching fail 
 			
-			// handle matching fail 
+			// handle matching fail
+
+
+			/*
+			==========================================
+			=========================== LOGIC
+			==========================================
+				1) delete client from client info list 
+				2) delete client from waitinglist
+				3) broadcast failed client id 
+			*/
 		}
 		else {
-			oppositeId = FindOpposite(client->second);
-			if (oppositeId != -1) {
-				// found success
+			// metric, latency 를 고려하여 상대편 찾음.
 
-				// send message result to RM 
+			oppositeId = FindOpposite(client->second);
+			if (oppositeId != -1) 
+			{
+				// found success
+				/*
+				==========================================
+				=========================== LOGIC
+				==========================================
+					1) change client state to reserved - clientinfolist, waitinglist 
+					2) send matching result to room manager				
+				*/
+
+				// 1) 미구현 
+				clientList.at(client->first).SetState(ClientState::Reserved);
+				//clientHolder.GetWaitingList()->clientList.
+
+
+				// 2) 미구현
+				/*
+				==========================================
+				=========================== LOGIC
+				==========================================
+				*/
+
 			}
-			else {
+			else 
+			{
 				// found fail : no opposite
-				
+				// 무언가 action이 있어야 하나??
+				// 현재로서는 없다. 
 			}
 			// inc matching attempts
 			client->second.IncCntTry();
@@ -61,44 +100,56 @@ void Matcher::Matching() {
 }
 
 // MessageQueue에 쌓여있는 Message Handle
-void Matcher::HandleMessageQueue() {
+void Matcher::HandleMessageQueue() 
+{
 
 	Packet* packet;
 	//Packet packet;
-	while (!messageQueue->IsEmpty()) {
-//		packet = messageQueue->Pop();
+	while (!messageQueue->IsEmpty()) 
+	{
+		packet = messageQueue->Pop();
 
 		// pass packet to packet handler 
+		/*
+			=====================================================
+			================================= call packet handler
+			=====================================================
+			미구현 
+		*/
 	}
 }
 
-int Matcher::FindOpposite(Client client) {
+int Matcher::FindOpposite(Client client) 
+{
 
-	WaitingList waitingList = clientHolder->GetWaitingList();
+	WaitingList waitingList = clientHolder.GetWaitingList();
 	int moveUnit = sizeof(ROOM);
 	int currentClientMetric = client.GetMetric();
 	int move = 0;
 	Client opposite;
 
-	while (currentClientMetric + move <= MAX_METRIC || currentClientMetric - move >= MIN_METRIC) {
+	while (currentClientMetric + move <= MAX_METRIC || currentClientMetric - move >= MIN_METRIC) 
+	{
 
 		// move right
-		if (currentClientMetric + move <= MAX_METRIC) {
+		if (currentClientMetric + move <= MAX_METRIC) 
+		{
 			// metric과 가까운 대기 client가 존재한다.
-			if ((waitingList + (currentClientMetric + move)*moveUnit)->clientList.size() != 0) {
+			if ((waitingList + (currentClientMetric + move)*moveUnit)->clientList.size() != 0) 
+			{
 
 				// latency check
 				// get oppoisite client
 				//opposite = (waitingList + move)->clientList.begin()->second;
 				// opposite = (waitingList + move)->clientList.front();
 
-
-				for (auto it = (waitingList + move)->clientList.begin(); ; ++it) {
+				for (auto it = (waitingList + move)->clientList.begin(); ; ++it) 
+				{
 					// latency check
 				}
 
 				// if latency check : ok 
-				return opposite.GetClientId();
+				// return opposite.GetClientId();
 
 				// else : fail
 				// continue;
@@ -106,9 +157,11 @@ int Matcher::FindOpposite(Client client) {
 		}
 
 		// move left
-		if (currentClientMetric - move >= MIN_METRIC) {
+		if (currentClientMetric - move >= MIN_METRIC) 
+		{
 			// metric과 가까운 대기 client가 존재한다.
-			if ((waitingList + (currentClientMetric - move)*moveUnit)->clientList.size() != 0) {
+			if ((waitingList + (currentClientMetric - move)*moveUnit)->clientList.size() != 0) 
+			{
 
 				// latency check
 				// if latency check : ok 
@@ -123,81 +176,3 @@ int Matcher::FindOpposite(Client client) {
 
 	return -1;
 }
-
-/*
-// 1) metric 생성
-// 2 list에 추가 
-// 3) br
-// 4) matching 수행 
-void Matcher::Matching(Client client) {
-
-	// 1) metric 생성
-	int metric = metricGenerator->GenerateMetric();
-	client.SetMetric(metric);
-
-	// 2) list에 추가 
-	clientHolder->AddClient(metric, client);
-
-	// 3) br
-
-	// 4) matching 수행
-	int oppositeId = FindOpposite(client);
-
-	// 5) 매칭결과 BR 
-}
-
-
-// Room Manager로부터 matching 에 대해 응답을 받으면, delete Client를 수행하고, client에게 돌려준다. 
-int Matcher::FindOpposite(Client client) {
-
-	WaitingList waitingList = clientHolder->GetWaitingList();
-	int moveUnit = sizeof(ROOM);
-	int currentClientMetric = client.GetMetric();
-	int move = 0;
-	Client opposite;
-
-	while (currentClientMetric + move <= MAX_METRIC || currentClientMetric - move >= MIN_METRIC) {
-
-		// move right
-		if (currentClientMetric + move <= MAX_METRIC) {
-			// metric과 가까운 대기 client가 존재한다.
-			if ((waitingList + (currentClientMetric + move)*moveUnit )->clientList.size() != 0) {
-
-				// latency check
-				// get oppoisite client
-				//opposite = (waitingList + move)->clientList.begin()->second;
-				// opposite = (waitingList + move)->clientList.front();
-				 
-
-				for (auto it = (waitingList + move)->clientList.begin(); ; ++it) {
-					// latency check
-				}
-
-				// if latency check : ok 
-				return opposite.GetClientId();
-
-				// else : fail
-				// continue;
-			}
-		}
-
-		// move left
-		if (currentClientMetric - move >= MIN_METRIC) {
-			// metric과 가까운 대기 client가 존재한다.
-			if ((waitingList + (currentClientMetric - move)*moveUnit)->clientList.size() != 0) {
-
-				// latency check
-				// if latency check : ok 
-				return opposite.GetClientId();
-
-				// else : fail
-				// continue;
-			}
-		}
-		move++;
-	}// end loop
-
-	return 0;
-}
-
-*/

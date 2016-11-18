@@ -1,6 +1,7 @@
 #pragma once
 #include "Protocol.h"
 #include <deque>
+#include <WinBase.h>
 
 class MessageQueue
 {
@@ -18,6 +19,8 @@ public:
 private: 
 	deque<Packet*> queue;
 	static MessageQueue* messageQueue;
+	
+	CRITICAL_SECTION CriticalSection;
 
 	MessageQueue();
 };

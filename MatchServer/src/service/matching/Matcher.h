@@ -2,6 +2,7 @@
 #include "ClientHolder.h"
 #include "MetricGenerator.h"
 #include "MessageQueue.h"
+#include "Logger.h"
 
 // client matching ผ๖วเ
 class Matcher {
@@ -11,7 +12,7 @@ private:
 	~Matcher();
 	static Matcher* instance;
 
-	ClientHolder* clientHolder;
+	ClientHolder clientHolder = ClientHolder::GetInstance();
 
 	MetricGenerator* metricGenerator;
 	MessageQueue* messageQueue;

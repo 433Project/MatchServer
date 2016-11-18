@@ -4,20 +4,22 @@
 #include "ClientHolder.h"
 #include "MetricGenerator.h"
 
-class CommandMatchRequest {
+class CommandMatchRequest 
+{
 
 private:
-	ClientHolder* clientHolder = ClientHolder::GetInstance();
+	ClientHolder clientHolder = ClientHolder::GetInstance();
 	MetricGenerator* metricGenerator = new MetricGenerator();
 
 public:
 
 	// handle Matching Request
-	void HandleCommand(Packet packet) {
+	void HandleCommand(Packet packet) 
+	{
 
 		int metric = metricGenerator->GenerateMetric();
 
-		clientHolder->AddClient(metric, Client(packet.header->srcCode,metric, 0, ClientState::Waiting, true));
+		clientHolder.AddClient(metric, Client(packet.header->srcCode,metric, 0, ClientState::Waiting, true));
 	}
 
 };
