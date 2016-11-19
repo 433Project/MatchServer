@@ -5,18 +5,20 @@
 MetricGenerator::MetricGenerator() 
 {
 	AppConfig appConfig = AppConfig::GetInstance();
-/*
-	json weights = appConfig.GetConfig<json>("weight");
-	json max = appConfig.GetConfig<json>("max");
-	this->levelWeight = weights["level"];
-	this->defenseWeight = weights["defense"];
-	this->offsenseWeight = weights["offense"]; 
 
-	this->levelMax = max["level"];
-	this->defenseMax= max["defense"];
-	this->offenseMax= max["offense"];
+	cout << appConfig.GetAppConfig() << endl;
 
-*/
+	//json weights = appConfig.GetConfig<json>("weight");
+	appConfig.GetConfig<string>("max");
+
+	//this->levelWeight = weights["level"];
+	//this->defenseWeight = weights["defense"];
+	//this->offsenseWeight = weights["offense"]; 
+
+	//this->levelMax = max["level"];
+	//this->defenseMax= max["defense"];
+	//this->offenseMax= max["offense"];
+
 	//if(appConfig)
 	//	delete appConfig;
 }
