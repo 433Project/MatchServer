@@ -5,7 +5,6 @@
 using namespace std;
 
 struct WaitingRoom {
-
 	deque<Client> clientList;
 };
 

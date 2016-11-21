@@ -1,4 +1,5 @@
 #include "IOCPManager.h"
+#include "Logger.h"
 
 IOCPManager* IOCPManager::instance = 0;
 
@@ -8,6 +9,14 @@ IOCPManager::IOCPManager()
 
 IOCPManager::~IOCPManager()
 {
+	for (int i = 0; i < numOfThreads; i++)
+	{
+		if (threads[i] != INVALID_HANDLE_VALUE)
+		{
+			delete threads[i];
+		}
+	}
+
 	delete iocp;
 }
 
@@ -31,21 +40,12 @@ void IOCPManager::Start()
 	iocp = CreateNewCompletionPort(si.dwNumberOfProcessors);
 	
 	//Create Thread Pool
-	HANDLE* threads = new HANDLE[numOfThreads];
+	threads = new HANDLE[numOfThreads];
 	for (int i = 0; i < numOfThreads; i++)
 	{
 		threads[i] = (HANDLE)_beginthreadex(NULL, 0, ProcessThread, (LPVOID)iocp, 0, NULL);
 	}
 
-	WaitForMultipleObjects(numOfThreads, threads, true, INFINITE);
-
-	for (int i = 0; i < numOfThreads; i++)
-	{
-		if (threads[i] != INVALID_HANDLE_VALUE)
-		{
-			delete threads[i];
-		}
-	}
 }
 
 HANDLE IOCPManager::CreateNewCompletionPort(DWORD numberOfConcurrentThreads)
@@ -63,7 +63,11 @@ BOOL IOCPManager::AssociateDeviceWithCompletionPort(HANDLE handle, DWORD complet
 unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
 
+	Logger& log = Logger::GetInstance();
+	CommandHandler* cmdHandler = new CommandHandler();
+	MessageQueue* mq = MessageQueue::GetInstance();
 	MessageManager* mm = new MessageManager();
+	
 	HANDLE completionPort = iocp;
 
 	DWORD bytesTransferred;
@@ -81,19 +85,38 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (bytesTransferred == 0) 
 		{
-			//closesocket;
+			log.INFO("disconnected with socket " + ioData->hClntSock);
+			closesocket(ioData->hClntSock);
 			continue;
 		}
+
 		Packet* p = new Packet();
 		mm->ReadPacket(p, ioData->buffer);
 		
-		//if srcType이 MS 나 RS일 경우
-		//메세지큐에 넣기
-		//else 
-		//커맨드핸들러에게 넘기기
+		if (p->body->cmd() == COMMAND_HEALTH_CHECK) 
+		{
+			char* data = new char[100];
+			mm->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
+
+			WSABUF wsabuf;
+			wsabuf.buf = data;
+			wsabuf.len = 100;
+
+			DWORD bytesSent;
+			WSASend(ioData->hClntSock, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+		}
+			
+		if (p->header->srcType == MATCHING_SERVER || p->header->srcType == ROOM_SERVER)
+			mq->Push(p);
+		else
+			cmdHandler->ProcessCommand(p);
 	}
 
-	delete mm;
+	if(mm != nullptr)
+		delete mm;
+	if (mq != nullptr)
+		delete mq;
+
 	_endthreadex(0);
 	return 0;
 }

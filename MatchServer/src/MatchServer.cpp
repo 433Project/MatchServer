@@ -2,7 +2,7 @@
 
 MatchServer::MatchServer()
 {
-	iocp = IOCPManager::GetInstance();
+	
 	socket = SocketManager::GetInstance();
 
 }
@@ -18,6 +18,7 @@ void MatchServer::Initailize()
 	int nErrCode = WSAStartup(MAKEWORD(2, 2), &wsd);
 	if (nErrCode)
 	{
+		log.ERROR("WSAStartup fail");
 		return;
 	}
 }
@@ -25,7 +26,8 @@ void MatchServer::Initailize()
 void MatchServer::Start() 
 {
 	//1. listen socket
-	if (socket->CreateLinstenSocket(port))
+	log.INFO("Listen Socket");
+	if (socket->CreateListenSocket())
 	{
 		socket->AcceptEX(5);
 	}
@@ -35,14 +37,12 @@ void MatchServer::Start()
 	}
 	
 	//2. config server
-	if (!socket->CreateSocket(CONFIG, cfIP, cfPort)) 
-	{
-		//log : [warning] fail to connect config server;
-		//but continue 
-	}
+	log.INFO("Config Server");
+	socket->CreateSocket(CONFIG, cfIP);
 	
 	//3. connection server  
-	if (!socket->CreateSocket(CONNECTION, csIP, csPort))
+	log.INFO("Connection Server");
+	if (!socket->CreateSocket(CONNECTION, csIP)) 
 	{
 		exit(0);
 	}

@@ -20,7 +20,7 @@ AppConfig& AppConfig::GetInstance()
 
 void AppConfig::LoadConfig() 
 {
-	logger.INFO("HI", "GGG",123);
+	//logger.INFO("HI", "GGG",123);
 
 	ifstream  configFile;
 	configFile.open("./config/app.json");

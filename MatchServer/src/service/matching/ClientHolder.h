@@ -7,7 +7,6 @@
 // MS에 요청한 Client들의 정보를 관리한다.
 class ClientHolder
 {
-
 public:
 
 	~ClientHolder();

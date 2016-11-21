@@ -1,21 +1,27 @@
 #pragma once
+#include <ctime>
 
 typedef int SERVERID;
 
+// 
 class Server
 {
 public:
 	Server();
 	~Server();
-	//static Server* CreateServer();
+	
+	void SetStartTime();
+	void SetEndTime();
 
 	double GetLatency();
-	
+	void CalculateLatency();
+
 private:
-
-
 	double latency;
-	SERVERID serverId;
-	
+
+	time_t startTime;
+	time_t endTime;
+
+	SERVERID serverId;	
 };
 

@@ -12,13 +12,12 @@ public:
 
 	static ServerHolder& GetInstance();
 
-	void AddServer(Server server);
+	void AddServer(SERVERID serverId, Server server);
 	void DeleteServer(SERVERID serverId);
 	Server GetServer(SERVERID serverId);
 
 private:
 	ServerHolder();
-	
 	unordered_map<SERVERID, Server> holder;
 };
 

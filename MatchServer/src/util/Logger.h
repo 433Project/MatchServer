@@ -15,7 +15,7 @@ typedef std::shared_ptr<logger> MSLogger;
 #define ENV live	
 #endif
 
-//#define ERROR(messages) errFuncName(__FUNCTION__, messages)
+#define ERROR(messages) errFuncName(__FUNCTION__, messages)
 
 class Logger
 {
@@ -33,6 +33,15 @@ public:
 	void INFO(Args ...args);
 
 	void errFuncName(string funcName, string message);
+
+
+	template<typename Message>
+	string convert(const Message& message);
+
+	template<typename First, typename... Rest>
+	string convert(const First& first, const Rest&... rest);
+
+	//void ERROR(string message);
 
 protected:
 	Logger();
@@ -57,3 +66,25 @@ void Logger::INFO(Args ... args)
 	this->spdLogger->flush();
 }
 
+template<typename Message>
+string Logger::convert(const Message& message) 
+{
+	if (typeid(first).name() == typeid(int).name()) {
+		return to_string(message);
+	}
+	return message;
+}
+
+template<typename First, typename... Rest>
+string Logger::convert(const First& first, const Rest&... rest)
+{
+	string tmp;
+	/*
+	if (typeid(first).name() == typeid(int).name()) {
+		tmp = to_string(first);
+		tmp.append(convert(rest... ));
+	}
+	*/
+	
+	return ((string)to_string(first)).append(convert(rest...));
+}

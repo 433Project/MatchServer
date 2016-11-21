@@ -1,8 +1,9 @@
 #pragma once
 #include <winsock2.h>
 #include <process.h>
-#include "Logger.h"
+#include "MessageQueue.h"
 #include "MessageManager.h"
+#include "CommandHandler.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 using namespace std;
@@ -30,15 +31,14 @@ enum COMPLETIONKEY : int
 
 class IOCPManager
 {
-protected:
-	IOCPManager();
-	~IOCPManager();
-	
 public:
-	
 	static IOCPManager* GetInstance();
+	~IOCPManager();
 	void Start();
 	BOOL AssociateDeviceWithCompletionPort(HANDLE handle, DWORD completionKey);
+
+protected:
+	IOCPManager();
 
 private:
 	HANDLE CreateNewCompletionPort(DWORD numberOfConcurrentThreads);	
@@ -47,6 +47,8 @@ private:
 private:
 	static IOCPManager* instance;
 	HANDLE iocp;
+	HANDLE* threads;
 	int numOfThreads;
+
 };
 

@@ -1,10 +1,15 @@
 #include "SocketManager.h"
+#include "Logger.h"
+
+
+Logger& logs = Logger::GetInstance();
 
 SocketManager* SocketManager::instance = 0;
+IOCPManager* iocp = IOCPManager::GetInstance();
 
 SocketManager::SocketManager()
 {
-	iocp = IOCPManager::GetInstance();
+	
 }
 
 SocketManager::~SocketManager()
@@ -16,10 +21,10 @@ SocketManager::~SocketManager()
 	if (csSocket != INVALID_SOCKET)
 		closesocket(listenSock);
 
-	set<SOCKET>::iterator iter;
+	map<SOCKET, int>::iterator iter;
 	for (iter = msList.begin(); iter != msList.end(); iter++) 
 	{
-		closesocket(*iter);
+		closesocket(iter->first);
 	}
 }
 
@@ -30,14 +35,14 @@ SocketManager* SocketManager::GetInstance()
 	return instance;
 }
 
-bool SocketManager::CreateLinstenSocket(int port)
+bool SocketManager::CreateListenSocket()
 {
 	listenSock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	if (listenSock == INVALID_SOCKET)
 	{
-		//cout << "socket failed, code : " << WSAGetLastError() << endl;
-		return false;;
+		logs.ERROR("socket failed, code : " + WSAGetLastError());
+		return false;
 	}
 
 	SOCKADDR_IN	sa;
@@ -49,30 +54,56 @@ bool SocketManager::CreateLinstenSocket(int port)
 	LONG lSockRet = ::bind(listenSock, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
-		//cout << "bind failed, code : " << WSAGetLastError() << endl;
+		logs.ERROR("bind failed, code : " + WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
-
+	logs.INFO("bind()");
 	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
-		//cout << "listen failed, code : " << WSAGetLastError() << endl;
+		logs.ERROR("listen  failed, code : " + WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
 
-	iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN);
+	logs.INFO("Listen()");
+
+	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
+	{
+		logs.INFO("Associate listen socket with completion port");
+	}
+	else 
+	{
+		logs.ERROR("Associate listen socket with completion port  failed");
+	}
 	return true;
 }
 
-bool SocketManager::CreateSocket(int type, char* ip, int port)
+bool SocketManager::CreateSocket(int type, char* ip, int id)
 {
 	SOCKET sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	int port = 0;
 	
+	if (type == CONNECTION)
+	{
+		csSocket = sock;
+		port = csPort;
+	}
+	else if (type == CONFIG)
+	{
+		cfSocket = sock;
+		port = cfPort;
+	}
+	else if (type == MATCHING)
+	{
+		msList.insert(pair<SOCKET, int>(sock, id));
+		port = this->port;
+	}
+
 	if (sock == INVALID_SOCKET)
 	{
-		//cout << "create socket failed, code : " << WSAGetLastError() << endl;
+		logs.ERROR("socket failed, code : " + WSAGetLastError());
 		return false;
 	}
 
@@ -84,27 +115,13 @@ bool SocketManager::CreateSocket(int type, char* ip, int port)
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		//cout << "connect failed, code : " << WSAGetLastError() << endl;
+		logs.ERROR("connect failed, code : " + WSAGetLastError());
 		return false;
 	}
 
 	//IOCP µî·Ï
-	if (type == CONNECTION_SERVER) 
-	{
-		csSocket = sock;
-		iocp->AssociateDeviceWithCompletionPort((HANDLE)csSocket, CONNECTION);
-	}
-	else if (type == CONFIG_SERVER) 
-	{
-		cfSocket = sock;
-		iocp->AssociateDeviceWithCompletionPort((HANDLE)cfSocket, CONFIG);
-	}
-	else if (type == MATCHING_SERVER) 
-	{
-		msList.insert(sock);
-		iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
-	}
-
+	iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
+	
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);
 	ReceivePacket(sock, ioData);
