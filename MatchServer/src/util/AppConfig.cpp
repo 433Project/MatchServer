@@ -31,7 +31,7 @@ void AppConfig::LoadConfig()
 	cout << "load configuration" << endl;
 }
 
-json AppConfig::GetAppConfig() 
+json& AppConfig::GetAppConfig() 
 {
 	return config;
 }

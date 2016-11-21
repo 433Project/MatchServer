@@ -4,20 +4,20 @@
 #include "IOCPManager.h"
 
 void main() {
-
+	// logger 사용 예시 
 	Logger& logger = Logger::GetInstance();
-	string msg = logger.convert("123", "12312313", 12);
+	logger.Info("con ",123131321,"verge ",11111,"킇핳하하핳ㅎ");
 
-	cout << msg << endl;
-	
-	//logger.ERROR("plain str");
-	//logger.ERROR("str + int" + 123);
-	//logger.INFO("str","st123",12);
-
-	while (true) {}
 	AppConfig config = AppConfig::GetInstance();
-	//config.GetAppConfig();
+	config.GetAppConfig();
+
 	cout << config.GetAppConfig() << endl;
+	cout << config.GetConfig<json>("max") << endl;
+	
+	// appconfig(json)에 새로운 값 대입 예시
+	config.GetAppConfig()["wow"] = "adf";
+	cout << config.GetAppConfig() << endl;
+	
 	IOCPManager* iocp = IOCPManager::GetInstance();
 	iocp->Start();
 	MatchServer* ms = new MatchServer();

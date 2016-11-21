@@ -34,7 +34,7 @@ void CommandCF::Command_MSLIST_REQUEST (Packet* p)
 {
 	//This command will never get received.
 	//Because MS sends it to Config Server
-	logg.ERROR("MS will be never received this command!");
+	logg.Error("MS will be never received this command!");
 }
 
 void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
@@ -42,14 +42,14 @@ void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 	int id = atoi(p->body->data1()->c_str());
 	char* ip = (char*)p->body->data2()->c_str();
 
-	logg.INFO("New Matching Server");
+	logg.Info("New Matching Server");
 	socketM->CreateSocket(MATCHING, ip, id);
 }
 
 void CommandCF::Command_MS_ID (Packet* p)
 {
 	//Appconfig에 id 저장하기 p->body->data1()->c_str();
-	logg.INFO("Get ID");
+	logg.Info("Get ID");
 	char* data = new char[socketM->packetSize];
 	msg->MakePacket(data, CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 	socketM->SendPacket(socketM->cfSocket, data);

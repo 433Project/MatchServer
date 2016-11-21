@@ -18,7 +18,7 @@ void MatchServer::Initailize()
 	int nErrCode = WSAStartup(MAKEWORD(2, 2), &wsd);
 	if (nErrCode)
 	{
-		log.ERROR("WSAStartup fail");
+		log.Error("WSAStartup fail");
 		return;
 	}
 }
@@ -26,7 +26,7 @@ void MatchServer::Initailize()
 void MatchServer::Start() 
 {
 	//1. listen socket
-	log.INFO("Listen Socket");
+	log.Info("Listen Socket");
 	if (socket->CreateListenSocket())
 	{
 		socket->AcceptEX(5);
@@ -37,11 +37,11 @@ void MatchServer::Start()
 	}
 	
 	//2. config server
-	log.INFO("Config Server");
+	log.Info("Config Server");
 	socket->CreateSocket(CONFIG, cfIP);
 	
 	//3. connection server  
-	log.INFO("Connection Server");
+	log.Info("Connection Server");
 	if (!socket->CreateSocket(CONNECTION, csIP)) 
 	{
 		exit(0);

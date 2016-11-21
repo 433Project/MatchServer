@@ -103,8 +103,6 @@ inline void spdlog::logger::log(level::level_enum lvl, const char* msg)
 template<typename T>
 inline void spdlog::logger::log(level::level_enum lvl, const T& msg)
 {
-	cout << "const t& callled" << endl;
-
 	if (!should_log(lvl)) return;
     try
     {
@@ -138,7 +136,6 @@ inline void spdlog::logger::debug(const char* fmt, const Args&... args)
 template <typename... Args>
 inline void spdlog::logger::info(const char* fmt, const Args&... args)
 {
-	cout << "inline void spdlog::logger::info(const char* fmt, const Args&... args)" << endl;
     log(level::info, fmt, args...);
 }
 
@@ -178,7 +175,6 @@ inline void spdlog::logger::debug(const T& msg)
 template<typename T>
 inline void spdlog::logger::info(const T& msg)
 {
-	cout << "inline void spdlog::logger::info(const T& msg)" << endl;
     log(level::info, msg);
 }
 

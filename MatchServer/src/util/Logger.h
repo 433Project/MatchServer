@@ -3,6 +3,7 @@
 #include <iostream>
 #include <time.h>
 #include <string>
+#include <type_traits>
 
 using namespace std;
 using namespace spdlog;
@@ -15,7 +16,7 @@ typedef std::shared_ptr<logger> MSLogger;
 #define ENV live	
 #endif
 
-#define ERROR(messages) errFuncName(__FUNCTION__, messages)
+//#define Error(messages) errFuncName(__FUNCTION__, messages)
 
 class Logger
 {
@@ -23,17 +24,13 @@ public:
 	static Logger& GetInstance();
 	~Logger();
 
-	template<typename ...Messages>
-	void infoFuncName(string funcName, Messages&... messages);
-
-	template<typename TF>
-	void infoFuncName(string funcName,TF const& f);
+	template<class ... Args>
+	void Info(Args ...args);
 
 	template<class ... Args>
-	void INFO(Args ...args);
+	void Error(Args ...args);
 
-	void errFuncName(string funcName, string message);
-
+	//void errFuncName(string funcName, string message);
 
 	template<typename Message>
 	string convert(const Message& message);
@@ -51,40 +48,52 @@ private:
 };
 
 template<class... Args>
-void Logger::INFO(Args ... args)
+void Logger::Info(Args ... args)
 {
-	string message;
-	
-	std::vector<string> vec = {args ...};
+	string convertedMsg = convert(args...);
 
-	for (int idx = 0; idx < vec.size(); idx++) 
-	{
-		message += vec[idx];
-	}
+	this->spdLogger->info(convertedMsg);
+	this->spdLogger->flush();
+}
 
-	this->spdLogger->info(message);
+template<class... Args>
+void Logger::Error(Args ... args)
+{
+	string convertedMsg = convert(args...);
+
+	this->spdLogger->error(convertedMsg);
 	this->spdLogger->flush();
 }
 
 template<typename Message>
 string Logger::convert(const Message& message) 
 {
-	if (typeid(first).name() == typeid(int).name()) {
-		return to_string(message);
-	}
-	return message;
+	return int_to_string(message);
 }
 
 template<typename First, typename... Rest>
 string Logger::convert(const First& first, const Rest&... rest)
 {
 	string tmp;
-	/*
-	if (typeid(first).name() == typeid(int).name()) {
-		tmp = to_string(first);
-		tmp.append(convert(rest... ));
-	}
-	*/
-	
-	return ((string)to_string(first)).append(convert(rest...));
+	tmp = int_to_string(first);
+
+	return tmp.append(convert(rest...));
+}
+
+template<typename T>
+string int_to_string(const T& t, std::true_type)
+{
+	return to_string((int)t);
+}
+
+template<typename T>
+string int_to_string(const T& t, std::false_type)
+{
+	return t;
+}
+
+template<typename T>
+string int_to_string(const T& t)
+{
+	return int_to_string(t, is_integral<T>());
 }

@@ -18,7 +18,7 @@ public:
 	static AppConfig& GetInstance();
 
 	//---logic
-	json GetAppConfig();
+	json& GetAppConfig();
 
 	template <typename T>
 	T GetConfig(string key);

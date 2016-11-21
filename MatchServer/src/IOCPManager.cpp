@@ -85,7 +85,7 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (bytesTransferred == 0) 
 		{
-			log.INFO("disconnected with socket " + ioData->hClntSock);
+			log.Info("disconnected with socket " + ioData->hClntSock);
 			closesocket(ioData->hClntSock);
 			continue;
 		}

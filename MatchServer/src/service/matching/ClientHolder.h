@@ -19,7 +19,6 @@ public:
 
 	// =============== Business Logic 
 	bool AddClient(int metric, Client client);
-
 	
 	bool DeleteClient(CLIENTID userId);
 	//Client GetClient(CLIENTID userId);

@@ -41,7 +41,7 @@ bool SocketManager::CreateListenSocket()
 
 	if (listenSock == INVALID_SOCKET)
 	{
-		logs.ERROR("socket failed, code : " + WSAGetLastError());
+		logs.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
 
@@ -54,28 +54,28 @@ bool SocketManager::CreateListenSocket()
 	LONG lSockRet = ::bind(listenSock, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
-		logs.ERROR("bind failed, code : " + WSAGetLastError());
+		logs.Error("bind failed, code : " , WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
-	logs.INFO("bind()");
+	logs.Info("bind()");
 	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
-		logs.ERROR("listen  failed, code : " + WSAGetLastError());
+		logs.Error("listen  failed, code : " , WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
 
-	logs.INFO("Listen()");
+	logs.Info("Listen()");
 
 	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
 	{
-		logs.INFO("Associate listen socket with completion port");
+		logs.Info("Associate listen socket with completion port");
 	}
 	else 
 	{
-		logs.ERROR("Associate listen socket with completion port  failed");
+		logs.Error("Associate listen socket with completion port  failed");
 	}
 	return true;
 }
@@ -103,7 +103,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 
 	if (sock == INVALID_SOCKET)
 	{
-		logs.ERROR("socket failed, code : " + WSAGetLastError());
+		logs.Error("socket failed, code : " + WSAGetLastError());
 		return false;
 	}
 
@@ -115,7 +115,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		logs.ERROR("connect failed, code : " + WSAGetLastError());
+		logs.Error("connect failed, code : " + WSAGetLastError());
 		return false;
 	}
 
