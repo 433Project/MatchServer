@@ -59,18 +59,35 @@ Logger& Logger::GetInstance()
 	return instance;
 }
 
-void Logger::infoFuncName(string funcName, string message) 
-{
-	string msg = "[" + funcName + "()] " + message;
 
-	this->spdLogger->info(msg);
+template <typename ... Messages>
+void Logger::infoFuncName(string funcName, Messages& ... messages)
+{
+	cout << "void Logger::infoFuncName(string funcName, char* message)" << endl;
+
+	string message;
+	
+	std::vector<string> vec = { messages ... };
+
+	for (int idx = 0; idx < vec.size(); idx++) 
+	{
+		message.append(vec(idx));
+	}
+
+	this->spdLogger->info(message);
 	this->spdLogger->flush();
+}
+
+template<typename TF>
+void Logger::infoFuncName(string funcName, TF const& f) 
+{
+	cout << "void Logger::infoFuncName(string funcName, TF const& f) " << endl;
 }
 
 void Logger::errFuncName(string funcName, string message) 
 {
 	string msg =  "[" + funcName + "()] " + message;
-
+	
 	this->spdLogger->error(msg);
 	this->spdLogger->flush();
 }

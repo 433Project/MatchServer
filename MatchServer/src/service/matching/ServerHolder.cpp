@@ -30,6 +30,7 @@ void ServerHolder::DeleteServer(SERVERID serverId)
 
 Server ServerHolder::GetServer(SERVERID serverId)
 {
-	if(holder.size() != 0)	
+	//if(holder.size() != 0)	
 		return holder[serverId];
+	
 }

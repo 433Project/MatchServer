@@ -13,10 +13,9 @@ typedef std::shared_ptr<logger> MSLogger;
 #define ENV dev
 #else
 #define ENV live	
-
 #endif
-#define INFO(message) infoFuncName(__FUNCTION__,  message)
-#define ERROR(message) errFuncName(__FUNCTION__, message)
+
+//#define ERROR(messages) errFuncName(__FUNCTION__, messages)
 
 class Logger
 {
@@ -24,7 +23,15 @@ public:
 	static Logger& GetInstance();
 	~Logger();
 
-	void infoFuncName(string funcName, string message);
+	template<typename ...Messages>
+	void infoFuncName(string funcName, Messages&... messages);
+
+	template<typename TF>
+	void infoFuncName(string funcName,TF const& f);
+
+	template<class ... Args>
+	void INFO(Args ...args);
+
 	void errFuncName(string funcName, string message);
 
 protected:
@@ -33,3 +40,20 @@ protected:
 private:
 	MSLogger spdLogger;
 };
+
+template<class... Args>
+void Logger::INFO(Args ... args)
+{
+	string message;
+	
+	std::vector<string> vec = {args ...};
+
+	for (int idx = 0; idx < vec.size(); idx++) 
+	{
+		message += vec[idx];
+	}
+
+	this->spdLogger->info(message);
+	this->spdLogger->flush();
+}
+

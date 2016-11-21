@@ -9,7 +9,7 @@ MetricGenerator::MetricGenerator()
 	cout << appConfig.GetAppConfig() << endl;
 
 	//json weights = appConfig.GetConfig<json>("weight");
-	appConfig.GetConfig<string>("max");
+	//appConfig.GetConfig<string>("max");
 
 	//this->levelWeight = weights["level"];
 	//this->defenseWeight = weights["defense"];

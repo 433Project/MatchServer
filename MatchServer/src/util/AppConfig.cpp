@@ -9,10 +9,8 @@ AppConfig::AppConfig()
 
 AppConfig::~AppConfig() 
 {
-
 }
 
-//AppConfig* AppConfig::appConfig = nullptr;
 AppConfig& AppConfig::GetInstance() 
 {
 	static AppConfig instance;
@@ -22,6 +20,8 @@ AppConfig& AppConfig::GetInstance()
 
 void AppConfig::LoadConfig() 
 {
+	logger.INFO("HI", "GGG",123);
+
 	ifstream  configFile;
 	configFile.open("./config/app.json");
 
@@ -29,17 +29,9 @@ void AppConfig::LoadConfig()
 	
 	configFile.close();
 	cout << "load configuration" << endl;
-	logger.INFO("Server Configuration load");
 }
 
 json AppConfig::GetAppConfig() 
 {
 	return config;
 }
-
-template<typename T>
-T AppConfig::GetConfig(string key) 
-{
-	return config[key];
-}
-

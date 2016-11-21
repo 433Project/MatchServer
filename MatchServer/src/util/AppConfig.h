@@ -22,12 +22,17 @@ public:
 
 	template <typename T>
 	T GetConfig(string key);
+
 private:
 	void LoadConfig();
-
-	json config;
 	AppConfig();
 
+	json config;
 	Logger& logger = Logger::GetInstance();
 };
 
+template<typename T>
+T AppConfig::GetConfig(string key)
+{
+	return config[key];
+}
