@@ -18,6 +18,11 @@
     <ClCompile Include="src\IOCPManager.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
     <ClCompile Include="src\type\Server.cpp" />
+    <ClCompile Include="src\service\command\CommandCF.cpp" />
+    <ClCompile Include="src\service\command\CommandMC.cpp" />
+    <ClCompile Include="src\service\command\CommandMS.cpp" />
+    <ClCompile Include="src\service\command\CommandRS.cpp" />
+    <ClCompile Include="src\service\command\CommandHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\json\allocator.h" />
@@ -56,6 +61,11 @@
     <ClInclude Include="src\IOCPManager.h" />
     <ClInclude Include="src\MatchServer.h" />
     <ClInclude Include="src\type\Server.h" />
+    <ClInclude Include="src\service\command\CommandCF.h" />
+    <ClInclude Include="src\service\command\CommandMC.h" />
+    <ClInclude Include="src\service\command\CommandMS.h" />
+    <ClInclude Include="src\service\command\CommandRS.h" />
+    <ClInclude Include="src\service\command\CommandHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />

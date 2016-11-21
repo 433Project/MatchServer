@@ -1,4 +1,5 @@
 #include "IOCPManager.h"
+#include "Logger.h"
 
 IOCPManager* IOCPManager::instance = 0;
 
@@ -63,9 +64,10 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
 
 	Logger& log = Logger::GetInstance();
+	CommandHandler* cmdHandler = new CommandHandler();
 	MessageQueue* mq = MessageQueue::GetInstance();
 	MessageManager* mm = new MessageManager();
-
+	
 	HANDLE completionPort = iocp;
 
 	DWORD bytesTransferred;
@@ -87,17 +89,34 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			closesocket(ioData->hClntSock);
 			continue;
 		}
+
 		Packet* p = new Packet();
 		mm->ReadPacket(p, ioData->buffer);
 		
-		//if srcType이 MS 나 RS일 경우
+		if (p->body->cmd() == COMMAND_HEALTH_CHECK) 
+		{
+			char* data = new char[100];
+			mm->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
+
+			WSABUF wsabuf;
+			wsabuf.buf = data;
+			wsabuf.len = 100;
+
+			DWORD bytesSent;
+			WSASend(ioData->hClntSock, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+		}
+			
 		if (p->header->srcType == MATCHING_SERVER || p->header->srcType == ROOM_SERVER)
 			mq->Push(p);
 		else
-			;
+			cmdHandler->ProcessCommand(p);
 	}
 
-	delete mm;
+	if(mm != nullptr)
+		delete mm;
+	if (mq != nullptr)
+		delete mq;
+
 	_endthreadex(0);
 	return 0;
 }

@@ -9,8 +9,7 @@ MetricGenerator::MetricGenerator()
 	cout << appConfig.GetAppConfig() << endl;
 
 	//json weights = appConfig.GetConfig<json>("weight");
-	appConfig.GetConfig<string>("max");
-
+	//appConfig.GetConfig<string>("max");
 	//this->levelWeight = weights["level"];
 	//this->defenseWeight = weights["defense"];
 	//this->offsenseWeight = weights["offense"]; 
@@ -46,7 +45,6 @@ int MetricGenerator::GenerateOffense()
 
 int MetricGenerator::GenerateMetric() 
 {
-
 	int level = GenerateLevel();
 	int offense = GenerateOffense();
 	int defense = GenerateDefense();

@@ -27,7 +27,7 @@ void MatchServer::Start()
 {
 	//1. listen socket
 	log.INFO("Listen Socket");
-	if (socket->CreateListenSocket(port))
+	if (socket->CreateListenSocket())
 	{
 		socket->AcceptEX(5);
 	}
@@ -38,13 +38,12 @@ void MatchServer::Start()
 	
 	//2. config server
 	log.INFO("Config Server");
-	socket->CreateSocket(CONFIG, cfIP, cfPort);
+	socket->CreateSocket(CONFIG, cfIP);
 	
 	//3. connection server  
-	/*log.INFO("Connection Server");
-	if (!socket->CreateSocket(CONNECTION, csIP, csPort)) 
+	log.INFO("Connection Server");
+	if (!socket->CreateSocket(CONNECTION, csIP)) 
 	{
-		//exit(0);
-	}*/
-	while (true) {};
+		exit(0);
+	}
 }

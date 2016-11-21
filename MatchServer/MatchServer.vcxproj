@@ -149,6 +149,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\service\command\CommandHandler.cpp" />
+    <ClCompile Include="src\service\command\CommandCF.cpp" />
+    <ClCompile Include="src\service\command\CommandMC.cpp" />
+    <ClCompile Include="src\service\command\CommandMS.cpp" />
+    <ClCompile Include="src\service\command\CommandRS.cpp" />
     <ClCompile Include="src\type\Server.cpp" />
     <ClCompile Include="src\IOCPManager.cpp" />
     <ClCompile Include="src\util\Logger.cpp" />
@@ -168,6 +173,11 @@
     <ClCompile Include="src\service\matching\ServerHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\service\command\CommandHandler.h" />
+    <ClInclude Include="src\service\command\CommandCF.h" />
+    <ClInclude Include="src\service\command\CommandMC.h" />
+    <ClInclude Include="src\service\command\CommandMS.h" />
+    <ClInclude Include="src\service\command\CommandRS.h" />
     <ClInclude Include="src\type\Server.h" />
     <ClInclude Include="src\IOCPManager.h" />
     <ClInclude Include="src\util\Logger.h" />
