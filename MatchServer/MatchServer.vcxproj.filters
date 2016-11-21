@@ -17,6 +17,7 @@
     <ClCompile Include="src\service\matching\MetricGenerator.cpp" />
     <ClCompile Include="src\IOCPManager.cpp" />
     <ClCompile Include="src\MatchServer.cpp" />
+    <ClCompile Include="src\type\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\json\allocator.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\service\matching\ClientHolder.h" />
     <ClInclude Include="src\IOCPManager.h" />
     <ClInclude Include="src\MatchServer.h" />
+    <ClInclude Include="src\type\Server.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\app.json" />
