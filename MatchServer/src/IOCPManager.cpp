@@ -8,6 +8,14 @@ IOCPManager::IOCPManager()
 
 IOCPManager::~IOCPManager()
 {
+	for (int i = 0; i < numOfThreads; i++)
+	{
+		if (threads[i] != INVALID_HANDLE_VALUE)
+		{
+			delete threads[i];
+		}
+	}
+
 	delete iocp;
 }
 
@@ -31,21 +39,12 @@ void IOCPManager::Start()
 	iocp = CreateNewCompletionPort(si.dwNumberOfProcessors);
 	
 	//Create Thread Pool
-	HANDLE* threads = new HANDLE[numOfThreads];
+	threads = new HANDLE[numOfThreads];
 	for (int i = 0; i < numOfThreads; i++)
 	{
 		threads[i] = (HANDLE)_beginthreadex(NULL, 0, ProcessThread, (LPVOID)iocp, 0, NULL);
 	}
 
-	WaitForMultipleObjects(numOfThreads, threads, true, INFINITE);
-
-	for (int i = 0; i < numOfThreads; i++)
-	{
-		if (threads[i] != INVALID_HANDLE_VALUE)
-		{
-			delete threads[i];
-		}
-	}
 }
 
 HANDLE IOCPManager::CreateNewCompletionPort(DWORD numberOfConcurrentThreads)
@@ -63,7 +62,10 @@ BOOL IOCPManager::AssociateDeviceWithCompletionPort(HANDLE handle, DWORD complet
 unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
 
+	Logger& log = Logger::GetInstance();
+	MessageQueue* mq = MessageQueue::GetInstance();
 	MessageManager* mm = new MessageManager();
+
 	HANDLE completionPort = iocp;
 
 	DWORD bytesTransferred;
@@ -81,16 +83,18 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (bytesTransferred == 0) 
 		{
-			//closesocket;
+			log.INFO("disconnected with socket " + ioData->hClntSock);
+			closesocket(ioData->hClntSock);
 			continue;
 		}
 		Packet* p = new Packet();
 		mm->ReadPacket(p, ioData->buffer);
 		
 		//if srcType이 MS 나 RS일 경우
-		//메세지큐에 넣기
-		//else 
-		//커맨드핸들러에게 넘기기
+		if (p->header->srcType == MATCHING_SERVER || p->header->srcType == ROOM_SERVER)
+			mq->Push(p);
+		else
+			;
 	}
 
 	delete mm;

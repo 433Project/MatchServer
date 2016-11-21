@@ -4,7 +4,6 @@ SocketManager* SocketManager::instance = 0;
 
 SocketManager::SocketManager()
 {
-	iocp = IOCPManager::GetInstance();
 }
 
 SocketManager::~SocketManager()
@@ -30,13 +29,13 @@ SocketManager* SocketManager::GetInstance()
 	return instance;
 }
 
-bool SocketManager::CreateLinstenSocket(int port)
+bool SocketManager::CreateListenSocket(int port)
 {
 	listenSock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	if (listenSock == INVALID_SOCKET)
 	{
-		//cout << "socket failed, code : " << WSAGetLastError() << endl;
+		log.ERROR("socket failed, code : " + WSAGetLastError());
 		return false;;
 	}
 
@@ -49,20 +48,29 @@ bool SocketManager::CreateLinstenSocket(int port)
 	LONG lSockRet = ::bind(listenSock, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
-		//cout << "bind failed, code : " << WSAGetLastError() << endl;
+		log.ERROR("bind failed, code : " + WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
-
+	log.INFO("bind()");
 	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
-		//cout << "listen failed, code : " << WSAGetLastError() << endl;
+		log.ERROR("listen  failed, code : " + WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
 
-	iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN);
+	log.INFO("Listen()");
+
+	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
+	{
+		log.INFO("Associate listen socket with completion port");
+	}
+	else 
+	{
+		log.ERROR("Associate listen socket with completion port  failed");
+	}
 	return true;
 }
 
@@ -72,7 +80,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int port)
 	
 	if (sock == INVALID_SOCKET)
 	{
-		//cout << "create socket failed, code : " << WSAGetLastError() << endl;
+		log.ERROR("socket failed, code : " + WSAGetLastError());
 		return false;
 	}
 
@@ -84,7 +92,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int port)
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		//cout << "connect failed, code : " << WSAGetLastError() << endl;
+		log.ERROR("connect failed, code : " + WSAGetLastError());
 		return false;
 	}
 

@@ -153,10 +153,7 @@
     <ClCompile Include="src\util\Logger.cpp" />
     <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
     <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
-    <ClCompile Include="src\service\command\ProcessMS.cpp" />
     <ClCompile Include="src\util\SocketManager.cpp" />
-    <ClCompile Include="src\service\command\ProcessCS.cpp" />
-    <ClCompile Include="src\service\command\ProcessConfig.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\service\matching\LatencyGenerator.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
@@ -183,10 +180,7 @@
     <ClInclude Include="lib\json\value.h" />
     <ClInclude Include="lib\json\version.h" />
     <ClInclude Include="lib\json\writer.h" />
-    <ClInclude Include="src\service\command\ProcessMS.h" />
     <ClInclude Include="src\util\SocketManager.h" />
-    <ClInclude Include="src\service\command\ProcessCS.h" />
-    <ClInclude Include="src\service\command\ProcessConfig.h" />
     <ClInclude Include="src\service\command\AbstractCommand.h" />
     <ClInclude Include="src\type\Message.h" />
     <ClInclude Include="src\util\MessageQueue.h" />

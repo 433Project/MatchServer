@@ -3,6 +3,7 @@
 #include <iostream>
 #include "IOCPManager.h"
 #include "MessageManager.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ protected:
 public:
 	static SocketManager* GetInstance();
 	bool CreateSocket(int type, char* ip, int port);
-	bool CreateLinstenSocket(int port);
+	bool CreateListenSocket(int port);
 	void AcceptEX(int count);
 	DWORD SendPacket(SOCKET socket, char* data);
 	void ReceivePacket(SOCKET socket, IO_DATA* ioData);
@@ -30,9 +31,10 @@ private:
 	SOCKET cfSocket;
 	set<SOCKET> msList;
 
-
 	static SocketManager* instance;
-	IOCPManager* iocp;
 	int packetSize = 100;
+	IOCPManager* iocp = IOCPManager::GetInstance();
+	Logger& log = Logger::GetInstance();
+
 };
 
