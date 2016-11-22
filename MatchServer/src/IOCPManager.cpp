@@ -1,5 +1,6 @@
 #include "IOCPManager.h"
 #include "Logger.h"
+#include "SocketManager.h"
 
 IOCPManager* IOCPManager::instance = 0;
 
@@ -63,11 +64,11 @@ BOOL IOCPManager::AssociateDeviceWithCompletionPort(HANDLE handle, DWORD complet
 unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
 
-	Logger& log = Logger::GetInstance();
+	Logger& logger = Logger::GetInstance();
 	CommandHandler* cmdHandler = new CommandHandler();
-	MessageQueue* mq = MessageQueue::GetInstance();
-	MessageManager* mm = new MessageManager();
-	
+	MessageManager* msgM = new MessageManager();
+	SocketManager* socket = SocketManager::GetInstance();
+
 	HANDLE completionPort = iocp;
 
 	DWORD bytesTransferred;
@@ -85,37 +86,30 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (bytesTransferred == 0) 
 		{
-			log.Info("disconnected with socket " + ioData->hClntSock);
+			logger.Info("disconnected with socket " + ioData->hClntSock);
 			closesocket(ioData->hClntSock);
 			continue;
 		}
 
 		Packet* p = new Packet();
-		mm->ReadPacket(p, ioData->buffer);
-		
-		if (p->body->cmd() == COMMAND_HEALTH_CHECK) 
+		msgM->ReadPacket(p, ioData->buffer);
+			
+		if (p->body->cmd() == COMMAND_HEALTH_CHECK_REQUEST)
 		{
 			char* data = new char[100];
-			mm->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK, STATUS_NONE, "", "");
-
-			WSABUF wsabuf;
-			wsabuf.buf = data;
-			wsabuf.len = 100;
-
-			DWORD bytesSent;
-			WSASend(ioData->hClntSock, &wsabuf, 1, &bytesSent, 0, NULL, NULL);
+			msgM->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK_RESPONSE, STATUS_NONE, "", "");
+			socket->SendPacket(ioData->hClntSock, data);
+			if (data != nullptr)
+				delete data;
 		}
-			
-		if (p->header->srcType == MATCHING_SERVER || p->header->srcType == ROOM_SERVER)
-			mq->Push(p);
 		else
 			cmdHandler->ProcessCommand(p);
+
+		socket->ReceivePacket(ioData->hClntSock, ioData);
 	}
 
-	if(mm != nullptr)
-		delete mm;
-	if (mq != nullptr)
-		delete mq;
+	if(msgM != nullptr)
+		delete msgM;
 
 	_endthreadex(0);
 	return 0;

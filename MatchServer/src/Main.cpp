@@ -7,6 +7,7 @@ void main() {
 	// logger 사용 예시 
 	Logger& logger = Logger::GetInstance();
 	logger.Info("con ",123131321,"verge ",11111,"킇핳하하핳ㅎ");
+	logger.Info("↑성공하셔서 신나셨어요?");
 
 	AppConfig config = AppConfig::GetInstance();
 	config.GetAppConfig();

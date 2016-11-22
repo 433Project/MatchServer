@@ -17,5 +17,6 @@ private:
 	CommandRS* rs;
 	CommandCF* cf;
 	int handlerCount = 4;
+	
 };
 

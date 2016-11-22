@@ -15,7 +15,7 @@ public:
 	void Start();
 
 private:
-	IOCPManager* iocp = IOCPManager::GetInstance();
+	IOCPManager* iocp;
 	SocketManager* socket;
 	
 	//Config Server 
@@ -23,7 +23,7 @@ private:
 	//Connection Server
 	char* csIP = "10.100.10.8";
 	
-	Logger& log = Logger::GetInstance();
+	Logger& logger = Logger::GetInstance();
 	
 };
 

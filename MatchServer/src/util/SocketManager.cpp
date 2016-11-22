@@ -2,14 +2,12 @@
 #include "Logger.h"
 
 
-Logger& logs = Logger::GetInstance();
 
 SocketManager* SocketManager::instance = 0;
-IOCPManager* iocp = IOCPManager::GetInstance();
 
 SocketManager::SocketManager()
 {
-	
+	iocp = IOCPManager::GetInstance();
 }
 
 SocketManager::~SocketManager()
@@ -41,7 +39,7 @@ bool SocketManager::CreateListenSocket()
 
 	if (listenSock == INVALID_SOCKET)
 	{
-		logs.Error("socket failed, code : ", WSAGetLastError());
+		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
 
@@ -54,28 +52,28 @@ bool SocketManager::CreateListenSocket()
 	LONG lSockRet = ::bind(listenSock, (PSOCKADDR)&sa, sizeof(SOCKADDR_IN));
 	if (lSockRet == SOCKET_ERROR)
 	{
-		logs.Error("bind failed, code : " , WSAGetLastError());
+		logger.Error("bind failed, code : " , WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
-	logs.Info("bind()");
+	logger.Info("bind()");
 	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
-		logs.Error("listen  failed, code : " , WSAGetLastError());
+		logger.Error("listen  failed, code : " , WSAGetLastError());
 		closesocket(listenSock);
 		return false;
 	}
 
-	logs.Info("Listen()");
+	logger.Info("Listen()");
 
 	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
 	{
-		logs.Info("Associate listen socket with completion port");
+		logger.Info("Associate listen socket with completion port");
 	}
 	else 
 	{
-		logs.Error("Associate listen socket with completion port  failed");
+		logger.Error("Associate listen socket with completion port  failed");
 	}
 	return true;
 }
@@ -103,7 +101,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 
 	if (sock == INVALID_SOCKET)
 	{
-		logs.Error("socket failed, code : " + WSAGetLastError());
+		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
 
@@ -115,7 +113,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		logs.Error("connect failed, code : " + WSAGetLastError());
+		logger.Error("connect failed, code : ",  WSAGetLastError());
 		return false;
 	}
 
@@ -158,7 +156,7 @@ void SocketManager::AcceptEX(int count)
 		{
 			if (WSAGetLastError() != WSA_IO_PENDING)
 			{
-				cout << "AcceptEx failed : " << WSAGetLastError() << endl;
+				logger.Error("AcceptEx failed : ", WSAGetLastError());
 				closesocket(ov->hClntSock);
 				delete ov;
 				break;
@@ -187,7 +185,7 @@ PVOID SocketManager::GetSockExtAPI(GUID guidFn)
 	);
 	if (lRet == SOCKET_ERROR)
 	{
-		std::cout << "WSAIoctl failed, code : " << WSAGetLastError() << endl;
+		logger.Error("WSAIoctl failed, code : ", WSAGetLastError());
 		return NULL;
 	}
 	return pfnEx;
@@ -209,7 +207,6 @@ DWORD SocketManager::SendPacket(SOCKET socket, char* data)
 void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 {
 	ioData->buffer = new char[packetSize];
-
 	DWORD flags = MSG_PUSH_IMMEDIATE;
 	WSABUF wb;
 	wb.buf = ioData->buffer;

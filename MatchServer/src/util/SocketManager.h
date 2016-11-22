@@ -29,10 +29,14 @@ public:
 	map<SOCKET, int> msList;
 	int packetSize = 100;
 
+
 private:
 	const int backlog = 10;
 	static SocketManager* instance;
-	
+
+	Logger& logger = Logger::GetInstance();
+	IOCPManager* iocp;
+
 	int cfPort = 14040;
 	int csPort = 8433;
 	int port = 10000;

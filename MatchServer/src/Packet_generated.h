@@ -10,12 +10,12 @@ namespace fb {
 	struct Body;
 
 	enum COMMAND {
-		COMMAND_HEALTH_CHECK = 0,
+		COMMAND_HEALTH_CHECK_REQUEST = 0,
+		COMMAND_HEALTH_CHECK_RESPONSE = 1,
 		COMMAND_NOTI_MATCH_REQUEST = 10,
-		COMMAND_NOTI_MATCH_RESPONSE = 11,
-		COMMAND_LATENCY = 12,
-		COMMAND_MATCH_REQUEST = 13,
-		COMMAND_MATCH_RESPONSE = 14,
+		COMMAND_NOTI_MATCH_SUCCESS = 11,
+		COMMAND_MATCH_REQUEST = 12,
+		COMMAND_MATCH_RESPONSE = 13,
 		COMMAND_MSLIST_REQUEST = 30,
 		COMMAND_MSLIST_RESPONSE = 31,
 		COMMAND_MS_ID = 32,
@@ -28,12 +28,12 @@ namespace fb {
 		COMMAND_PG_START = 60,
 		COMMAND_PG_END = 61,
 		COMMAND_PG_DUMMY = 62,
-		COMMAND_MIN = COMMAND_HEALTH_CHECK,
+		COMMAND_MIN = COMMAND_HEALTH_CHECK_REQUEST,
 		COMMAND_MAX = COMMAND_PG_DUMMY
 	};
 
 	inline const char **EnumNamesCOMMAND() {
-		static const char *names[] = { "HEALTH_CHECK", "", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_RESPONSE", "LATENCY", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "MS_ID", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
+		static const char *names[] = { "HEALTH_CHECK_REQUEST", "HEALTH_CHECK_RESPONSE", "", "", "", "", "", "", "", "", "NOTI_MATCH_REQUEST", "NOTI_MATCH_SUCCESS", "MATCH_REQUEST", "MATCH_RESPONSE", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "MSLIST_REQUEST", "MSLIST_RESPONSE", "MS_ID", "", "", "", "", "", "", "", "ROOM_CREATE_REQUEST", "ROOM_CREATE_RESPONSE", "", "", "", "", "", "", "", "", "ROOM_JOIN_REQUEST", "ROOM_JOIN_RESPONSE", "GAME_START", "GAME_END", "", "", "", "", "", "", "PG_START", "PG_END", "PG_DUMMY", nullptr };
 		return names;
 	}
 
@@ -93,7 +93,7 @@ namespace fb {
 	};
 
 	inline flatbuffers::Offset<Body> CreateBody(flatbuffers::FlatBufferBuilder &_fbb,
-		COMMAND cmd = COMMAND_HEALTH_CHECK,
+		COMMAND cmd = COMMAND_HEALTH_CHECK_REQUEST,
 		STATUS status = STATUS_SUCCESS,
 		flatbuffers::Offset<flatbuffers::String> data1 = 0,
 		flatbuffers::Offset<flatbuffers::String> data2 = 0) {
@@ -106,7 +106,7 @@ namespace fb {
 	}
 
 	inline flatbuffers::Offset<Body> CreateBodyDirect(flatbuffers::FlatBufferBuilder &_fbb,
-		COMMAND cmd = COMMAND_HEALTH_CHECK,
+		COMMAND cmd = COMMAND_HEALTH_CHECK_REQUEST,
 		STATUS status = STATUS_SUCCESS,
 		const char *data1 = nullptr,
 		const char *data2 = nullptr) {

@@ -23,20 +23,18 @@ CommandHandler::~CommandHandler()
 
 void CommandHandler::ProcessCommand(Packet* p)
 {
-	if (p->body->cmd() >= 40) 
-	{
 
-	}
-	else if (p->body->cmd() >= 30) 
-	{
+	switch (p->header->srcCode) {
+	case CONFIG_SERVER:
 		cf->CommandCFHandler(p);
-	}
-	else if (p->body->cmd() >= 20)
-	{
-
-	}
-	else if (p->body->cmd() >= 10)
-	{
-
+		break;
+	case MATCHING_SERVER:
+		break;
+	case MATCHING_CLIENT:
+		break;
+	case ROOM_SERVER:
+		break;
+	default:
+		break;
 	}
 }
