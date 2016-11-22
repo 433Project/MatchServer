@@ -6,7 +6,6 @@ using namespace std;
 struct IO_DATA : OVERLAPPED
 {
 	char* buffer;
-	WSABUF wsabuf;
 	SOCKET hClntSock;
 
 	IO_DATA(SOCKET sock)

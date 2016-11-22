@@ -120,12 +120,14 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	}
 
 	//IOCP µî·Ï
-	iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
-	
+	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
+		logger.Info("Associate socket ", type, " with completion port");
+	else
+		logger.Error("Associate socket ", type, " with completion port");
+
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);
 	ReceivePacket(sock, ioData);
-
 	return true;
 }
 
@@ -209,7 +211,9 @@ DWORD SocketManager::SendPacket(SOCKET socket, char* data)
 void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 {
 	ioData->buffer = new char[packetSize];
-	ioData->wsabuf.buf = ioData->buffer;
-	ioData->wsabuf.len = packetSize;
-	WSARecv(ioData->hClntSock, &ioData->wsabuf, 1, NULL, 0, ioData, NULL);
+	DWORD flag = MSG_PUSH_IMMEDIATE;
+	WSABUF wsaBuf;
+	wsaBuf.buf = ioData->buffer;
+	wsaBuf.len = packetSize;
+	WSARecv(ioData->hClntSock, &wsaBuf, 1, NULL, &flag, ioData, NULL);
 }

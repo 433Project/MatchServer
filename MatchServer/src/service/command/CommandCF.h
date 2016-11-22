@@ -13,6 +13,8 @@ public:
 	void CommandCFHandler(Packet* p);
 
 private:
+	void Command_HEALTH_CHECK_REQUEST(Packet* p);
+	void Command_HEALTH_CHECK_RESPONSE(Packet* p);
 	void Command_MSLIST_REQUEST (Packet* p);
 	void Command_MSLIST_RESPONSE (Packet* p);
 	void Command_MS_ID (Packet* p);

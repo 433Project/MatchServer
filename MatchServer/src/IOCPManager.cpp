@@ -66,7 +66,6 @@ BOOL IOCPManager::AssociateDeviceWithCompletionPort(HANDLE handle, DWORD complet
 
 unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 {
-
 	Logger& logger = Logger::GetInstance();
 	CommandHandler* cmdHandler = new CommandHandler();
 	MessageManager* msgM = new MessageManager();
@@ -88,7 +87,7 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (bytesTransferred == 0) 
 		{
-			logger.Info("disconnected with socket " + ioData->hClntSock);
+			logger.Info("disconnected with socket ", ioData->hClntSock);
 			closesocket(ioData->hClntSock);
 			continue;
 		}
@@ -96,14 +95,14 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 		Packet* p = new Packet();
 		msgM->ReadPacket(p, ioData->buffer);
 			
-		
 		cmdHandler->ProcessCommand(p);
 		
 		ioData->buffer = new char[packetSize];
-		ioData->wsabuf.buf = ioData->buffer;
-		ioData->wsabuf.len = packetSize;
-
-		WSARecv(ioData->hClntSock, &ioData->wsabuf, 1, NULL, 0, ioData, NULL);
+		DWORD flag = MSG_PUSH_IMMEDIATE;
+		WSABUF wsaBuf;
+		wsaBuf.buf = ioData->buffer;
+		wsaBuf.len = packetSize;
+		WSARecv(ioData->hClntSock, &wsaBuf, 1, NULL, &flag, ioData, NULL);
 	}
 
 	if(msgM != nullptr)

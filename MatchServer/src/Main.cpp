@@ -24,5 +24,5 @@ void main() {
 	MatchServer* ms = new MatchServer();
 	ms->Initailize();
 	ms->Start();
-	//while (true) {}
+	while (true) {}
 }
