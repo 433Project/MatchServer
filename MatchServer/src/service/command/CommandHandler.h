@@ -1,8 +1,9 @@
 #pragma once
-#include "CommandCF.h"
-#include "CommandMS.h"
-#include "CommandMC.h"
-#include "CommandRS.h"
+#include "Protocol.h"
+class CommandMS;
+class CommandMC;
+class CommandRS;
+class CommandCF;
 
 class CommandHandler
 {

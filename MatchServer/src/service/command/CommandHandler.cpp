@@ -1,4 +1,8 @@
 #include "CommandHandler.h"
+#include "CommandMS.h"
+#include "CommandMC.h"
+#include "CommandCF.h"
+#include "CommandRS.h"
 
 CommandHandler::CommandHandler()
 {

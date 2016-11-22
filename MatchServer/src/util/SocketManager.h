@@ -1,9 +1,6 @@
 #pragma once
-#include <iostream>
 #include "IOCPManager.h"
-#include "MessageManager.h"
-
-using namespace std;
+#include "Logger.h"
 
 class SocketManager
 {
@@ -26,7 +23,7 @@ public:
 	SOCKET listenSock;	
 	SOCKET csSocket;
 	SOCKET cfSocket;
-	map<SOCKET, int> msList;
+	std::unordered_map<int, SOCKET> msList;
 	int packetSize = 100;
 
 

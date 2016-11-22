@@ -1,8 +1,11 @@
 #include "IOCPManager.h"
+#include <process.h>
+#include "MessageQueue.h"
+#include "MessageManager.h"
 #include "Logger.h"
-#include "SocketManager.h"
+#include "CommandHandler.h"
 
-IOCPManager* IOCPManager::instance = 0;
+IOCPManager* IOCPManager::instance = nullptr;
 
 IOCPManager::IOCPManager()
 {
@@ -24,7 +27,7 @@ IOCPManager::~IOCPManager()
 
 IOCPManager* IOCPManager::GetInstance()
 {
-	if (instance == 0)
+	if (instance == nullptr)
 		instance = new IOCPManager();
 	return instance;
 }
@@ -67,7 +70,6 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 	Logger& logger = Logger::GetInstance();
 	CommandHandler* cmdHandler = new CommandHandler();
 	MessageManager* msgM = new MessageManager();
-	SocketManager* socket = SocketManager::GetInstance();
 
 	HANDLE completionPort = iocp;
 
@@ -94,23 +96,24 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 		Packet* p = new Packet();
 		msgM->ReadPacket(p, ioData->buffer);
 			
-		if (p->body->cmd() == COMMAND_HEALTH_CHECK_REQUEST)
+		/*if (p->body->cmd() == COMMAND_HEALTH_CHECK_REQUEST)
 		{
 			char* data = new char[100];
 			msgM->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK_RESPONSE, STATUS_NONE, "", "");
-			socket->SendPacket(ioData->hClntSock, data);
+			socketM->SendPacket(ioData->hClntSock, data);
 			if (data != nullptr)
 				delete data;
 		}
 		else
 			cmdHandler->ProcessCommand(p);
 
-		socket->ReceivePacket(ioData->hClntSock, ioData);
+		socketM->ReceivePacket(ioData->hClntSock, ioData);*/
 	}
 
 	if(msgM != nullptr)
 		delete msgM;
-
+	if (cmdHandler != nullptr)
+		delete cmdHandler;
 	_endthreadex(0);
 	return 0;
 }

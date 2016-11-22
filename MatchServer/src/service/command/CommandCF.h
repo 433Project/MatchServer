@@ -1,11 +1,9 @@
 #pragma once
-#include <iostream>
 #include "Protocol.h"
 #include "AppConfig.h"
-#include "MessageManager.h"
-#include "SocketManager.h"
 
-using namespace std;
+class SocketManager;
+class MessageManager;
 
 class CommandCF
 {
@@ -27,9 +25,8 @@ private:
 	int funcCount = 3;
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
-	SocketManager* socketM = SocketManager::GetInstance();
-	MessageManager* msgM ;
-	
 
+	SocketManager* socketM;
+	MessageManager* msgM ;
 };
 

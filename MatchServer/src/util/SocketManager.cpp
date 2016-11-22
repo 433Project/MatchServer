@@ -1,10 +1,12 @@
 #include "SocketManager.h"
-#include "Logger.h"
+#include <iostream>
+#include <map>
+#include <winsock2.h>
+#include <mswsock.h>
 
+#pragma comment(lib, "Ws2_32.lib")
 
-
-SocketManager* SocketManager::instance = 0;
-
+SocketManager* SocketManager::instance = nullptr;
 SocketManager::SocketManager()
 {
 	iocp = IOCPManager::GetInstance();
@@ -19,7 +21,7 @@ SocketManager::~SocketManager()
 	if (csSocket != INVALID_SOCKET)
 		closesocket(listenSock);
 
-	map<SOCKET, int>::iterator iter;
+	std::unordered_map<int, SOCKET>::iterator iter;
 	for (iter = msList.begin(); iter != msList.end(); iter++) 
 	{
 		closesocket(iter->first);
@@ -28,7 +30,7 @@ SocketManager::~SocketManager()
 
 SocketManager* SocketManager::GetInstance()
 {
-	if (instance == 0)
+	if (instance == nullptr)
 		instance = new SocketManager();
 	return instance;
 }
@@ -95,7 +97,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	}
 	else if (type == MATCHING)
 	{
-		msList.insert(pair<SOCKET, int>(sock, id));
+		msList.insert(pair<int, SOCKET>(id, sock));
 		port = this->port;
 	}
 
