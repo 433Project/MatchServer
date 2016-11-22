@@ -209,9 +209,7 @@ DWORD SocketManager::SendPacket(SOCKET socket, char* data)
 void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 {
 	ioData->buffer = new char[packetSize];
-	DWORD flags = MSG_PUSH_IMMEDIATE;
-	WSABUF wb;
-	wb.buf = ioData->buffer;
-	wb.len = packetSize;
-	WSARecv(ioData->hClntSock, &wb, 1, NULL, &flags, ioData, NULL);
+	ioData->wsabuf.buf = ioData->buffer;
+	ioData->wsabuf.len = packetSize;
+	WSARecv(ioData->hClntSock, &ioData->wsabuf, 1, NULL, 0, ioData, NULL);
 }

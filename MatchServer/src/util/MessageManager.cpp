@@ -11,7 +11,7 @@ MessageManager::~MessageManager()
 }
 
 
-void MessageManager::MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2)
+void MessageManager::MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, COMMAND comm, STATUS st, string data1, string data2, int srcCode)
 {
 	flatbuffers::FlatBufferBuilder builder;
 	flatbuffers::Offset<Body> body;
@@ -29,7 +29,7 @@ void MessageManager::MakePacket(char* bytes, TERMINALTYPE dstType, int dstCode, 
 	char* b = reinterpret_cast<char*>(buf);
 	int len = builder.GetSize();
 
-	Header* h = new Header(len, MATCHING_SERVER, 0, dstType, dstCode);
+	Header* h = new Header(len, MATCHING_SERVER, srcCode, dstType, dstCode);
 
 	memcpy(bytes, h, sizeof(Header));
 	memcpy(&bytes[sizeof(Header)], b, len);

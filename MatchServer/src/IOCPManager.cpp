@@ -96,18 +96,14 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 		Packet* p = new Packet();
 		msgM->ReadPacket(p, ioData->buffer);
 			
-		/*if (p->body->cmd() == COMMAND_HEALTH_CHECK_REQUEST)
-		{
-			char* data = new char[100];
-			msgM->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK_RESPONSE, STATUS_NONE, "", "");
-			socketM->SendPacket(ioData->hClntSock, data);
-			if (data != nullptr)
-				delete data;
-		}
-		else
-			cmdHandler->ProcessCommand(p);
+		
+		cmdHandler->ProcessCommand(p);
+		
+		ioData->buffer = new char[packetSize];
+		ioData->wsabuf.buf = ioData->buffer;
+		ioData->wsabuf.len = packetSize;
 
-		socketM->ReceivePacket(ioData->hClntSock, ioData);*/
+		WSARecv(ioData->hClntSock, &ioData->wsabuf, 1, NULL, 0, ioData, NULL);
 	}
 
 	if(msgM != nullptr)

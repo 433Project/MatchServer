@@ -5,7 +5,8 @@ using namespace std;
 
 struct IO_DATA : OVERLAPPED
 {
-	char* buffer;		
+	char* buffer;
+	WSABUF wsabuf;
 	SOCKET hClntSock;
 
 	IO_DATA(SOCKET sock)
@@ -44,6 +45,7 @@ private:
 	HANDLE iocp;
 	HANDLE* threads;
 	int numOfThreads;
+	static const int packetSize = 100;
 
 };
 
