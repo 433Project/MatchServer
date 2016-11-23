@@ -38,11 +38,25 @@ void MatchServer::Start()
 	
 	//2. config server
 	logger.Info("Config Server");
-	socket->CreateSocket(CONFIG, cfIP);
-	
+	json cf = config.GetConfig<json>("Config");
+
+	cout << cf << endl;
+	string ip = cf["ip"];
+	if(true)
+		socket->CreateSocket(CONFIG, ip, cf["port"]);
+	else
+		socket->CreateSocket(CONFIG, cfIP, cfPort);
+
 	//3. connection server  
 	logger.Info("Connection Server");
-	if (!socket->CreateSocket(CONNECTION, csIP)) 
+	json cs = config.GetConfig<json>("Connection");
+	bool connected;
+	if (true)
+		connected = socket->CreateSocket(CONFIG, cs["ip"], cs["port"]);
+	else
+		connected = socket->CreateSocket(CONFIG, csIP, csPort);
+
+	if (!connected)
 	{
 		exit(0);
 	}

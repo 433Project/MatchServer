@@ -11,6 +11,7 @@ SocketManager::SocketManager()
 {
 	iocpM = IOCPManager::GetInstance();
 	msgM = new MessageManager();
+
 }
 
 SocketManager::~SocketManager()
@@ -81,26 +82,9 @@ bool SocketManager::CreateListenSocket()
 	return true;
 }
 
-bool SocketManager::CreateSocket(COMPLETIONKEY type, char* ip, int id)
+bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id)
 {
 	SOCKET sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-	int port = 0;
-	
-	if (type == CONNECTION)
-	{
-		csSocket = sock;
-		port = csPort;
-	}
-	else if (type == CONFIG)
-	{
-		cfSocket = sock;
-		port = cfPort;
-	}
-	else if (type == MATCHING)
-	{
-		msList.insert(pair<int, SOCKET>(id, sock));
-		port = this->port;
-	}
 
 	if (sock == INVALID_SOCKET)
 	{
@@ -111,7 +95,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, char* ip, int id)
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = inet_addr(ip);			//Server IP
+	addr.sin_addr.s_addr = inet_addr(ip.c_str());			//Server IP
 	addr.sin_port = htons(port);					//Server Port
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
@@ -120,6 +104,19 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, char* ip, int id)
 		return false;
 	}
 
+	if (type == CONNECTION)
+	{
+		csSocket = sock;
+	}
+	else if (type == CONFIG)
+	{
+		cfSocket = sock;
+	}
+	else if (type == MATCHING)
+	{
+		msList.insert(pair<int, SOCKET>(id, sock));
+	}
+	
 	//IOCP µî·Ï
 	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
 		logger.Info("Associate socket with completion port");
@@ -127,6 +124,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, char* ip, int id)
 	else
 		logger.Error("Associate socket with completion port fail");
 		//logger.Error("Associate ", type, "socket with completion port fail");
+
 
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);

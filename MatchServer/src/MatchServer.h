@@ -1,10 +1,7 @@
 #pragma once
-
 #include "SocketManager.h"
 #include "Logger.h"
-
-using namespace std;
-
+#include "AppConfig.h"
 
 class MatchServer
 {
@@ -19,11 +16,13 @@ private:
 	SocketManager* socket;
 	
 	//Config Server 
-	char* cfIP = "10.100.10.10";
+	string cfIP = "10.100.10.10";
+	int cfPort = 14040;
 	//Connection Server
-	char* csIP = "10.100.10.8";
-	
+	string csIP = "10.100.10.8";
+	int csPort = 8433;
+
 	Logger& logger = Logger::GetInstance();
-	
+	AppConfig& config = AppConfig::GetInstance();
 };
 

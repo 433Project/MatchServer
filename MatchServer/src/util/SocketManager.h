@@ -12,7 +12,7 @@ protected:
 
 public:
 	static SocketManager* GetInstance();
-	bool CreateSocket(COMPLETIONKEY type, char* ip, int id = 0);
+	bool CreateSocket(COMPLETIONKEY type, string ip, int port, int id = 0);
 	bool CreateListenSocket();
 	void AcceptEX(int count);
 	DWORD SendPacket(SOCKET socket, char* data);
@@ -33,6 +33,7 @@ public:
 	int packetSize = 100;
 
 private:
+	int port = 10000;
 	const int backlog = 10;
 	static SocketManager* instance;
 	IOCPManager* iocpM;
@@ -40,9 +41,5 @@ private:
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
 
-
-	int cfPort = 14040;
-	int csPort = 8433;
-	int port = 10000;
 };
 
