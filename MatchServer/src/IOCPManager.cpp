@@ -85,6 +85,13 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			INFINITE
 		);
 
+		if (completionKey == LISTEN)
+		{
+			logger.Info("Accepted");
+			cmdHandler->ProcessListen(ioData->hClntSock, ioData->buffer);
+			continue;
+		}
+
 		if (bytesTransferred == 0) 
 		{
 			logger.Info("disconnected with socket ", ioData->hClntSock);
@@ -94,8 +101,16 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		Packet* p = new Packet();
 		msgM->ReadPacket(p, ioData->buffer);
-			
-		cmdHandler->ProcessCommand(p);
+		
+		
+		if (completionKey == CONFIG || completionKey == CONNECTION || completionKey == MATCHING)
+		{
+			cmdHandler->ProcessCommand(p);
+		}
+		else 
+		{
+			logger.Error("Unkwon Completion key", completionKey);
+		}
 		
 		ioData->buffer = new char[packetSize];
 		DWORD flag = MSG_PUSH_IMMEDIATE;

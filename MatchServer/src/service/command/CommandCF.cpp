@@ -57,9 +57,17 @@ void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 {
 	int id = atoi(p->body->data1()->c_str());
 	char* ip = (char*)p->body->data2()->c_str();
-
-	logger.Info("New Matching Server");
+	logger.Info(" Command_MSLIST_RESPONSE ip : ", ip);
+	logger.Info("Connecting to  MS");
 	socketM->CreateSocket(MATCHING, ip, id);
+
+	char* data = new char[sizeof(Header)];
+	msgM->HeaderToBytes(data, MATCHING_SERVER, id, config.GetConfig<json>("ID"));
+	socketM->SendPacket(socketM->msList[id], data);
+	logger.Info("Send header to id : ", id);
+	if (data != nullptr)
+		delete data;
+
 }
 
 void CommandCF::Command_MS_ID (Packet* p)
@@ -69,8 +77,7 @@ void CommandCF::Command_MS_ID (Packet* p)
 	{
 		config.GetAppConfig()["ID"] = id;
 		logger.Info("Server id : ", id);
-		int packetSize = socketM->packetSize;
-		char* data = new char[packetSize];
+		char* data = new char[socketM->packetSize];
 		msgM->MakePacket(data, CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 		socketM->SendPacket(socketM->cfSocket, data);
 

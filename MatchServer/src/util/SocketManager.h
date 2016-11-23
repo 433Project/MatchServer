@@ -15,6 +15,7 @@ public:
 	void AcceptEX(int count);
 	DWORD SendPacket(SOCKET socket, char* data);
 	void ReceivePacket(SOCKET socket, IO_DATA* ioData);
+	void AcceptMS(SOCKET sock, int id);
 
 private:
 	PVOID GetSockExtAPI(GUID guidFn);
@@ -32,7 +33,7 @@ private:
 	static SocketManager* instance;
 
 	Logger& logger = Logger::GetInstance();
-	IOCPManager* iocp;
+	IOCPManager* iocpM;
 
 	int cfPort = 14040;
 	int csPort = 8433;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Protocol.h"
 #include "Logger.h"
+#include <WinSock2.h>
 class CommandMS;
 class CommandMC;
 class CommandRS;
@@ -14,6 +15,7 @@ public:
 	CommandHandler();
 	~CommandHandler();
 	void ProcessCommand(Packet* p);
+	void ProcessListen(SOCKET s, char* bytes);
 
 private:
 	int handlerCount = 4;
@@ -23,7 +25,6 @@ private:
 	CommandCF* cf;
 	SocketManager* socketM;
 	MessageManager* msgM;
-
 	Logger& logger = Logger::GetInstance();
 	
 };

@@ -1,3 +1,4 @@
+#pragma once
 #include "CommandHandler.h"
 #include "CommandMS.h"
 #include "CommandMC.h"
@@ -47,7 +48,14 @@ void CommandHandler::ProcessCommand(Packet* p)
 	default:
 		//logger.Error("received Message from ", p->header->srcType);
 		break;
-	}
+	}	
+}
 
+void CommandHandler::ProcessListen(SOCKET s, char* bytes)
+{
+	Header* h = new Header();
+	msgM->BytesToHeader(bytes, h);
+	socketM->AcceptMS(s, h->srcCode);
 	
 }
+

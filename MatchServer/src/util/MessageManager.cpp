@@ -47,3 +47,13 @@ void MessageManager::ReadPacket(Packet* p, char* data)
 	p->body = (Body*)GetBody(d);
 }
 
+void MessageManager::HeaderToBytes(char* bytes, TERMINALTYPE dstType, int dstCode, int srcCode)
+{
+	Header* h = new Header(0, MATCHING_SERVER, srcCode, dstType, dstCode);
+	memcpy(bytes, h, sizeof(Header));
+}
+
+void MessageManager::BytesToHeader(char* bytes, Header* h)
+{
+	memcpy(h, bytes, sizeof(Header));
+}

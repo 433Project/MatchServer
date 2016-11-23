@@ -3,13 +3,12 @@
 #include <map>
 #include <winsock2.h>
 #include <mswsock.h>
-
 #pragma comment(lib, "Ws2_32.lib")
 
 SocketManager* SocketManager::instance = nullptr;
 SocketManager::SocketManager()
 {
-	iocp = IOCPManager::GetInstance();
+	iocpM = IOCPManager::GetInstance();
 }
 
 SocketManager::~SocketManager()
@@ -44,7 +43,7 @@ bool SocketManager::CreateListenSocket()
 		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
-
+	logger.Info(listenSock);
 	SOCKADDR_IN	sa;
 	memset(&sa, 0, sizeof(SOCKADDR_IN));
 	sa.sin_family = AF_INET;
@@ -69,7 +68,7 @@ bool SocketManager::CreateListenSocket()
 
 	logger.Info("Listen()");
 
-	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
+	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
 	{
 		logger.Info("Associate listen socket with completion port");
 	}
@@ -120,7 +119,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	}
 
 	//IOCP µî·Ï
-	if (iocp->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
+	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
 		logger.Info("Associate socket ", type, " with completion port");
 	else
 		logger.Error("Associate socket ", type, " with completion port");
@@ -128,6 +127,7 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);
 	ReceivePacket(sock, ioData);
+	logger.Info(sock);
 	return true;
 }
 
@@ -142,17 +142,18 @@ void SocketManager::AcceptEX(int count)
 		if (sock == INVALID_SOCKET)
 			return;
 
+		DWORD dwBytes;
 		IO_DATA* ov = new IO_DATA(sock);
-		ov->buffer = new char[512];
+		ov->buffer = new char[(sizeof(SOCKADDR_IN) + 16)*2 + 20];
 		BOOL bIsOK = pfnAcceptEx
 		(
 			listenSock,						//sListenSocket
 			sock,							//sAcceptSocket
 			ov->buffer,						//lpOutputBuffer
-			0,								//dwReceiveDataLength
+			20,						//dwReceiveDataLength
 			sizeof(SOCKADDR_IN) + 16,		//dwLocalAddressLength
 			sizeof(SOCKADDR_IN) + 16,		//dwRemoteAddressLength
-			NULL,							//lpdwBytesReceived
+			&dwBytes,							//lpdwBytesReceived
 			(LPOVERLAPPED)ov				//lpOverlapped
 		);
 
@@ -216,4 +217,12 @@ void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 	wsaBuf.buf = ioData->buffer;
 	wsaBuf.len = packetSize;
 	WSARecv(ioData->hClntSock, &wsaBuf, 1, NULL, &flag, ioData, NULL);
+}
+
+void SocketManager::AcceptMS(SOCKET sock, int id)
+{
+	iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
+	logger.Info("New Matching Server " + sock);
+	msList.insert(pair<int, SOCKET>(id, sock));
+	AcceptEX(1);
 }
