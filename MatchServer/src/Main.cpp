@@ -11,9 +11,6 @@ void main() {
 
 	AppConfig config = AppConfig::GetInstance();
 	config.GetAppConfig();
-
-	cout << config.GetAppConfig() << endl;
-	cout << config.GetConfig<json>("max") << endl;
 	
 	// appconfig(json)에 새로운 값 대입 예시
 	config.GetAppConfig()["wow"] = "adf";

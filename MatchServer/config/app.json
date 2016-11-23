@@ -1,24 +1,23 @@
 {
-  "max": [
-    { "offense": "100" },
-    { "defense": "100" },
-    { "level": "100" }
-  ],
+  "max": {
+    "offense": "100",
+    "defense": "100",
+    "level": "100"
+  },
 
-  "weight": [
-    { "offsense": "0.2" },
-    { "defense": "0.2" },
-    { "level": "0.2" }
-  ],
+  "weight": {
+    "offsense": "0.2",
+    "defense": "0.2",
+    "level": "0.2"
+  },
 
-  "Config": [
-    { "ip": "10.100.10.10" },
-    { "port": "14040" }
-  ],
+  "Config": {
+    "ip": "10.100.10.10",
+     "port": 14040
+  },
 
-  "Connection": [
-    { "ip": "10.100.10.6" },
-    { "port": "8433" }
-  ]
-
+  "Connection": {
+    "ip": "10.100.10.6",
+    "port": 8433
+  }
 }

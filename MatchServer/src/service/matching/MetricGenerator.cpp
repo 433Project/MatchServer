@@ -10,7 +10,7 @@ MetricGenerator::MetricGenerator()
 
 	json weights = appConfig.GetConfig<json>("weight");
 	json max = appConfig.GetConfig<json>("max");
-	appConfig.GetConfig<string>("max");
+
 	this->levelWeight = weights["level"];
 	this->defenseWeight = weights["defense"];
 	this->offsenseWeight = weights["offense"]; 
