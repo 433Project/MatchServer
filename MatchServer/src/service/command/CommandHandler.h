@@ -23,6 +23,7 @@ private:
 	CommandMC* mc;
 	CommandRS* rs;
 	CommandCF* cf;
+
 	SocketManager* socketM;
 	MessageManager* msgM;
 	Logger& logger = Logger::GetInstance();

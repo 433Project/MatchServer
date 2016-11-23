@@ -150,10 +150,10 @@ void SocketManager::AcceptEX(int count)
 			listenSock,						//sListenSocket
 			sock,							//sAcceptSocket
 			ov->buffer,						//lpOutputBuffer
-			20,						//dwReceiveDataLength
+			20,								//dwReceiveDataLength
 			sizeof(SOCKADDR_IN) + 16,		//dwLocalAddressLength
 			sizeof(SOCKADDR_IN) + 16,		//dwRemoteAddressLength
-			&dwBytes,							//lpdwBytesReceived
+			&dwBytes,						//lpdwBytesReceived
 			(LPOVERLAPPED)ov				//lpOverlapped
 		);
 
@@ -222,7 +222,7 @@ void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 void SocketManager::AcceptMS(SOCKET sock, int id)
 {
 	iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
-	logger.Info("New Matching Server " + sock);
+	logger.Info("New Matching Server ", sock, " id = ", id);
 	msList.insert(pair<int, SOCKET>(id, sock));
 	AcceptEX(1);
 }

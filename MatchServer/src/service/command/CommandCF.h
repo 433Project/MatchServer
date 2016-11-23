@@ -4,6 +4,7 @@
 
 class SocketManager;
 class MessageManager;
+//class ServerHolder;
 
 class CommandCF
 {
@@ -27,8 +28,11 @@ private:
 	int funcCount = 3;
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
+	//ServerHolder& servers = ServerHolder::GetInstance();
 
 	SocketManager* socketM;
 	MessageManager* msgM ;
+	
+	int heartBeat = 0;
 };
 

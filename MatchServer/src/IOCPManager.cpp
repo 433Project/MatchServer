@@ -91,21 +91,22 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			cmdHandler->ProcessListen(ioData->hClntSock, ioData->buffer);
 			continue;
 		}
-
-		if (bytesTransferred == 0) 
+		else if (completionKey == CONFIG || completionKey == CONNECTION || completionKey == MATCHING)
 		{
-			logger.Info("disconnected with socket ", ioData->hClntSock);
-			closesocket(ioData->hClntSock);
-			continue;
-		}
+			if (bytesTransferred == 0)
+			{
+				logger.Info("disconnected with socket ", ioData->hClntSock);
+				closesocket(ioData->hClntSock);
+				continue;
+			}
 
-		Packet* p = new Packet();
-		msgM->ReadPacket(p, ioData->buffer);
-		
-		
-		if (completionKey == CONFIG || completionKey == CONNECTION || completionKey == MATCHING)
-		{
-			cmdHandler->ProcessCommand(p);
+			Packet* p = new Packet();
+			if (p != nullptr) 
+			{
+				msgM->ReadPacket(p, ioData->buffer);
+				cmdHandler->ProcessCommand(p);
+				delete p;
+			}
 		}
 		else 
 		{

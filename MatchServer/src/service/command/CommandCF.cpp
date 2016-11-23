@@ -1,12 +1,14 @@
 #include "CommandCF.h"
 #include <iostream>
 #include "SocketManager.h"
-#include"MessageManager.h"
+#include "MessageManager.h"
+//#include "ServerHolder.h"
 
 CommandCF::CommandCF()
 {
 	msgM = new MessageManager();
 	socketM = SocketManager::GetInstance();
+
 	func = new FuncType[funcCount];
 	func[0] = &CommandCF::Command_MSLIST_REQUEST;
 	func[1] = &CommandCF::Command_MSLIST_RESPONSE;
@@ -44,13 +46,16 @@ void CommandCF::Command_HEALTH_CHECK_REQUEST(Packet* p)
 }
 void CommandCF::Command_HEALTH_CHECK_RESPONSE(Packet* p)
 {
+	//This command will never get received.
+	//Because Config sends it to MS
+	logger.Error("MS will be never received this command from Config! - Command_HEALTH_CHECK_RESPONSE");
 }
 
 void CommandCF::Command_MSLIST_REQUEST (Packet* p) 
 {
 	//This command will never get received.
 	//Because MS sends it to Config Server
-	logger.Error("MS will be never received this command!");
+	logger.Error("MS will be never received this command!-Command_MSLIST_REQUEST");
 }
 
 void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
@@ -68,6 +73,7 @@ void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 	if (data != nullptr)
 		delete data;
 
+	//서버추가하기
 }
 
 void CommandCF::Command_MS_ID (Packet* p)
