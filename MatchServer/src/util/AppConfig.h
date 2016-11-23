@@ -23,6 +23,8 @@ public:
 	template <typename T>
 	T GetConfig(string key);
 
+	bool Contains(string key);
+
 private:
 	void LoadConfig();
 	AppConfig();
@@ -34,5 +36,6 @@ private:
 template<typename T>
 T AppConfig::GetConfig(string key)
 {
+	
 	return config[key];
 }
