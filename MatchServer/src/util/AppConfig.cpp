@@ -31,6 +31,18 @@ void AppConfig::LoadConfig()
 	cout << "load configuration" << endl;
 }
 
+//true : exist, false : none 
+bool AppConfig::Contains(string key) 
+{
+
+	if (this->config.find(key) != this->config.end()) 
+	{
+		return true;
+	}
+
+	return false;
+}
+
 json& AppConfig::GetAppConfig() 
 {
 	return config;
