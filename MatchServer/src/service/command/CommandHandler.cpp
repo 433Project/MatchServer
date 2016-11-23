@@ -34,16 +34,18 @@ CommandHandler::~CommandHandler()
 
 void CommandHandler::ProcessCommand(Packet* p)
 {
-	
 	switch (p->header->srcType) {
 	case CONFIG_SERVER:
 		cf->CommandCFHandler(p);
 		break;
-	case MATCHING_SERVER:
+	case MATCHING_SERVER:	//메세지 큐에 넣어주기
+		ms->CommandMSHandler(p);
 		break;
 	case MATCHING_CLIENT:
+		mc->CommandMCHandler(p);
 		break;
-	case ROOM_SERVER:
+	case ROOM_SERVER:		//메세지 큐에 넣어주기
+		rs->CommandRSHandler(p);
 		break;
 	default:
 		//logger.Error("received Message from ", p->header->srcType);
@@ -56,6 +58,5 @@ void CommandHandler::ProcessListen(SOCKET s, char* bytes)
 	Header* h = new Header();
 	msgM->BytesToHeader(bytes, h);
 	socketM->AcceptMS(s, h->srcCode);
-	
 }
 

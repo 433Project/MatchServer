@@ -79,7 +79,7 @@ bool SocketManager::CreateListenSocket()
 	return true;
 }
 
-bool SocketManager::CreateSocket(int type, char* ip, int id)
+bool SocketManager::CreateSocket(COMPLETIONKEY type, char* ip, int id)
 {
 	SOCKET sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	int port = 0;
@@ -120,9 +120,11 @@ bool SocketManager::CreateSocket(int type, char* ip, int id)
 
 	//IOCP µî·Ï
 	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
-		logger.Info("Associate socket ", type, " with completion port");
+		logger.Info("Associate socket with completion port");
+		//logger.Info("Associate ", type, "socket with completion port");
 	else
-		logger.Error("Associate socket ", type, " with completion port");
+		logger.Error("Associate socket with completion port fail");
+		//logger.Error("Associate ", type, "socket with completion port fail");
 
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);

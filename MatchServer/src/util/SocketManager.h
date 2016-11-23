@@ -10,7 +10,7 @@ protected:
 
 public:
 	static SocketManager* GetInstance();
-	bool CreateSocket(int type, char* ip, int id = 0);
+	bool CreateSocket(COMPLETIONKEY type, char* ip, int id = 0);
 	bool CreateListenSocket();
 	void AcceptEX(int count);
 	DWORD SendPacket(SOCKET socket, char* data);

@@ -1,5 +1,4 @@
 #include "CommandCF.h"
-#include <iostream>
 #include "SocketManager.h"
 #include "MessageManager.h"
 //#include "ServerHolder.h"

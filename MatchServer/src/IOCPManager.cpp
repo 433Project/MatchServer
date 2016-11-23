@@ -101,10 +101,11 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			}
 
 			Packet* p = new Packet();
-			if (p != nullptr) 
+			
+			msgM->ReadPacket(p, ioData->buffer);
+			cmdHandler->ProcessCommand(p);
+			if (p != nullptr)
 			{
-				msgM->ReadPacket(p, ioData->buffer);
-				cmdHandler->ProcessCommand(p);
 				delete p;
 			}
 		}

@@ -157,8 +157,6 @@
     <ClCompile Include="src\type\Server.cpp" />
     <ClCompile Include="src\IOCPManager.cpp" />
     <ClCompile Include="src\util\Logger.cpp" />
-    <ClCompile Include="src\service\command\CommandMatchRequest.cpp" />
-    <ClCompile Include="src\service\command\CommandRoomCreateRequest.cpp" />
     <ClCompile Include="src\util\SocketManager.cpp" />
     <ClCompile Include="src\util\MessageQueue.cpp" />
     <ClCompile Include="src\util\MessageManager.cpp" />
