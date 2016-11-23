@@ -41,9 +41,9 @@ void MatchServer::Start()
 	socket->CreateSocket(CONFIG, cfIP);
 	
 	//3. connection server  
-	/*logger.Info("Connection Server");
+	logger.Info("Connection Server");
 	if (!socket->CreateSocket(CONNECTION, csIP)) 
 	{
 		exit(0);
-	}*/
+	}
 }

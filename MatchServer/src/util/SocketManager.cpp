@@ -1,4 +1,5 @@
 #include "SocketManager.h"
+#include "MessageManager.h"
 #include <iostream>
 #include <map>
 #include <winsock2.h>
@@ -9,6 +10,7 @@ SocketManager* SocketManager::instance = nullptr;
 SocketManager::SocketManager()
 {
 	iocpM = IOCPManager::GetInstance();
+	msgM = new MessageManager();
 }
 
 SocketManager::~SocketManager()
@@ -224,7 +226,48 @@ void SocketManager::ReceivePacket(SOCKET socket, IO_DATA* ioData)
 void SocketManager::AcceptMS(SOCKET sock, int id)
 {
 	iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, MATCHING);
-	logger.Info("New Matching Server ", sock, " id = ", id);
+	logger.Info("New Matching Server(", sock, "), id = ", id);
 	msList.insert(pair<int, SOCKET>(id, sock));
 	AcceptEX(1);
+}
+
+void SocketManager::CloseSocketMS(int id)
+{
+	logger.Info("Closed Matching Socket(", msList[id], "), id = ", id);
+	closesocket(msList[id]);
+	msList.erase(id);
+}
+
+
+void SocketManager::HeartBeats()
+{
+	while (true)
+	{
+		for each (pair<int, SOCKET> kvp in msList)
+		{
+			std::unordered_map<int, int>::const_iterator got = heartbeats.find(kvp.first);
+
+			if (got == heartbeats.end())
+			{
+				heartbeats.insert(pair<int, int>(kvp.first, 0));
+			}
+
+			if (++heartbeats[kvp.first]>3)
+			{
+				CloseSocketMS(kvp.first);
+			}
+			else
+			{
+				char* data = new char[packetSize];
+				logger.Info("error check 해야하지 않을가? id = ", config.GetConfig<json>("ID"));
+				msgM->MakePacket(data, MATCHING_SERVER, kvp.first, COMMAND_HEALTH_CHECK_REQUEST, STATUS_NONE, "", "", config.GetConfig<json>("ID"));
+				SendPacket(msList[kvp.first], data);
+				if (data != nullptr)
+					delete data;
+				//서버의 보낸 시간을 저장하자
+			}
+		}
+
+	}
+
 }

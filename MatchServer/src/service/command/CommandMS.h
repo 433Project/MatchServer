@@ -24,6 +24,8 @@ private:
 private:
 	//int cmd = 30;
 	//int funcCount = 2;
+
+
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
 	//ServerHolder& servers = ServerHolder::GetInstance();

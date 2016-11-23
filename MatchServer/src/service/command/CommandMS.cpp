@@ -7,6 +7,8 @@ CommandMS::CommandMS()
 	msgM = new MessageManager();
 	socketM = SocketManager::GetInstance();
 
+	//sendHB = (HANDLE)CreateThread(NULL, 0, HeartBeats, NULL, 0, NULL);
+
 	/*func = new FuncType[funcCount];
 	func[0] = &CommandMS::Command_NOTI_MATCH_REQUEST;
 	func[1] = &CommandMS::Command_NOTI_MATCH_RESPONSE;*/
@@ -15,13 +17,8 @@ CommandMS::CommandMS()
 
 CommandMS::~CommandMS()
 {
-	//for (int i = 0; i < funcCount; i++)
-	//{
-	//	delete &func[i];
-	//}
-	//delete func;
-	//if (msgM != nullptr)
-	//	delete msgM;
+	if (msgM != nullptr)
+		delete msgM;
 }
 
 void CommandMS::CommandMSHandler(Packet* p)
@@ -35,6 +32,7 @@ void CommandMS::CommandMSHandler(Packet* p)
 	//메세지 큐에 넣기
 }
 
+
 void CommandMS::Command_HEALTH_CHECK_REQUEST(Packet* p)
 {
 	char* data = new char[100];
@@ -46,7 +44,14 @@ void CommandMS::Command_HEALTH_CHECK_REQUEST(Packet* p)
 }
 void CommandMS::Command_HEALTH_CHECK_RESPONSE(Packet* p)
 {
-	//서버의 시간 업데이트 레이턴시
+	std::unordered_map<int, int>::const_iterator got = socketM->heartbeats.find(p->header->srcCode);
+
+	if (got != socketM->heartbeats.end())
+	{
+		socketM->heartbeats[p->header->srcCode] = 0;
+	}
+
+	//서버의 받은 시간 저장하기
 }
 
 //void CommandMS::Command_NOTI_MATCH_REQUEST(Packet* p)

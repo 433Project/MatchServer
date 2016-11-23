@@ -1,7 +1,9 @@
 #pragma once
 #include "IOCPManager.h"
 #include "Logger.h"
+#include "AppConfig.h"
 
+class MessageManager;
 class SocketManager
 {
 protected:
@@ -16,6 +18,8 @@ public:
 	DWORD SendPacket(SOCKET socket, char* data);
 	void ReceivePacket(SOCKET socket, IO_DATA* ioData);
 	void AcceptMS(SOCKET sock, int id);
+	void CloseSocketMS(int id);
+	void HeartBeats();
 
 private:
 	PVOID GetSockExtAPI(GUID guidFn);
@@ -25,15 +29,17 @@ public:
 	SOCKET csSocket;
 	SOCKET cfSocket;
 	std::unordered_map<int, SOCKET> msList;
+	unordered_map<int, int> heartbeats;
 	int packetSize = 100;
-
 
 private:
 	const int backlog = 10;
 	static SocketManager* instance;
-
-	Logger& logger = Logger::GetInstance();
 	IOCPManager* iocpM;
+	MessageManager* msgM;
+	Logger& logger = Logger::GetInstance();
+	AppConfig& config = AppConfig::GetInstance();
+
 
 	int cfPort = 14040;
 	int csPort = 8433;
