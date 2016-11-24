@@ -211,8 +211,6 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="config\app.json" />
     <None Include="src\Config.ini" />
   </ItemGroup>

@@ -19,13 +19,7 @@ private:
 	void Command_NOTI_MATCH_REQUEST(Packet* p);
 	void Command_NOTI_MATCH_RESPONSE(Packet* p);
 
-	typedef void(CommandMS::*FuncType)(Packet* p);
-	FuncType* func;
-
 private:
-	int cmd = 30;
-	int funcCount = 2;
-
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
 	//ServerHolder& servers = ServerHolder::GetInstance();

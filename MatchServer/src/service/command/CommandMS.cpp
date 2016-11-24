@@ -8,19 +8,12 @@ CommandMS::CommandMS()
 	msgM = new MessageManager();
 	msgQ = MessageQueue::GetInstance();
 	socketM = SocketManager::GetInstance();
-
-	func = new FuncType[funcCount];
-	func[0] = &CommandMS::Command_NOTI_MATCH_REQUEST;
-	func[1] = &CommandMS::Command_NOTI_MATCH_RESPONSE;
 }
-
 
 CommandMS::~CommandMS()
 {
 	if (msgM != nullptr)
 		delete msgM;
-	if (func != nullptr)
-		delete func;
 }
 
 void CommandMS::CommandMSHandler(Packet* p)
