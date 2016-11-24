@@ -31,10 +31,11 @@ public:
 	std::unordered_map<int, SOCKET> msList;
 	unordered_map<int, int> heartbeats;
 	int packetSize = 100;
+	int port = 10000;
 	int serverID = 0;
 
 private:
-	int port = 10000;
+
 	const int backlog = 10;
 	static SocketManager* instance;
 	IOCPManager* iocpM;

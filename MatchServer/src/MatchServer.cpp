@@ -1,4 +1,5 @@
 #include "MatchServer.h"
+#include "CommandCF.h"
 
 MatchServer::MatchServer()
 {
@@ -25,6 +26,7 @@ void MatchServer::Initailize()
 
 void MatchServer::Start() 
 {
+	CommandCF* cmdCF = new CommandCF();
 	//1. listen socket
 	if (socket->CreateListenSocket())
 	{
@@ -39,8 +41,11 @@ void MatchServer::Start()
 	if (config.Contains("Config"))
 	{
 		json cf = config.GetConfig<json>("Config");
-		if (!socket->CreateSocket(CONFIG, cf["ip"], cf["port"]))
+		if (socket->CreateSocket(CONFIG, cf["ip"], cf["port"]))
+			cmdCF->Command_MS_ID_REQUEST();
+		else	
 			logger.Error("Fail to connect Config server. check Config Server's ip, port at app.json");
+		
 	}
 	else 
 	{
@@ -48,7 +53,7 @@ void MatchServer::Start()
 	}
 
 	//3. connection server  
-	if (config.Contains("Connection")) 
+	/*if (config.Contains("Connection")) 
 	{
 		json cs = config.GetConfig<json>("Connection");
 		if (!socket->CreateSocket(CONNECTION, cs["ip"], cs["port"]))
@@ -58,5 +63,5 @@ void MatchServer::Start()
 	{
 		logger.Error("Connection Server doesn't exist in app.json");
 		exit(0);
-	}
+	}*/
 }

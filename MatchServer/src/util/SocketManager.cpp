@@ -46,7 +46,13 @@ bool SocketManager::CreateListenSocket()
 		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
-	logger.Info("Listen Socket(", listenSock, ")");
+
+
+	if (config.Contains("Listen"))
+		port = config.GetConfig<json>("Listen")["port"];
+
+	logger.Info("Listen Socket(", listenSock, ") port : ", port);
+
 	SOCKADDR_IN	sa;
 	memset(&sa, 0, sizeof(SOCKADDR_IN));
 	sa.sin_family = AF_INET;
@@ -85,7 +91,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 
 	if (sock == INVALID_SOCKET)
 	{
-		logger.Error("socket failed, code : ", WSAGetLastError());
+		logger.Error(EnumNamesCOMPLETIONKEY()[type], "socket failed, code : ", WSAGetLastError());
 		return false;
 	}
 	logger.Info(EnumNamesCOMPLETIONKEY()[type]," Socket(", sock, ")");
@@ -97,7 +103,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)
 	{
-		logger.Error("connect failed, code : ",  WSAGetLastError());
+		logger.Error(EnumNamesCOMPLETIONKEY()[type]," connect failed, code : ",  WSAGetLastError());
 		return false;
 	}
 

@@ -57,3 +57,18 @@ void MessageManager::BytesToHeader(char* bytes, Header* h)
 {
 	memcpy(h, bytes, sizeof(Header));
 }
+
+void MessageManager::split(const string& s, char del, vector<string>& v) 
+{
+	string::size_type i = 0;
+	string::size_type j = s.find(del);
+
+	while (j != string::npos) {
+		v.push_back(s.substr(i, j - i));
+		i = ++j;
+		j = s.find(del, j);
+
+		if (j == string::npos)
+			v.push_back(s.substr(i, s.length()));
+	}
+}

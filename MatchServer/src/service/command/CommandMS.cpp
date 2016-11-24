@@ -7,11 +7,9 @@ CommandMS::CommandMS()
 	msgM = new MessageManager();
 	socketM = SocketManager::GetInstance();
 
-	//sendHB = (HANDLE)CreateThread(NULL, 0, HeartBeats, NULL, 0, NULL);
-
-	/*func = new FuncType[funcCount];
+	func = new FuncType[funcCount];
 	func[0] = &CommandMS::Command_NOTI_MATCH_REQUEST;
-	func[1] = &CommandMS::Command_NOTI_MATCH_RESPONSE;*/
+	func[1] = &CommandMS::Command_NOTI_MATCH_RESPONSE;
 }
 
 
@@ -36,8 +34,7 @@ void CommandMS::CommandMSHandler(Packet* p)
 void CommandMS::Command_HEALTH_CHECK_REQUEST(Packet* p)
 {
 	char* data = new char[100];
-	logger.Info("error check 해야하지 않을가? id = ", config.GetConfig<json>("ID"));
-	msgM->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK_RESPONSE, STATUS_NONE, "", "", config.GetConfig<json>("ID"));
+	msgM->MakePacket(data, p->header->srcType, p->header->srcCode, COMMAND_HEALTH_CHECK_RESPONSE, STATUS_NONE, "", "", socketM->serverID);
 	socketM->SendPacket(socketM->cfSocket, data);
 	if (data != nullptr)
 		delete data;
@@ -54,11 +51,11 @@ void CommandMS::Command_HEALTH_CHECK_RESPONSE(Packet* p)
 	//서버의 받은 시간 저장하기
 }
 
-//void CommandMS::Command_NOTI_MATCH_REQUEST(Packet* p)
-//{
-//
-//}
-//void CommandMS::Command_NOTI_MATCH_RESPONSE(Packet* p)
-//{
-//
-//}
+void CommandMS::Command_NOTI_MATCH_REQUEST(Packet* p)
+{
+
+}
+void CommandMS::Command_NOTI_MATCH_RESPONSE(Packet* p)
+{
+
+}

@@ -17,6 +17,6 @@ public:
 	void ReadPacket(Packet* p, char* data);
 	void HeaderToBytes(char* bytes, TERMINALTYPE dstType, int dstCode, int srcCode);
 	void BytesToHeader(char* bytes, Header* h);
-
+	void split(const string& s, char del, vector<string>& v);
 };
 

@@ -15,16 +15,15 @@ public:
 private:
 	void Command_HEALTH_CHECK_REQUEST(Packet* p);
 	void Command_HEALTH_CHECK_RESPONSE(Packet* p);
-	//void Command_NOTI_MATCH_REQUEST(Packet* p);
-	//void Command_NOTI_MATCH_RESPONSE(Packet* p);
+	void Command_NOTI_MATCH_REQUEST(Packet* p);
+	void Command_NOTI_MATCH_RESPONSE(Packet* p);
 
-	//typedef void(CommandMS::*FuncType)(Packet* p);
-	//FuncType* func;
+	typedef void(CommandMS::*FuncType)(Packet* p);
+	FuncType* func;
 
 private:
-	//int cmd = 30;
-	//int funcCount = 2;
-
+	int cmd = 30;
+	int funcCount = 2;
 
 	Logger& logger = Logger::GetInstance();
 	AppConfig& config = AppConfig::GetInstance();
@@ -32,7 +31,5 @@ private:
 
 	SocketManager* socketM;
 	MessageManager* msgM;
-
-	int heartBeat = 0;
 };
 
