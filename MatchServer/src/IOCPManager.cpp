@@ -75,6 +75,7 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 	DWORD bytesTransferred;
 	IO_DATA* ioData;
 	ULONG_PTR completionKey = 0;
+
 	while (TRUE)
 	{
 		GetQueuedCompletionStatus(
@@ -87,7 +88,6 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 
 		if (completionKey == LISTEN)
 		{
-			logger.Info("Accepted");
 			cmdHandler->ProcessListen(ioData->hClntSock, ioData->buffer);
 			continue;
 		}
@@ -112,7 +112,8 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 		}
 		else 
 		{
-			logger.Error("Unkwon Completion key", completionKey);
+			logger.Error("Unkwon Completion key : ", completionKey);
+			continue;
 		}
 		
 		ioData->buffer = new char[packetSize];

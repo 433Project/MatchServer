@@ -73,11 +73,7 @@ bool SocketManager::CreateListenSocket()
 		return false;
 	}
 
-	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
-	{
-		logger.Info("Associate listen socket with completion port");
-	}
-	else 
+	if (!iocpM->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
 	{
 		logger.Error("Associate listen socket with completion port  failed");
 	}
@@ -121,9 +117,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 	}
 	
 	//IOCP µî·Ï
-	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
-		logger.Info("Associate ", EnumNamesCOMPLETIONKEY()[type], " socket with completion port");
-	else
+	if (!iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
 		logger.Error("Associate ", EnumNamesCOMPLETIONKEY()[type], " socket with completion port fail");
 
 	//initial receive
@@ -145,13 +139,13 @@ void SocketManager::AcceptEX(int count)
 
 		DWORD dwBytes;
 		IO_DATA* ov = new IO_DATA(sock);
-		ov->buffer = new char[(sizeof(SOCKADDR_IN) + 16)*2 + 20];
+		ov->buffer = new char[(sizeof(SOCKADDR_IN) + 16)*2 + sizeof(Header)];
 		BOOL bIsOK = pfnAcceptEx
 		(
 			listenSock,						//sListenSocket
 			sock,							//sAcceptSocket
 			ov->buffer,						//lpOutputBuffer
-			20,								//dwReceiveDataLength
+			sizeof(Header),					//dwReceiveDataLength
 			sizeof(SOCKADDR_IN) + 16,		//dwLocalAddressLength
 			sizeof(SOCKADDR_IN) + 16,		//dwRemoteAddressLength
 			&dwBytes,						//lpdwBytesReceived

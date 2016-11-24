@@ -1,17 +1,14 @@
 #include "CommandMS.h"
 #include "SocketManager.h"
 #include "MessageManager.h"
+#include "MessageQueue.h"
 
 CommandMS::CommandMS()
 {
 	msgM = new MessageManager();
+	msgQ = MessageQueue::GetInstance();
 	socketM = SocketManager::GetInstance();
-
-	func = new FuncType[funcCount];
-	func[0] = &CommandMS::Command_NOTI_MATCH_REQUEST;
-	func[1] = &CommandMS::Command_NOTI_MATCH_RESPONSE;
 }
-
 
 CommandMS::~CommandMS()
 {
@@ -26,8 +23,7 @@ void CommandMS::CommandMSHandler(Packet* p)
 	else if (p->body->cmd() == COMMAND_HEALTH_CHECK_RESPONSE)
 		Command_HEALTH_CHECK_RESPONSE(p);
 	else
-		;
-	//메세지 큐에 넣기
+		msgQ->Push(p);
 }
 
 

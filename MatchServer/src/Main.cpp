@@ -13,6 +13,7 @@ void main() {
 	
 	IOCPManager* iocp = IOCPManager::GetInstance();
 	iocp->Start();
+
 	MatchServer* ms = new MatchServer();
 	ms->Initailize();
 	ms->Start();
