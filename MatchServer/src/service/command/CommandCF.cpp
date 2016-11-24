@@ -46,7 +46,6 @@ void CommandCF::Command_HEALTH_CHECK_REQUEST(Packet* p)
 }
 void CommandCF::Command_HEALTH_CHECK_RESPONSE(Packet* p)
 {
-	logger.Info("Command_HEALTH_CHECK_RESPONSE");
 	//This command will never get received.
 	//Because MS sends it to Config
 	logger.Error("MS will be never received this command from Config Server! - Command_HEALTH_CHECK_RESPONSE");
@@ -79,7 +78,7 @@ void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 	}
 	else
 	{
-		logger.Error("Doesn't exist ServerID");
+		logger.Error("Doesn't exist Server ID");
 	}
 	//서버추가하기
 }

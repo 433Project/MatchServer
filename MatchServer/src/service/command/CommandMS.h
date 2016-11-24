@@ -4,6 +4,7 @@
 
 class SocketManager;
 class MessageManager;
+class MessageQueue;
 
 class CommandMS
 {
@@ -31,5 +32,6 @@ private:
 
 	SocketManager* socketM;
 	MessageManager* msgM;
+	MessageQueue* msgQ;
 };
 
