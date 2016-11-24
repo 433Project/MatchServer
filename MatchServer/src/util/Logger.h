@@ -16,7 +16,8 @@ typedef std::shared_ptr<logger> MSLogger;
 #define ENV live	
 #endif
 
-//#define Error(messages) errFuncName(__FUNCTION__, messages)
+#define Info(...) logInfo(__FUNCTION__, __VA_ARGS__)
+#define Error(...) logError(__FUNCTION__, __VA_ARGS__)
 
 class Logger
 {
@@ -25,12 +26,10 @@ public:
 	~Logger();
 
 	template<class ... Args>
-	void Info(Args ...args);
+	void logInfo(string funcName, Args ...args);
 
 	template<class ... Args>
-	void Error(Args ...args);
-
-	//void errFuncName(string funcName, string message);
+	void logError(string funcName, Args ...args);
 
 	template<typename Message>
 	string convert(const Message& message);
@@ -48,18 +47,18 @@ private:
 };
 
 template<class... Args>
-void Logger::Info(Args ... args)
+void Logger::logInfo(string funcName, Args ... args)
 {
-	string convertedMsg = convert(args...);
+	string convertedMsg = "[" + funcName + "] " + convert(args...);
 
 	this->spdLogger->info(convertedMsg);
 	this->spdLogger->flush();
 }
 
 template<class... Args>
-void Logger::Error(Args ... args)
+void Logger::logError(string funcName, Args ... args)
 {
-	string convertedMsg = convert(args...);
+	string convertedMsg = "[" + funcName + "] " + convert(args...);
 
 	this->spdLogger->error(convertedMsg);
 	this->spdLogger->flush();
