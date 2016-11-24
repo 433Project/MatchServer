@@ -23,5 +23,8 @@
   "Connection": {
     "ip": "10.100.10.8",
     "port": 9433
+  },
+  "log": {
+    "path": "adf"
   }
 }

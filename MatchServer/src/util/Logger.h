@@ -4,6 +4,8 @@
 #include <time.h>
 #include <string>
 #include <type_traits>
+#include <Windows.h>
+#include <winbase.h>
 
 using namespace std;
 using namespace spdlog;
