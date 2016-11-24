@@ -31,6 +31,7 @@ public:
 	std::unordered_map<int, SOCKET> msList;
 	unordered_map<int, int> heartbeats;
 	int packetSize = 100;
+	int serverID = 0;
 
 private:
 	int port = 10000;

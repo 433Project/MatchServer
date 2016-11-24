@@ -46,7 +46,7 @@ bool SocketManager::CreateListenSocket()
 		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
-	logger.Info(listenSock);
+	logger.Info("Listen Socket(", listenSock, ")");
 	SOCKADDR_IN	sa;
 	memset(&sa, 0, sizeof(SOCKADDR_IN));
 	sa.sin_family = AF_INET;
@@ -60,7 +60,6 @@ bool SocketManager::CreateListenSocket()
 		closesocket(listenSock);
 		return false;
 	}
-	logger.Info("bind()");
 	lSockRet = listen(listenSock, backlog);
 	if (lSockRet == SOCKET_ERROR)
 	{
@@ -68,8 +67,6 @@ bool SocketManager::CreateListenSocket()
 		closesocket(listenSock);
 		return false;
 	}
-
-	logger.Info("Listen()");
 
 	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)listenSock, LISTEN))
 	{
@@ -91,7 +88,7 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 		logger.Error("socket failed, code : ", WSAGetLastError());
 		return false;
 	}
-
+	logger.Info(EnumNamesCOMPLETIONKEY()[type]," Socket(", sock, ")");
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
@@ -119,17 +116,13 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 	
 	//IOCP 등록
 	if (iocpM->AssociateDeviceWithCompletionPort((HANDLE)sock, type))
-		logger.Info("Associate socket with completion port");
-		//logger.Info("Associate ", type, "socket with completion port");
+		logger.Info("Associate ", EnumNamesCOMPLETIONKEY()[type], " socket with completion port");
 	else
-		logger.Error("Associate socket with completion port fail");
-		//logger.Error("Associate ", type, "socket with completion port fail");
-
+		logger.Error("Associate ", EnumNamesCOMPLETIONKEY()[type], " socket with completion port fail");
 
 	//initial receive
 	IO_DATA* ioData = new IO_DATA(sock);
 	ReceivePacket(sock, ioData);
-	logger.Info(sock);
 	return true;
 }
 
@@ -257,8 +250,7 @@ void SocketManager::HeartBeats()
 			else
 			{
 				char* data = new char[packetSize];
-				logger.Info("error check 해야하지 않을가? id = ", config.GetConfig<json>("ID"));
-				msgM->MakePacket(data, MATCHING_SERVER, kvp.first, COMMAND_HEALTH_CHECK_REQUEST, STATUS_NONE, "", "", config.GetConfig<json>("ID"));
+				msgM->MakePacket(data, MATCHING_SERVER, kvp.first, COMMAND_HEALTH_CHECK_REQUEST, STATUS_NONE, "", "", serverID);
 				SendPacket(msList[kvp.first], data);
 				if (data != nullptr)
 					delete data;

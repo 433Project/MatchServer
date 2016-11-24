@@ -46,42 +46,46 @@ void CommandCF::Command_HEALTH_CHECK_REQUEST(Packet* p)
 void CommandCF::Command_HEALTH_CHECK_RESPONSE(Packet* p)
 {
 	//This command will never get received.
-	//Because Config sends it to MS
-	logger.Error("MS will be never received this command from Config! - Command_HEALTH_CHECK_RESPONSE");
+	//Because MS sends it to Config
+	logger.Error("MS will be never received this command from Config Server! - Command_HEALTH_CHECK_RESPONSE");
 }
 
 void CommandCF::Command_MSLIST_REQUEST (Packet* p) 
 {
 	//This command will never get received.
 	//Because MS sends it to Config Server
-	logger.Error("MS will be never received this command!-Command_MSLIST_REQUEST");
+	logger.Error("MS will be never received this command from Config Server! - Command_MSLIST_REQUEST");
 }
 
 void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 {
 	int id = atoi(p->body->data1()->c_str());
 	char* ip = (char*)p->body->data2()->c_str();
-	logger.Info(" Command_MSLIST_RESPONSE ip : ", ip);
-	logger.Info("Connecting to  MS");
+	logger.Info("Command_MSLIST_RESPONSE (ip : ", ip, ", id : ", id, ")");
 	socketM->CreateSocket(MATCHING, ip, id);
-
-	char* data = new char[sizeof(Header)];
-	msgM->HeaderToBytes(data, MATCHING_SERVER, id, config.GetConfig<json>("ID"));
-	socketM->SendPacket(socketM->msList[id], data);
-	logger.Info("Send header to id : ", id);
-	if (data != nullptr)
-		delete data;
-
+	
+	if(socketM->serverID != 0)
+	{
+		char* data = new char[sizeof(Header)];
+		msgM->HeaderToBytes(data, MATCHING_SERVER, id, socketM->serverID);
+		socketM->SendPacket(socketM->msList[id], data);
+		if (data != nullptr)
+			delete data;
+	}
+	else
+	{
+		logger.Error("Doesn't exist ServerID");
+	}
 	//서버추가하기
 }
 
 void CommandCF::Command_MS_ID (Packet* p)
 {
 	int id = atoi(p->body->data1()->c_str());
+	logger.Info("Command_MS_ID (id : ", id, ")");
 	if (id != 0)
 	{
-		config.GetAppConfig()["ID"] = id;
-		logger.Info("Server id : ", id);
+		socketM->serverID = id;
 		char* data = new char[socketM->packetSize];
 		msgM->MakePacket(data, CONFIG_SERVER, 0, COMMAND_MSLIST_REQUEST, STATUS_NONE, "", "");
 		socketM->SendPacket(socketM->cfSocket, data);
@@ -90,6 +94,6 @@ void CommandCF::Command_MS_ID (Packet* p)
 			delete data;
 	}
 	else
-		logger.Error("Convert string to int fail", p->body->data1()->c_str());
+		logger.Error("Wrong value Server ID", p->body->data1()->c_str());
 	
 }

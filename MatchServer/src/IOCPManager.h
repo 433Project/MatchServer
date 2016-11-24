@@ -1,7 +1,6 @@
 #pragma once
 #include <winsock2.h>
 #pragma comment(lib, "Ws2_32.lib")
-using namespace std;
 
 struct IO_DATA : OVERLAPPED
 {
@@ -23,6 +22,11 @@ enum COMPLETIONKEY : int
 	CONNECTION,
 	MATCHING
 };
+
+inline const char **EnumNamesCOMPLETIONKEY() {
+	static const char *names[] = { "LISTEN", "CONFIG", "CONNECTION", "MATCHING", nullptr };
+	return names;
+}
 
 class IOCPManager
 {
