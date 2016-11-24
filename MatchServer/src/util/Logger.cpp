@@ -38,7 +38,7 @@ Logger::Logger()
 		spdlog::set_async_mode(q_size);
 
 		spdlog::set_level(spdlog::level::info); //Set global log level to info
-		this->logger = spdlog::basic_logger_mt("ms_file_logger", fileName);
+		this->spdLogger = spdlog::basic_logger_mt("ms_file_logger", fileName);
 	}
 	catch (const spdlog::spdlog_ex& ex) 
 	{
