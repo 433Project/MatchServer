@@ -35,7 +35,6 @@ public:
 	int serverID = 0;
 
 private:
-
 	const int backlog = 10;
 	static SocketManager* instance;
 	IOCPManager* iocpM;

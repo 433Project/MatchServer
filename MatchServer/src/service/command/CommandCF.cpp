@@ -67,7 +67,7 @@ void CommandCF::Command_MSLIST_RESPONSE (Packet* p)
 	char* ip = (char*)ipAddress[0].c_str();
 	int port = atoi(ipAddress[1].c_str());
 	logger.Info("Command_MSLIST_RESPONSE (id : ", id, ", ip : ", ip, ", port : ", port, ")");
-	socketM->CreateSocket(MATCHING, ip, id);
+	socketM->CreateSocket(MATCHING, ip, port, id);
 	
 	if(socketM->serverID != 0)
 	{

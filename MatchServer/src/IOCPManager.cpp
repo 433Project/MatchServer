@@ -91,6 +91,7 @@ unsigned __stdcall IOCPManager::ProcessThread(void* iocp)
 			cmdHandler->ProcessListen(ioData->hClntSock, ioData->buffer);
 			continue;
 		}
+
 		else if (completionKey == CONFIG || completionKey == CONNECTION || completionKey == MATCHING)
 		{
 			if (bytesTransferred == 0)

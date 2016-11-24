@@ -47,7 +47,6 @@ bool SocketManager::CreateListenSocket()
 		return false;
 	}
 
-
 	if (config.Contains("Listen"))
 		port = config.GetConfig<json>("Listen")["port"];
 
@@ -95,10 +94,11 @@ bool SocketManager::CreateSocket(COMPLETIONKEY type, string ip, int port, int id
 		return false;
 	}
 	logger.Info(EnumNamesCOMPLETIONKEY()[type]," Socket(", sock, ")");
+	
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = inet_addr(ip.c_str());			//Server IP
+	addr.sin_addr.s_addr = inet_addr(ip.c_str());	//Server IP
 	addr.sin_port = htons(port);					//Server Port
 	
 	if (connect(sock, (SOCKADDR*)&addr, sizeof(addr)) == SOCKET_ERROR)

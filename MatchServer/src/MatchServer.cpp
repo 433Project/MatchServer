@@ -45,7 +45,6 @@ void MatchServer::Start()
 			cmdCF->Command_MS_ID_REQUEST();
 		else	
 			logger.Error("Fail to connect Config server. check Config Server's ip, port at app.json");
-		
 	}
 	else 
 	{

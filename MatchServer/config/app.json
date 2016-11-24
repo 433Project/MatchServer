@@ -12,7 +12,7 @@
   },
 
   "Listen": {
-    "port": 10000
+    "port": 15000
   },
 
   "Config": {
